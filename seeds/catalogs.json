@@ -1,0 +1,13 @@
+{ 
+    "sqlitepersist.SQLitePersistBasicClasses.PCatalog": 
+        [
+            {"type": "BIO_SEX", "code":"MALE", "value":"male", "langcode":"GBR"},
+            {"type": "BIO_SEX", "code":"FEMALE", "value":"female", "langcode":"GBR"},
+            {"type": "BIO_SEX", "code":"UNKNOWN", "value":"unknown", "langcode":"GBR"},
+            {"type": "BIO_SEX", "code":"MALE", "value":"männlich", "langcode":"DEU"},
+            {"type": "BIO_SEX", "code":"FEMALE", "value":"weiblich", "langcode":"DEU"},
+            {"type": "BIO_SEX", "code":"UNKNOWN", "value":"unbekannt", "langcode":"DEU"}
+            
+        ]
+  
+}

@@ -6,10 +6,12 @@ import logging.config
 import tempfile as tmpf
 
 import wx
+import wx.adv
 import GeneratedGUI as gg
 from ConfigReader import *
 from DocArchiver import *
 from PersonEditDialog import PersonEditDialog
+from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
 
@@ -138,6 +140,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         self.logger.info("Initialising database in db-file %s", dbfilename)
         self.makesuredirexists(dbfilename)
         self._fact = sqp.SQFactory("AncPicDb", dbfilename)
+        self._fact.lang = "DEU"
         doinits = self._configuration.get_value("database", "tryinits")
         self._fact.set_db_dbglevel(self.logger,
             self._configuration.get_value("database", "dbglevel"))
@@ -164,10 +167,10 @@ class AncPicDbMain(gg.AncPicDBMain):
             if done:
                 createds.append(pclass)
 
-        #if sqp.PCatalog in createds:
-        #    self.logger.info("Seeding catalogs")
-        #    sdr = sqp.SQPSeeder(self._fact, os.path.join(self._apppath, "PexSeeds/catalogs.json"))
-        #    sdr.create_seeddata()
+        if sqp.PCatalog in createds:
+            self.logger.info("Seeding catalogs")
+            sdr = sqp.SQPSeeder(self._fact, os.path.join(self._apppath, "seeds/catalogs.json"))
+            sdr.create_seeddata()
 
 		#if Unit in createds:
 		#	self.logger.info("Seeding units")
@@ -179,9 +182,27 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         #hevily used data with only a small number of records
         self._persons = self.get_all_persons()
+        self.refresh_dash()
+
+    def refresh_dash(self):
+        """do a complete refresh of the main GUI with the list of persons and the dependent list of documnents and oictures"""
+
+        self._persons = self.get_all_persons()
+        self.m_personsLB.Clear()
             
+        if len(self._persons) > 0:
+            ps = []
+            for p in self._persons:
+                ps.append(p.__str__())
+        
+            self.m_personsLB.InsertItems(ps, 0)
+            self.m_personsLB.SetSelection(wx.NOT_FOUND)
+            
+        #self.m_personsLB.Refresh()
+        
+
     def get_all_persons(self):
-        q = sqp.SQQuery(self._fact, Person)
+        q = sqp.SQQuery(self._fact, Person).order_by(Person.FirstName)
         answ = list(q)
 
         return answ
@@ -228,6 +249,34 @@ class AncPicDbMain(gg.AncPicDBMain):
         if res != wx.ID_OK:
             return
         newp = pedial.flushnget()
+
+        self.refresh_dash()
+
+    def editExistingPerson(self,event):
+        selpos = self.m_personsLB.GetSelection()
+        if selpos == wx.NOT_FOUND:
+            return
+        edp = self._persons[selpos]
+        pedial = PersonEditDialog(frm, self._fact, edp)
+        res = pedial.showmodal()
+        if res != wx.ID_OK:
+            return
+        edp = pedial.flushnget()
+
+        self.refresh_dash()
+        
+
+    def deletePerson(self, event):
+        selpos = self.m_personsLB.GetSelection()
+        if selpos == wx.NOT_FOUND:
+            return
+        
+        dp = self._persons[selpos]
+
+        if GuiHelper.ask_user(self, "Möchtest du wirklich die Person >>{}<< löschen?".format(dp.__str__())) == wx.ID_YES:
+            self._fact.delete(dp)
+            self.refresh_dash()
+        
         
 
 

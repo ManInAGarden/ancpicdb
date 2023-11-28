@@ -1,5 +1,8 @@
 import sqlitepersist as sqp
 
+class SexCat(sqp.PCatalog):
+     _cattype = "BIO_SEX"
+     _langsensitive = True
 
 class _InfoBit(sqp.PBase):
      TargetId = sqp.UUid()
@@ -21,8 +24,10 @@ class PersonPictureInter(sqp.PBase):
 class Person(sqp.PBase):
      Name = sqp.String()
      FirstName = sqp.String()
+     BioSex = sqp.Catalog(catalogtype=SexCat)
      NameOfBirth = sqp.String()
      Birthdate = sqp.DateTime()
+     DeathDate = sqp.DateTime()
      FatherId = sqp.UUid()
      MotherId = sqp.UUid()
      Infotext = sqp.String()
@@ -31,7 +36,10 @@ class Person(sqp.PBase):
      Pictures = sqp.IntersectedList(targettype=PersonPictureInter, interupid=PersonPictureInter.PersonId, interdownid=PersonPictureInter.PictureId)
 
      def __str__(self):
-          return "{0} {1}".format(self.vorname, self.name)
+          if self.birthdate is not None:
+               return "{0} {1} ({2:%d.%m.%Y})".format(self.firstname, self.name, self.birthdate)
+          else:
+               return "{0} {1}".format(self.firstname, self.name)
 
 class PictureInfoBit(_InfoBit):
      """class for informations according pictures"""
