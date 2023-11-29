@@ -11,6 +11,7 @@ import GeneratedGUI as gg
 from ConfigReader import *
 from DocArchiver import *
 from PersonEditDialog import PersonEditDialog
+from PicturesViewDialog import PicturesViewDialog
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
@@ -27,6 +28,10 @@ class AncPicDbMain(gg.AncPicDBMain):
         self.init_archive()
         self.init_db()
         self.init_gui()
+
+    @property
+    def configuration(self):
+        return self._configuration
 
     def _get_app_path(self):
         if getattr(sys, 'frozen', False):
@@ -182,6 +187,9 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         #hevily used data with only a small number of records
         self._persons = self.get_all_persons()
+
+        self.m_mainWindowSB.SetStatusText("DB: {0}".format(self._fact._dbfilename), 0)
+
         self.refresh_dash()
 
     def refresh_dash(self):
@@ -244,7 +252,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         newp = Person()
         newp.firstname = "<vorname>"
         newp.name = "<Name>"
-        pedial = PersonEditDialog(frm, self._fact, newp)
+        pedial = PersonEditDialog(self, self._fact, newp)
         res = pedial.showmodal()
         if res != wx.ID_OK:
             return
@@ -257,7 +265,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         if selpos == wx.NOT_FOUND:
             return
         edp = self._persons[selpos]
-        pedial = PersonEditDialog(frm, self._fact, edp)
+        pedial = PersonEditDialog(self, self._fact, edp)
         res = pedial.showmodal()
         if res != wx.ID_OK:
             return
@@ -276,7 +284,11 @@ class AncPicDbMain(gg.AncPicDBMain):
         if GuiHelper.ask_user(self, "Möchtest du wirklich die Person >>{}<< löschen?".format(dp.__str__())) == wx.ID_YES:
             self._fact.delete(dp)
             self.refresh_dash()
-        
+
+    def openViewPicturesDialog(self, event):
+        pwdial = PicturesViewDialog(self, self._fact)
+        res = pwdial.showmodal()
+        self.refresh_dash()        
         
 
 

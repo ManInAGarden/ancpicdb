@@ -51,9 +51,13 @@ class Picture(sqp.PBase):
      FilePath = sqp.String()
      ScanDate = sqp.DateTime()
      TakenDate = sqp.DateTime()
-     Title = sqp.String()
+     Title = sqp.String(default="<Titel>")
      SettledInformation = sqp.String()
      PictInfoBits = sqp.JoinedEmbeddedList(targettype=PictureInfoBit, foreignid=PictureInfoBit.TargetId, cascadedelete=True)
+
+     def __str__(self):
+          return "{} ({})".format(self.title, self.readableid)
+     
 
 class DocumentInfoBit(_InfoBit):
      pass

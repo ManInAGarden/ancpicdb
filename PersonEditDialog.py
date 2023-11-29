@@ -1,4 +1,5 @@
 import datetime
+from dateutil.relativedelta import relativedelta
 import wx
 import wx.adv
 import GeneratedGUI as gg
@@ -99,7 +100,9 @@ class PersonEditDialog(gg.gPersonEditDialog):
         #now fill mother and father
         #manipulate combo-boxes so that only older persons can be selected and not the person himself can be selected
         if p.birthdate is not None:
-            refdate = p.birthdate
+            cdd = self.Parent.configuration.get_value("gui", "childdeltayears")
+            if cdd is None: cdd = 16
+            refdate = p.birthdate - relativedelta(years=cdd)
         else:
             refdate = datetime.datetime.today()
 
@@ -143,13 +146,15 @@ class PersonEditDialog(gg.gPersonEditDialog):
         if biosexp is not wx.NOT_FOUND:
             self._person.biosex = self._biosexes[biosexp]
 
-        motherp = self.m_motherCB.GetSelection()
-        if motherp is not wx.NOT_FOUND:
-            self._person.motherid = self._pmothers[motherp]._id
-
-        fatherp = self.m_motherCB.GetSelection()
-        if fatherp is not wx.NOT_FOUND:
-            self._person.fatherid = self._pfathers[fatherp]._id
+        if len(self._pmothers)>0:
+            motherp = self.m_motherCB.GetSelection()
+            if motherp is not wx.NOT_FOUND:
+                self._person.motherid = self._pmothers[motherp]._id
+        
+        if len(self._pfathers)>0:
+            fatherp = self.m_motherCB.GetSelection()
+            if fatherp is not wx.NOT_FOUND:
+                self._person.fatherid = self._pfathers[fatherp]._id
 
         self._fact.flush(self._person)
         return self._person
