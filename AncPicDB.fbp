@@ -201,7 +201,7 @@
                 <property name="window_name"></property>
                 <property name="window_style"></property>
             </object>
-            <object class="wxGridBagSizer" expanded="0">
+            <object class="wxGridBagSizer" expanded="1">
                 <property name="empty_cell_size"></property>
                 <property name="flexible_direction">wxBOTH</property>
                 <property name="growablecols">0,1</property>
@@ -212,14 +212,14 @@
                 <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_SPECIFIED</property>
                 <property name="permission">none</property>
                 <property name="vgap">0</property>
-                <object class="gbsizeritem" expanded="0">
+                <object class="gbsizeritem" expanded="1">
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">0</property>
                     <property name="flag">wxALL|wxEXPAND</property>
                     <property name="row">0</property>
                     <property name="rowspan">2</property>
-                    <object class="wxGridBagSizer" expanded="0">
+                    <object class="wxGridBagSizer" expanded="1">
                         <property name="empty_cell_size"></property>
                         <property name="flexible_direction">wxBOTH</property>
                         <property name="growablecols">0</property>
@@ -294,6 +294,7 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
+                                <event name="OnListBox">personSelected</event>
                             </object>
                         </object>
                         <object class="gbsizeritem" expanded="0">

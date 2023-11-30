@@ -215,6 +215,48 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         return answ
     
+    def get_selected_ppos(self):
+        """get the selected persons position in the self._persons list
+        returns wx.NOT_FOUND when nothing was selected or the list is empty"""
+        if len(self._persons) == 0:
+            return wx.NOT_FOUND
+        
+        return self.m_personsLB.GetSelection()
+    
+    def get_selected_personandpos(self):
+        """get the selected persons position in the self._persons list
+        and the person itself as a tuple.
+        returns wx.NOT_FOUND, None when nothing was selected or the list is empty"""
+        if len(self._persons) == 0:
+            return wx.NOT_FOUND, None
+        
+        pos = self.m_personsLB.GetSelection()
+        return pos, self._persons[pos]
+    
+        
+    def refresh_dash_forp(self, pos):
+        """refresh the persons details in case a person was selected or the persons data where updated by another
+        callback (picture editing/document editing)"""
+        pers = self._persons[pos] #we demand that the person had been refreshed in case links where updated!!!!
+        self._fact.fill_joins(pers, 
+                              Person.Pictures,
+                              Person.Documents)
+
+        self.m_picturesLB.Clear()
+        if len(pers.pictures) > 0:
+            picsstrs = []
+            for pic in pers.pictures:
+                picsstrs.append(pic.__str__())
+            self.m_picturesLB.AppendItems(picsstrs)
+
+        self.m_documentsLB.Clear()
+        if len(pers.documents) > 0:
+            docstrs = []
+            for doc in pers.documents:
+                docstrs.append(doc.__str__())
+            self.m_documentsLB.AppendItems(docstrs)
+
+
     def cleanup_temp(self):
         """delete any temporary files from the temp-dir"""
         if not os.path.exists(self._extractionpath):
@@ -285,11 +327,22 @@ class AncPicDbMain(gg.AncPicDBMain):
             self._fact.delete(dp)
             self.refresh_dash()
 
+    def personSelected(self, event):
+        ppos = self.m_personsLB.GetSelection()
+        if ppos is wx.NOT_FOUND:
+            return
+        
+        self.refresh_dash_forp(ppos)
+
     def openViewPicturesDialog(self, event):
         pwdial = PicturesViewDialog(self, self._fact)
         res = pwdial.showmodal()
-        self.refresh_dash()        
-        
+
+        pos = self.get_selected_ppos()
+        if pos is not wx.NOT_FOUND:
+            self.refresh_dash_forp(pos)
+
+        #no refresh ist needed in case no person was selected because only pictures for the person may have changed        
 
 
 if __name__ == '__main__':

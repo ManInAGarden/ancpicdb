@@ -193,6 +193,7 @@ class AncPicDBMain ( wx.Frame ):
 		# Connect Events
 		self.Bind( wx.EVT_MENU, self.quit, id = self.m_exitMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
+		self.m_personsLB.Bind( wx.EVT_LISTBOX, self.personSelected )
 		self.m_newPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editNewPerson )
 		self.m_editPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editExistingPerson )
 		self.m_deletePersonBU.Bind( wx.EVT_LEFT_DOWN, self.deletePerson )
@@ -212,6 +213,9 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def openViewPicturesDialog( self, event ):
+		event.Skip()
+
+	def personSelected( self, event ):
 		event.Skip()
 
 	def editNewPerson( self, event ):

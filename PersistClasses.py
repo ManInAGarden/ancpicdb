@@ -14,12 +14,12 @@ class PersonInfoBit(_InfoBit):
 
 class PersonDocumentInter(sqp.PBase):
      """intersection of Person and Documents"""
-     DocumentId = sqp.UUid()
-     PersonId = sqp.UUid()
+     DocumentId = sqp.UUid(uniquegrp="persdocunique")
+     PersonId = sqp.UUid(uniquegrp="persdocunique")
 
 class PersonPictureInter(sqp.PBase):
-     PictureId = sqp.UUid()
-     PersonId = sqp.UUid()
+     PictureId = sqp.UUid(uniquegrp="perspicunique")
+     PersonId = sqp.UUid(uniquegrp="perspicunique")
 
 class Person(sqp.PBase):
      Name = sqp.String()
@@ -32,8 +32,8 @@ class Person(sqp.PBase):
      MotherId = sqp.UUid()
      Infotext = sqp.String()
      InfoBits = sqp.JoinedEmbeddedList(targettype=PersonInfoBit, foreignid=PersonInfoBit.TargetId, cascadedelete=True)
-     Documents = sqp.IntersectedList(targettype=PersonDocumentInter, interupid=PersonDocumentInter.PersonId, interdownid=PersonDocumentInter.DocumentId)
-     Pictures = sqp.IntersectedList(targettype=PersonPictureInter, interupid=PersonPictureInter.PersonId, interdownid=PersonPictureInter.PictureId)
+     Documents = sqp.IntersectedList(targettype=PersonDocumentInter, interupid="personId", interdownid="documentid")
+     Pictures = sqp.IntersectedList(targettype=PersonPictureInter, interupid="personid", interdownid="pictureid")
 
      def __str__(self):
           if self.birthdate is not None:
