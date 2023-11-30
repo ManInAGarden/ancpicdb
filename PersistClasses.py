@@ -49,6 +49,7 @@ class Picture(sqp.PBase):
      """class for pictures normally with people on them"""
      ReadableId = sqp.String()
      FilePath = sqp.String()
+     Ext = sqp.String()
      ScanDate = sqp.DateTime()
      TakenDate = sqp.DateTime()
      Title = sqp.String(default="<Titel>")

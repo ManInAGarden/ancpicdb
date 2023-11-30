@@ -45,4 +45,42 @@ class GuiHelper:
     def ask_user(cls, par : any, mesg : str) ->int :
         msb = wx.MessageDialog(message=mesg, caption="Rückfrage", parent=par, style=wx.YES_NO)
         return msb.ShowModal()
+    
+    @classmethod
+    def set_val(cls, ctrl, val):
+        """set value to the ctrl if not none"""
+
+        ct = type(ctrl)
+        if ct is wx.TextCtrl:
+            if val is not None:
+                ctrl.SetValue(val)
+            else:
+                ctrl.SetValue("")
+        elif ct is wx.adv.DatePickerCtrl:
+            if val is not None:
+                ctrl.SetValue(wx.pydate2wxdate(val))
+            else:
+                ctrl.SetValue(wx.InvalidDateTime)
+        else:
+            raise Exception("Unknown control type in _set_val")
+        
+    @classmethod
+    def get_val(cls, ctrl):
+        """get value from the ctrl"""
+        
+        ctt = type(ctrl)
+        if ctt is wx.adv.DatePickerCtrl:
+            val = ctrl.GetValue()
+            if val is wx.InvalidDateTime:
+                return None
+            else:
+                return wx.wxdate2pydate(val)
+        elif ctt is wx.TextCtrl:
+            val = ctrl.GetValue()
+            if val is None or len(val)==0:
+                return None
+            else:
+                return val
+        else:
+            raise Exception("Unknown type {} in _get_val()".format(ctt))
         

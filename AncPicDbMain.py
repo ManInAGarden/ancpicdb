@@ -32,6 +32,10 @@ class AncPicDbMain(gg.AncPicDBMain):
     @property
     def configuration(self):
         return self._configuration
+    
+    @property
+    def docarchive(self):
+        return self._docarchive
 
     def _get_app_path(self):
         if getattr(sys, 'frozen', False):
@@ -138,7 +142,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 		
         #we are starting for the first time, so we initialize the document archive here
         DocArchiver.prepare_archive(apath, dnum)
-        self._docarchive = DocArchiver(apath) #use neew archive
+        self._docarchive = DocArchiver(apath) #use new archive
 
     def init_db(self):
         dbfilename = self._configuration.get_value_interp("database", "filename")
