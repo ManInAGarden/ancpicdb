@@ -278,7 +278,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         for filename in list_of_files:
             if os.path.isfile(filename):
                 os.remove(filename)
-                ct += 1
+                fct += 1
             elif os.path.isdir(filename):
                 os.rmdir(filename)
                 dct += 1

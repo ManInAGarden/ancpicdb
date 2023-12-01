@@ -253,7 +253,7 @@ class AncPicDBMain ( wx.Frame ):
 class geditPictureDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 486,627 ), style = wx.DEFAULT_DIALOG_STYLE )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 606,794 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -338,8 +338,13 @@ class geditPictureDialog ( wx.Dialog ):
 		self.m_scanDatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer7.Add( self.m_scanDatumDP, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_pictureBitmapBMC = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer7.Add( self.m_pictureBitmapBMC, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 4 )
+		self.m_staticText181 = wx.StaticText( self, wx.ID_ANY, u"Bildinhalt:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText181.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText181, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_bitmapPAN = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		gbSizer7.Add( self.m_bitmapPAN, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -370,8 +375,8 @@ class geditPictureDialog ( wx.Dialog ):
 
 		gbSizer7.AddGrowableCol( 1 )
 		gbSizer7.AddGrowableRow( 4 )
-		gbSizer7.AddGrowableRow( 5 )
 		gbSizer7.AddGrowableRow( 6 )
+		gbSizer7.AddGrowableRow( 7 )
 
 		self.SetSizer( gbSizer7 )
 		self.Layout()
@@ -380,6 +385,7 @@ class geditPictureDialog ( wx.Dialog ):
 
 		# Connect Events
 		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadDocument )
+		self.m_button23.Bind( wx.EVT_BUTTON, self.removePicture )
 
 	def __del__( self ):
 		pass
@@ -387,6 +393,9 @@ class geditPictureDialog ( wx.Dialog ):
 
 	# Virtual event handlers, override them in your derived class
 	def uploadDocument( self, event ):
+		event.Skip()
+
+	def removePicture( self, event ):
 		event.Skip()
 
 

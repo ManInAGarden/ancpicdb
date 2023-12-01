@@ -26,6 +26,7 @@ class EditPictureDialog(gg.geditPictureDialog):
         if self.machlabel is None:
             self.machlabel = "XXXX"
         self._picture = picture
+        self.m_staticBM = None
 
     def _fill_dialog(self):
         p = self._picture
@@ -51,25 +52,58 @@ class EditPictureDialog(gg.geditPictureDialog):
         p.takendate = GuiHelper.get_val(self.m_aufnahmeDatumDP)
         
         return res
+    
+    def _scaleimagetomax(self, img : wx.Image, width : int, height : int):
+        """scale image so that it fits into a box with the given width and height without defomation """
+        oriwi = img.GetWidth()
+        orihe = img.GetHeight()
+        wif = width / oriwi
+        hef = height / orihe
 
+        if wif <= hef:
+            neww = int(wif * oriwi)
+            newh = int(wif * orihe)
+        else:
+            neww = int(hef * oriwi)
+            newh = int(hef * orihe)
+
+        return img.Scale(width=neww, height=newh)
+
+    def isempty(self, val):
+        if val is None:
+            return True
+        
+        if type(val) is str:
+            if len(val)==0:
+                return True
+            
+        return False
+    
     def _display_document(self):
         """display the document in the bitmap box in appropriate form"""
-        if self._picture.ext is None:
+        if self.isempty(self._picture.ext) or self.isempty(self._picture.filepath):
             return
+        
         extr = self._docarchive.extract_file(self._picture.filepath, self.extdir)
-        upperext = self._picture.ext.toupper()
-        if upperext == ".BMP":
-            pass
-        elif upperext == ".PNG":
-            pass
+        upperext = self._picture.ext.upper()
+
+        if upperext in [".BMP", ".JPG", ".JPEG", ".PNG"]:
+            img = wx.Image(extr)
         else:
-            pass
+            raise Exception("Unbekanntes Bildvormat")
+
+        img = self._scaleimagetomax(img, 300, 200)
+        bm = img.ConvertToBitmap()
+        if self.m_staticBM is not None:
+            self.m_bitmapPAN.RemoveChild(self.m_staticBM) #remove any exiting image
+
+        self.m_staticBM = wx.StaticBitmap(self.m_bitmapPAN, bitmap=bm)
         
     def uploadDocument(self, event):
         if self._picture.filepath is not None:
             GuiHelper.show_error("Bitte entferne zuerst das bereits angehängte Bild")
 
-        with wx.FileDialog(self, "Dateiauswahl", wildcard="PNG Bilder (*.png)|*.png",
+        with wx.FileDialog(self, "Dateiauswahl", wildcard="PNG Bilder (*.png)|*.png, Bmp Bitmaps (*.bmp)|*.bmp, JPeg Bilder (*.jpg)|*.jpg",
                        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
 
             if fileDialog.ShowModal() == wx.ID_CANCEL:
@@ -85,4 +119,20 @@ class EditPictureDialog(gg.geditPictureDialog):
                 wx.LogError("Cannot open file '%s'." % pathname)
 
         self._display_document()
+
+    def removePicture(self, event):
+        res = wx.MessageBox(parent=self,
+                      message="Bist du sicher, dass das Bild entfernt werden soll?",
+                      caption="Rückfrage",
+                      style=wx.YES_NO)
+        if res == wx.ID_NO:
+            return
+        
+        if self._picture.filepath is not None and len(self._picture.filepath)>0:
+            self._docarchive.remove_file(self._picture.filepath)
+            self._picture.filepath = None
+            self._picture.ext = None
+            self._fact.flush(self._picture) #make sure that database reflects archive state
+            self.m_bitmapPAN.RemoveChild(self.m_staticBM)
+            self.Refresh()
         
