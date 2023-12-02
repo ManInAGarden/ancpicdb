@@ -18,7 +18,7 @@ import wx.adv
 class AncPicDBMain ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AncPicDB", pos = wx.DefaultPosition, size = wx.Size( 560,569 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AncPicDB", pos = wx.DefaultPosition, size = wx.Size( 964,619 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -197,8 +197,10 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_newPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editNewPerson )
 		self.m_editPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editExistingPerson )
 		self.m_deletePersonBU.Bind( wx.EVT_LEFT_DOWN, self.deletePerson )
+		self.m_connectPictureBU.Bind( wx.EVT_BUTTON, self.addPicture )
 		self.m_connectPictureBU.Bind( wx.EVT_LEFT_DOWN, self.connectPicture )
 		self.m_editPictureBU.Bind( wx.EVT_LEFT_DOWN, self.editPicture )
+		self.m_disconnectPictureBU.Bind( wx.EVT_BUTTON, self.removePictureFromPerson )
 		self.m_disconnectPictureBU.Bind( wx.EVT_LEFT_DOWN, self.disconnectPicture )
 		self.m_connectDocumentBU.Bind( wx.EVT_LEFT_DOWN, self.editNewDocument )
 		self.m_editDocumentBU.Bind( wx.EVT_LEFT_DOWN, self.editDocument )
@@ -227,10 +229,16 @@ class AncPicDBMain ( wx.Frame ):
 	def deletePerson( self, event ):
 		event.Skip()
 
+	def addPicture( self, event ):
+		event.Skip()
+
 	def connectPicture( self, event ):
 		event.Skip()
 
 	def editPicture( self, event ):
+		event.Skip()
+
+	def removePictureFromPerson( self, event ):
 		event.Skip()
 
 	def disconnectPicture( self, event ):
@@ -406,7 +414,7 @@ class geditPictureDialog ( wx.Dialog ):
 class gPicturesViewDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bilder sichten", pos = wx.DefaultPosition, size = wx.Size( 522,424 ), style = wx.DEFAULT_DIALOG_STYLE )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bilder sichten", pos = wx.DefaultPosition, size = wx.Size( 739,519 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -446,7 +454,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 		bSizer10.Add( self.deletePictureBU, 0, wx.ALL, 5 )
 
 
-		gbSizer6.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+		gbSizer6.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText11 = wx.StaticText( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText11.Wrap( -1 )
@@ -591,6 +599,89 @@ class gPersonEditDialog ( wx.Dialog ):
 		gbSizer2.AddGrowableRow( 6 )
 
 		self.SetSizer( gbSizer2 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
+
+
+###########################################################################
+## Class gAddPictureDialog
+###########################################################################
+
+class gAddPictureDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bildauswahl", pos = wx.DefaultPosition, size = wx.Size( 487,455 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer8 = wx.GridBagSizer( 0, 0 )
+		gbSizer8.SetFlexibleDirection( wx.BOTH )
+		gbSizer8.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer4 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer4OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer4.AddButton( self.m_sdbSizer4OK )
+		self.m_sdbSizer4Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer4.AddButton( self.m_sdbSizer4Cancel )
+		m_sdbSizer4.Realize();
+
+		gbSizer8.Add( m_sdbSizer4, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_picturesLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer8.Add( self.m_picturesLCTRL, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText19 = wx.StaticText( self, wx.ID_ANY, u"Titel:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText19.Wrap( -1 )
+
+		gbSizer8.Add( self.m_staticText19, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_titleTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer8.Add( self.m_titleTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_button21 = wx.Button( self, wx.ID_ANY, u"Filter anwenden", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer8.Add( self.m_button21, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText20 = wx.StaticText( self, wx.ID_ANY, u"Aufnamedatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText20.Wrap( -1 )
+
+		gbSizer8.Add( self.m_staticText20, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_operatorCBChoices = [ u"=", u">", u"<" ]
+		self.m_operatorCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_operatorCBChoices, 0 )
+		gbSizer8.Add( self.m_operatorCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_dateTakenDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
+		gbSizer8.Add( self.m_dateTakenDP, wx.GBPosition( 1, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText21 = wx.StaticText( self, wx.ID_ANY, u"Scandatum", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText21.Wrap( -1 )
+
+		gbSizer8.Add( self.m_staticText21, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_comboBox5Choices = [ u"=", u">", u"<" ]
+		self.m_comboBox5 = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_comboBox5Choices, 0 )
+		gbSizer8.Add( self.m_comboBox5, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_scanDateDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
+		gbSizer8.Add( self.m_scanDateDP, wx.GBPosition( 2, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText22 = wx.StaticText( self, wx.ID_ANY, u"Kennung", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText22.Wrap( -1 )
+
+		gbSizer8.Add( self.m_staticText22, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_kennungTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer8.Add( self.m_kennungTB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer8.AddGrowableCol( 2 )
+		gbSizer8.AddGrowableRow( 6 )
+
+		self.SetSizer( gbSizer8 )
 		self.Layout()
 
 		self.Centre( wx.BOTH )

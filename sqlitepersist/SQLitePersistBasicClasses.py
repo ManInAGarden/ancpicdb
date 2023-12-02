@@ -33,7 +33,7 @@ class OperationStackElement(object):
     def __eq__(self, other):
         return OperationStackElement(self, "==", other)
 
-    def __neq__(self, other):
+    def __ne__(self, other):
         return OperationStackElement(self, "!=", other)
 
     def __str__(self):
@@ -46,7 +46,7 @@ class BaseComparableType(object):
     def __eq__(self, other):
         return OperationStackElement(self, "==", other)
 
-    def __neq__(self, other):
+    def __ne__(self, other):
         return OperationStackElement(self, "!=", other)
 
     def __lt__(self, other):

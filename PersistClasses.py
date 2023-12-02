@@ -11,7 +11,24 @@ class _InfoBit(sqp.PBase):
 class PersonInfoBit(_InfoBit):
      """class for informations according persons"""
      pass
+class PictureInfoBit(_InfoBit):
+     """class for informations according pictures"""
+     pass
 
+class Picture(sqp.PBase):
+     """class for pictures normally with people on them"""
+     ReadableId = sqp.String()
+     FilePath = sqp.String()
+     Ext = sqp.String()
+     ScanDate = sqp.DateTime()
+     TakenDate = sqp.DateTime()
+     Title = sqp.String(default="<Titel>")
+     SettledInformation = sqp.String()
+     PictInfoBits = sqp.JoinedEmbeddedList(targettype=PictureInfoBit, foreignid=PictureInfoBit.TargetId, cascadedelete=True)
+
+     def __str__(self):
+          return "{} ({})".format(self.title, self.readableid)
+     
 class PersonDocumentInter(sqp.PBase):
      """intersection of Person and Documents"""
      DocumentId = sqp.UUid(uniquegrp="persdocunique")
@@ -20,6 +37,14 @@ class PersonDocumentInter(sqp.PBase):
 class PersonPictureInter(sqp.PBase):
      PictureId = sqp.UUid(uniquegrp="perspicunique")
      PersonId = sqp.UUid(uniquegrp="perspicunique")
+     Picture = sqp.JoinedEmbeddedObject(targettype=Picture, localid="pictureid", autofill=True)
+
+     def __str__(self):
+          return "[{}] {}".format(self.picture.readableid, self.picture.title)
+
+class PictureToPersonSel(Picture):
+     PersInter = sqp.JoinedEmbeddedObject(targettype=PersonPictureInter, localid="_id", foreignid="pictureid", autofill=True)
+
 
 class Person(sqp.PBase):
      Name = sqp.String()
@@ -41,24 +66,7 @@ class Person(sqp.PBase):
           else:
                return "{0} {1}".format(self.firstname, self.name)
 
-class PictureInfoBit(_InfoBit):
-     """class for informations according pictures"""
-     pass
 
-class Picture(sqp.PBase):
-     """class for pictures normally with people on them"""
-     ReadableId = sqp.String()
-     FilePath = sqp.String()
-     Ext = sqp.String()
-     ScanDate = sqp.DateTime()
-     TakenDate = sqp.DateTime()
-     Title = sqp.String(default="<Titel>")
-     SettledInformation = sqp.String()
-     PictInfoBits = sqp.JoinedEmbeddedList(targettype=PictureInfoBit, foreignid=PictureInfoBit.TargetId, cascadedelete=True)
-
-     def __str__(self):
-          return "{} ({})".format(self.title, self.readableid)
-     
 
 class DocumentInfoBit(_InfoBit):
      pass

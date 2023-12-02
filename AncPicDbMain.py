@@ -12,6 +12,7 @@ from ConfigReader import *
 from DocArchiver import *
 from PersonEditDialog import PersonEditDialog
 from PicturesViewDialog import PicturesViewDialog
+from AddPictureDialog import AddPictureDialog
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
@@ -347,6 +348,39 @@ class AncPicDbMain(gg.AncPicDBMain):
             self.refresh_dash_forp(pos)
 
         #no refresh ist needed in case no person was selected because only pictures for the person may have changed        
+
+    def addPicture(self, event):
+        selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)
+        if selpers is None:
+            return
+        
+        dial = AddPictureDialog(self, self._fact, selpers)
+        res = dial.showmodal()
+
+        if res == wx.ID_OK:
+            for pic in dial.selection:
+                persinterpic = PersonPictureInter(personid=selpers._id,
+                                                  pictureid=pic._id)
+                self._fact.flush(persinterpic)
+        selpers.pictures = None
+        self._fact.fill_joins(selpers, Person.Pictures)
+        self.refresh_dash_forp(perspos)
+
+    def removePictureFromPerson(self, event):
+        selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)
+        if selpers is None:
+            return
+        
+        selpic, picpos = GuiHelper.get_selected_fromlb(self.m_picturesLB, selpers.pictures)
+        if selpic is None:
+            return
+        
+        self._fact.delete(selpic)
+        selpers.pictures = None
+        self._fact.fill_joins(selpers, 
+                              Person.Pictures)
+        self.refresh_dash_forp(perspos)
+
 
 
 if __name__ == '__main__':

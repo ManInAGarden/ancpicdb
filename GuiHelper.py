@@ -4,8 +4,23 @@ import logging
 class GuiHelper:
     """ class to help with ever repeating gui oprations"""
 
+    @classmethod 
+    def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list):
+        """get the currently selected item of a ListBox. Returns None when nothing was selected"""
+        if lst is None or len(lst)==0:
+            return None
+
+        lidx = lstbox.GetSelection()
+        if lidx == wx.NOT_FOUND:
+            return None
+        
+        if lidx < 0 or lidx > len(lst):
+            raise Exception("Index <{}> found in item data is out of range for list of length <{}>".format(lidx, len(lst)))
+
+        return lst[lidx], lidx
+        
     @classmethod
-    def get_selected_item(cls, lstctrl : wx.ListCtrl, lst : list):
+    def get_selected_fromlctrl(cls, lstctrl : wx.ListCtrl, lst : list):
         """ get the selected item from lst according to the selected item in lstctrl
             returns None when nothing was selected"""
 
@@ -13,6 +28,7 @@ class GuiHelper:
             return None
 
         sitm = lstctrl.GetFirstSelected()
+
         if sitm == wx.NOT_FOUND:
             return None
         
