@@ -12,6 +12,8 @@ from ConfigReader import *
 from DocArchiver import *
 from PersonEditDialog import PersonEditDialog
 from PicturesViewDialog import PicturesViewDialog
+from DocumentsViewDialog import DocumentsViewDialog
+from EditPictureDialog import EditPictureDialog
 from AddPictureDialog import AddPictureDialog
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
@@ -167,6 +169,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 			Picture,
             PictureInfoBit,
             Document,
+            DocumentInfoBit,
             PersonPictureInter,
             PersonDocumentInter
 			]
@@ -182,10 +185,6 @@ class AncPicDbMain(gg.AncPicDBMain):
             sdr = sqp.SQPSeeder(self._fact, os.path.join(self._apppath, "seeds/catalogs.json"))
             sdr.create_seeddata()
 
-		#if Unit in createds:
-		#	self.logger.info("Seeding units")
-		#	sdr = sqp.SQPSeeder(self._fact, os.path.join(self._apppath, "PexSeeds/units.json"))
-		#	sdr.create_seeddata()
 
     def init_gui(self):
         """fill the gui for the first time. This includes to fetch all initially needed data from the DB"""
@@ -343,11 +342,19 @@ class AncPicDbMain(gg.AncPicDBMain):
         pwdial = PicturesViewDialog(self, self._fact)
         res = pwdial.showmodal()
 
+        #no refresh ist needed in case no person was selected because only pictures for the person may have changed        
         pos = self.get_selected_ppos()
         if pos is not wx.NOT_FOUND:
             self.refresh_dash_forp(pos)
 
+
+    def openViewDocumentsDialog(self, event):
+        dwdial = DocumentsViewDialog(self, self._fact)
+        res = dwdial.showmodal()
         #no refresh ist needed in case no person was selected because only pictures for the person may have changed        
+        pos = self.get_selected_ppos()
+        if pos is not wx.NOT_FOUND:
+            self.refresh_dash_forp(pos)
 
     def addPicture(self, event):
         selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)
@@ -381,6 +388,22 @@ class AncPicDbMain(gg.AncPicDBMain):
                               Person.Pictures)
         self.refresh_dash_forp(perspos)
 
+    def editPersonsPicture(self, event):
+        selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)
+        if selpers is None:
+            return
+        
+        selpicinter, picpos = GuiHelper.get_selected_fromlb(self.m_picturesLB, selpers.pictures)
+        if selpicinter is None:
+            return
+
+        picdial = EditPictureDialog(self, self._fact, selpicinter.picture)
+        res = picdial.showmodal()
+        if res == wx.ID_CANCEL:
+            return
+        
+        self._fact.flush(picdial.picture)
+        self.refresh_dash_forp(perspos)
 
 
 if __name__ == '__main__':

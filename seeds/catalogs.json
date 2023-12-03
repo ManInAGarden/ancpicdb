@@ -6,8 +6,13 @@
             {"type": "BIO_SEX", "code":"UNKNOWN", "value":"unknown", "langcode":"GBR"},
             {"type": "BIO_SEX", "code":"MALE", "value":"männlich", "langcode":"DEU"},
             {"type": "BIO_SEX", "code":"FEMALE", "value":"weiblich", "langcode":"DEU"},
-            {"type": "BIO_SEX", "code":"UNKNOWN", "value":"unbekannt", "langcode":"DEU"}
-            
+            {"type": "BIO_SEX", "code":"UNKNOWN", "value":"unbekannt", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"GEBURTURKUNDE", "value":"Geburtsurkunde", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"STERBEURKUNDE", "value":"Sterbeurkunde", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"HEIRATSURKUNDE", "value":"Heiratsurkunde", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"AUSWEIS", "value":"Ausweis", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"ZEUGNIS", "value":"Zeugnis", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"NSP", "value":"nicht spez.", "langcode":"DEU"}
         ]
   
 }

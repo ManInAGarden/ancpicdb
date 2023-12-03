@@ -304,7 +304,7 @@ class SQFactory():
         """Get a full catalog entry of the given type and code. If the cat is language sensitive the code
             will be searched in the current language of the factory
 
-            lang can be override to enforce a language other then the current language of the factory for
+            lang can be overriden to enforce a language other then the current language of the factory for
             language sensitive catalogs
         """
         if lang is None:

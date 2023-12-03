@@ -1,5 +1,6 @@
 import wx
 import logging
+import sqlitepersist as sqp
 
 class GuiHelper:
     """ class to help with ever repeating gui oprations"""
@@ -8,11 +9,11 @@ class GuiHelper:
     def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list):
         """get the currently selected item of a ListBox. Returns None when nothing was selected"""
         if lst is None or len(lst)==0:
-            return None
+            return None, None
 
         lidx = lstbox.GetSelection()
         if lidx == wx.NOT_FOUND:
-            return None
+            return None, None
         
         if lidx < 0 or lidx > len(lst):
             raise Exception("Index <{}> found in item data is out of range for list of length <{}>".format(lidx, len(lst)))
@@ -63,7 +64,7 @@ class GuiHelper:
         return msb.ShowModal()
     
     @classmethod
-    def set_val(cls, ctrl, val):
+    def set_val(cls, ctrl, val, fullcat=None):
         """set value to the ctrl if not none"""
 
         ct = type(ctrl)
@@ -77,6 +78,19 @@ class GuiHelper:
                 ctrl.SetValue(wx.pydate2wxdate(val))
             else:
                 ctrl.SetValue(wx.InvalidDateTime)
+        elif ct is wx.ComboBox:
+            if issubclass(type(val), sqp.PCatalog):
+                itemss = list(map(lambda p: p.value, fullcat))
+                ctrl.AppendItems(itemss)
+                ct = 0
+                for s in itemss:
+                    if s == val.value:
+                        ctrl.SetSelection(ct)
+                        break
+                    ct += 1
+                    
+            else:
+                raise Exception("Combobox with non catalog not yet handled in GUIHelper.SetVal")
         else:
             raise Exception("Unknown control type in _set_val")
         

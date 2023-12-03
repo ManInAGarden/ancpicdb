@@ -31,7 +31,7 @@ class AncPicDBMain ( wx.Frame ):
 
 		self.m_fileMenu.AppendSeparator()
 
-		self.m_exitMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Beenden", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_exitMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Beenden"+ u"\t" + u"CTRL+Q", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_exitMI )
 
 		self.m_mainMenuBar.Append( self.m_fileMenu, u"Datei" )
@@ -193,12 +193,14 @@ class AncPicDBMain ( wx.Frame ):
 		# Connect Events
 		self.Bind( wx.EVT_MENU, self.quit, id = self.m_exitMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.openViewDocumentsDialog, id = self.m_documentsMI.GetId() )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX, self.personSelected )
 		self.m_newPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editNewPerson )
 		self.m_editPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editExistingPerson )
 		self.m_deletePersonBU.Bind( wx.EVT_LEFT_DOWN, self.deletePerson )
 		self.m_connectPictureBU.Bind( wx.EVT_BUTTON, self.addPicture )
 		self.m_connectPictureBU.Bind( wx.EVT_LEFT_DOWN, self.connectPicture )
+		self.m_editPictureBU.Bind( wx.EVT_BUTTON, self.editPersonsPicture )
 		self.m_editPictureBU.Bind( wx.EVT_LEFT_DOWN, self.editPicture )
 		self.m_disconnectPictureBU.Bind( wx.EVT_BUTTON, self.removePictureFromPerson )
 		self.m_disconnectPictureBU.Bind( wx.EVT_LEFT_DOWN, self.disconnectPicture )
@@ -215,6 +217,9 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def openViewPicturesDialog( self, event ):
+		event.Skip()
+
+	def openViewDocumentsDialog( self, event ):
 		event.Skip()
 
 	def personSelected( self, event ):
@@ -235,6 +240,9 @@ class AncPicDBMain ( wx.Frame ):
 	def connectPicture( self, event ):
 		event.Skip()
 
+	def editPersonsPicture( self, event ):
+		event.Skip()
+
 	def editPicture( self, event ):
 		event.Skip()
 
@@ -251,6 +259,249 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def disconnectDocument( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class geditDocumentDialog
+###########################################################################
+
+class geditDocumentDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokument bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 606,794 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer7 = wx.GridBagSizer( 0, 0 )
+		gbSizer7.SetFlexibleDirection( wx.BOTH )
+		gbSizer7.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer3 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer3OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer3.AddButton( self.m_sdbSizer3OK )
+		self.m_sdbSizer3Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer3.AddButton( self.m_sdbSizer3Cancel )
+		m_sdbSizer3.Realize();
+
+		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
+
+		self.m_staticText13 = wx.StaticText( self, wx.ID_ANY, u"Kennummer:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText13.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText13, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_kennummerTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer7.Add( self.m_kennummerTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText14 = wx.StaticText( self, wx.ID_ANY, u"Typ:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText14.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText14, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_doctypCBChoices = []
+		self.m_doctypCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_doctypCBChoices, 0 )
+		gbSizer7.Add( self.m_doctypCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText15 = wx.StaticText( self, wx.ID_ANY, u"Produktionsdatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText15.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText15, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_produktionsDatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
+		gbSizer7.Add( self.m_produktionsDatumDP, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText16 = wx.StaticText( self, wx.ID_ANY, u"Scandatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText16.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText16, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText18 = wx.StaticText( self, wx.ID_ANY, u"Informationen:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText18.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText18, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_izusatzinfoLCT = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_AUTOARRANGE|wx.LC_ICON|wx.LC_SINGLE_SEL )
+		gbSizer7.Add( self.m_izusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_addPictBitInfoBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_addPictBitInfoBU.SetBitmap( wx.Bitmap( u"ressources/Add-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer5.Add( self.m_addPictBitInfoBU, 0, wx.ALL, 5 )
+
+		self.m_editPictBitInfoBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_editPictBitInfoBU.SetBitmap( wx.Bitmap( u"ressources/Edit.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer5.Add( self.m_editPictBitInfoBU, 0, wx.ALL, 5 )
+
+		self.m_deletePictBitInfoBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_deletePictBitInfoBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer5.Add( self.m_deletePictBitInfoBU, 0, wx.ALL, 5 )
+
+
+		gbSizer7.Add( bSizer5, wx.GBPosition( 8, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_TOP|wx.EXPAND, 5 )
+
+		self.m_scanDatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
+		gbSizer7.Add( self.m_scanDatumDP, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText181 = wx.StaticText( self, wx.ID_ANY, u"Dokumentenscan:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText181.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText181, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_bitmapPAN = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		gbSizer7.Add( self.m_bitmapPAN, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_uploadBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_uploadBU.SetBitmap( wx.Bitmap( u"ressources/Upload.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_uploadBU.SetToolTip( u"Ein Bild von der lokalen Festplatte hochladen" )
+
+		bSizer6.Add( self.m_uploadBU, 0, wx.ALL, 5 )
+
+		self.m_downloadBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_downloadBU.SetBitmap( wx.Bitmap( u"ressources/Download.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_downloadBU.SetToolTip( u"Das Bild auf die lokale Festplatte hereunterladen" )
+
+		bSizer6.Add( self.m_downloadBU, 0, wx.ALL, 5 )
+
+		self.m_button23 = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_button23.SetBitmap( wx.Bitmap( u"ressources/Remove-Image.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_button23.SetToolTip( u"Den Bildinhalt entfernen" )
+
+		bSizer6.Add( self.m_button23, 0, wx.ALL, 5 )
+
+
+		gbSizer7.Add( bSizer6, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+
+
+		gbSizer7.AddGrowableCol( 1 )
+		gbSizer7.AddGrowableRow( 4 )
+		gbSizer7.AddGrowableRow( 7 )
+
+		self.SetSizer( gbSizer7 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadDocument )
+		self.m_downloadBU.Bind( wx.EVT_BUTTON, self.downloadDocument )
+		self.m_button23.Bind( wx.EVT_BUTTON, self.removeDocument )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def uploadDocument( self, event ):
+		event.Skip()
+
+	def downloadDocument( self, event ):
+		event.Skip()
+
+	def removeDocument( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gDocumentsViewDialog
+###########################################################################
+
+class gDocumentsViewDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokumente sichten", pos = wx.DefaultPosition, size = wx.Size( 739,519 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer6 = wx.GridBagSizer( 0, 0 )
+		gbSizer6.SetFlexibleDirection( wx.BOTH )
+		gbSizer6.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_documentsLBChoices = []
+		self.m_documentsLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_documentsLBChoices, wx.LB_SINGLE )
+		gbSizer6.Add( self.m_documentsLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_ApplyFilterBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_ApplyFilterBU.SetBitmap( wx.Bitmap( u"ressources/Filled-Filter.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_ApplyFilterBU, 0, wx.ALL, 5 )
+
+		self.m_addRowBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_addRowBU.SetBitmap( wx.Bitmap( u"ressources/Add-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_addRowBU, 0, wx.ALL, 5 )
+
+		self.m_editBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_editBU.SetBitmap( wx.Bitmap( u"ressources/Edit.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_editBU, 0, wx.ALL, 5 )
+
+		self.m_downloadPictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_downloadPictureBU.SetBitmap( wx.Bitmap( u"ressources/Download.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_downloadPictureBU, 0, wx.ALL, 5 )
+
+		self.deletePictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.deletePictureBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.deletePictureBU, 0, wx.ALL, 5 )
+
+
+		gbSizer6.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText11 = wx.StaticText( self, wx.ID_ANY, u"Dokumente:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText11.Wrap( -1 )
+
+		gbSizer6.Add( self.m_staticText11, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_sdbSizer2 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer2OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
+		m_sdbSizer2.Realize();
+
+		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer6.AddGrowableCol( 0 )
+		gbSizer6.AddGrowableRow( 1 )
+
+		self.SetSizer( gbSizer6 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_addRowBU.Bind( wx.EVT_BUTTON, self.addNewRow )
+		self.m_editBU.Bind( wx.EVT_BUTTON, self.editElement )
+		self.m_downloadPictureBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
+		self.deletePictureBU.Bind( wx.EVT_BUTTON, self.removeRow )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def addNewRow( self, event ):
+		event.Skip()
+
+	def editElement( self, event ):
+		event.Skip()
+
+	def downloadPicture( self, event ):
+		event.Skip()
+
+	def removeRow( self, event ):
 		event.Skip()
 
 

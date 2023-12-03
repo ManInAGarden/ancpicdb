@@ -90,7 +90,7 @@ class EditPictureDialog(gg.geditPictureDialog):
         if upperext in [".BMP", ".JPG", ".JPEG", ".PNG"]:
             img = wx.Image(extr)
         else:
-            raise Exception("Unbekanntes Bildvormat")
+            raise Exception("Unbekanntes Bildformat")
 
         img = self._scaleimagetomax(img, 300, 200)
         bm = img.ConvertToBitmap()

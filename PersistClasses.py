@@ -1,8 +1,13 @@
 import sqlitepersist as sqp
+import datetime
 
 class SexCat(sqp.PCatalog):
      _cattype = "BIO_SEX"
      _langsensitive = True
+
+class DocType(sqp.PCatalog):
+     _cattype = "DOC_TYPE"
+     _langsensitive = False
 
 class _InfoBit(sqp.PBase):
      TargetId = sqp.UUid()
@@ -25,9 +30,11 @@ class Picture(sqp.PBase):
      Title = sqp.String(default="<Titel>")
      SettledInformation = sqp.String()
      PictInfoBits = sqp.JoinedEmbeddedList(targettype=PictureInfoBit, foreignid=PictureInfoBit.TargetId, cascadedelete=True)
-
+ 
      def __str__(self):
-          return "{} ({})".format(self.title, self.readableid)
+          return "[{}] {} {}".format(self.readableid, 
+                                      ewn(self.title), 
+                                      ewn(self.takendate))
      
 class PersonDocumentInter(sqp.PBase):
      """intersection of Person and Documents"""
@@ -74,12 +81,29 @@ class DocumentInfoBit(_InfoBit):
 class Document(sqp.PBase):
      ReadableId = sqp.String()
      FilePath = sqp.String()
+     Ext = sqp.String()
      ScanDate = sqp.DateTime()
-     Type = sqp.String()
+     Type = sqp.Catalog(catalogtype=DocType)
      ProductionDate = sqp.DateTime()
      DocInfoBits = sqp.JoinedEmbeddedList(targettype=DocumentInfoBit, foreignid=DocumentInfoBit.TargetId, cascadedelete=True)
 
+     def __str__(self):
+          return "[{}] {} {}".format(self.readableid, 
+                                      ewn(self.type), 
+                                      ewn(self.productiondate))
 
-
-
-
+def ewn(val):
+     if val is None:
+          return ""
+          
+     if type(val) is str:
+          return val
+     elif type(val) is datetime.datetime:
+          return "{:%d.%m.%Y}".format(val)
+     elif type(val) is int:
+          return "{}".format(val)
+     elif issubclass(type(val), sqp.PCatalog):
+          return "{}".format(val.value)
+     else:
+          raise Exception("Unbekannter Datentyp in PersistClasses.py ewn()")
+         
