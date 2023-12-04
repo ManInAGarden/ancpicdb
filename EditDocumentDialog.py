@@ -33,9 +33,10 @@ class EditDocumentDialog(gg.geditDocumentDialog):
     
     def _filldialog(self):
         d = self._document
-        typelist = self._get_all_types()
+        self._doctypelist = self._get_all_types()
         GuiHelper.set_val(self.m_kennummerTB, d.readableid)
-        GuiHelper.set_val(self.m_doctypCB, d.type, fullcat=typelist)
+        GuiHelper.set_val(self.m_doctypCB, d.type, fullcat=self._doctypelist)
+        GuiHelper.set_val(self.m_titelTB, d.title)
         GuiHelper.set_val(self.m_scanDatumDP, d.scandate)
         GuiHelper.set_val(self.m_produktionsDatumDP, d.productiondate)
         self._display_document()
@@ -86,8 +87,10 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         
         p = self._document
         p.readableid = GuiHelper.get_val(self.m_kennummerTB)
-        p.typ = GuiHelper.get_val(self.m_doctypCB)
+        p.type = GuiHelper.get_val(self.m_doctypCB, self._doctypelist)
+        p.title = GuiHelper.get_val(self.m_titelTB)
         p.scandate = GuiHelper.get_val(self.m_scanDatumDP)
         p.productiondate = GuiHelper.get_val(self.m_produktionsDatumDP)
         
+        self._fact.flush(p)
         return res

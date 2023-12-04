@@ -520,7 +520,7 @@ class SQFactory():
 
             res = self.find_with_dict(cls, {"_id": findpar._id})
             return self._first_or_default(res)
-        elif findpar is uuid.UUID: #we have an id to be searched for
+        elif type(findpar) is uuid.UUID: #we have an id to be searched for
             res = self.find_with_dict(cls, {"_id": findpar})
             return self._first_or_default(res)
         else:

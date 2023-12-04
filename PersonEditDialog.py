@@ -88,7 +88,19 @@ class PersonEditDialog(gg.gPersonEditDialog):
             
         return wx.NOT_FOUND
     
+    def _assurecontains(self, perslist, personid):
+        if personid is None:
+            return perslist
+        
+        for p in perslist:
+            if p._id == personid:
+                return perslist
+            
+        mustpers = sqp.SQQuery(self._fact, Person).where(Person.Id==personid).first_or_default(None)
+        #mustpers = self._fact.find(Person, personid)
 
+        return perslist + [mustpers]
+            
     def _filldialog(self, p):
         self._set_val(self.m_NameTB, p.name)
         self._set_val(self.m_vornameTB, p.firstname)
@@ -119,6 +131,7 @@ class PersonEditDialog(gg.gPersonEditDialog):
         #fill mother and father combos
         q = sqp.SQQuery(self._fact, Person).where((Person.Birthdate < refdate) & (Person.BioSex == "MALE")).order_by(Person.FirstName)
         self._pfathers = list(q) #rember possible fathers for selection change
+        self._pfathers = self._assurecontains(self._pfathers, self._person.fatherid)
         pfs = self._get_strlist(self._pfathers)
         self.m_fatherCB.Set(pfs)
         fatherp = self._getfirst_personidx(self._pfathers, p.fatherid)
@@ -127,6 +140,7 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
         q = sqp.SQQuery(self._fact, Person).where((Person.Birthdate < refdate) & (Person.BioSex == "FEMALE")).order_by(Person.FirstName)
         self._pmothers = list(q) #rember possible mothers for selection change
+        self._pmothers = self._assurecontains(self._pmothers, self._person.motherid)
         pms = self._get_strlist(self._pmothers)
         self.m_motherCB.Set(pms)
         motherp = self._getfirst_personidx(self._pmothers, p.motherid)
@@ -152,7 +166,7 @@ class PersonEditDialog(gg.gPersonEditDialog):
                 self._person.motherid = self._pmothers[motherp]._id
         
         if len(self._pfathers)>0:
-            fatherp = self.m_motherCB.GetSelection()
+            fatherp = self.m_fatherCB.GetSelection()
             if fatherp is not wx.NOT_FOUND:
                 self._person.fatherid = self._pfathers[fatherp]._id
 

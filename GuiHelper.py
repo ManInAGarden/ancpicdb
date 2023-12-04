@@ -95,7 +95,7 @@ class GuiHelper:
             raise Exception("Unknown control type in _set_val")
         
     @classmethod
-    def get_val(cls, ctrl):
+    def get_val(cls, ctrl, datal : list=None):
         """get value from the ctrl"""
         
         ctt = type(ctrl)
@@ -111,6 +111,10 @@ class GuiHelper:
                 return None
             else:
                 return val
+        elif ctt is wx.ComboBox:
+            selpo = ctrl.GetSelection()
+            if selpo != wx.NOT_FOUND:
+                return datal[selpo]
         else:
             raise Exception("Unknown type {} in _get_val()".format(ctt))
         

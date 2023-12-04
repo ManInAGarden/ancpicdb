@@ -80,6 +80,7 @@ class DocumentInfoBit(_InfoBit):
 
 class Document(sqp.PBase):
      ReadableId = sqp.String()
+     Title = sqp.String(default="<Titel>")
      FilePath = sqp.String()
      Ext = sqp.String()
      ScanDate = sqp.DateTime()
@@ -88,9 +89,10 @@ class Document(sqp.PBase):
      DocInfoBits = sqp.JoinedEmbeddedList(targettype=DocumentInfoBit, foreignid=DocumentInfoBit.TargetId, cascadedelete=True)
 
      def __str__(self):
-          return "[{}] {} {}".format(self.readableid, 
+          return "[{}] {} {} {}".format(self.readableid, 
                                       ewn(self.type), 
-                                      ewn(self.productiondate))
+                                      ewn(self.productiondate),
+                                      ewn(self.title))
 
 def ewn(val):
      if val is None:
