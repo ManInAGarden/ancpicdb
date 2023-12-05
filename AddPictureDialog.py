@@ -1,7 +1,7 @@
 import wx
 import wx.adv
 import GeneratedGUI as gg
-from PersistClasses import Person, Picture, PictureToPersonSel
+from PersistClasses import Person, Picture
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 

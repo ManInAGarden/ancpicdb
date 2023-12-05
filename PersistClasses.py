@@ -12,6 +12,7 @@ class DocType(sqp.PCatalog):
 class _InfoBit(sqp.PBase):
      TargetId = sqp.UUid()
      InfoContent = sqp.String()
+     InfoDate = sqp.DateTime()
 
 class PersonInfoBit(_InfoBit):
      """class for informations according persons"""
@@ -19,6 +20,10 @@ class PersonInfoBit(_InfoBit):
 class PictureInfoBit(_InfoBit):
      """class for informations according pictures"""
      pass
+
+class DocumentInfoBit(_InfoBit):
+     pass
+
 
 class Picture(sqp.PBase):
      """class for pictures normally with people on them"""
@@ -35,11 +40,34 @@ class Picture(sqp.PBase):
           return "[{}] {} {}".format(self.readableid, 
                                       ewn(self.title), 
                                       ewn(self.takendate))
+class Document(sqp.PBase):
+     ReadableId = sqp.String()
+     Title = sqp.String(default="<Titel>")
+     FilePath = sqp.String()
+     Ext = sqp.String()
+     ScanDate = sqp.DateTime()
+     Type = sqp.Catalog(catalogtype=DocType)
+     ProductionDate = sqp.DateTime()
+     DocInfoBits = sqp.JoinedEmbeddedList(targettype=DocumentInfoBit, foreignid=DocumentInfoBit.TargetId, cascadedelete=True)
+
+     def __str__(self):
+          return "[{}] {} {} {}".format(self.readableid, 
+                                      ewn(self.type), 
+                                      ewn(self.productiondate),
+                                      ewn(self.title))
      
 class PersonDocumentInter(sqp.PBase):
      """intersection of Person and Documents"""
      DocumentId = sqp.UUid(uniquegrp="persdocunique")
      PersonId = sqp.UUid(uniquegrp="persdocunique")
+     Document = sqp.JoinedEmbeddedObject(targettype=Document, localid="documentid", autofill=True)
+
+     def __str__(self):
+          doc = self.document
+          return "[{}] {} {} {}".format(doc.readableid, 
+                                      ewn(doc.type), 
+                                      ewn(doc.productiondate),
+                                      ewn(doc.title))
 
 class PersonPictureInter(sqp.PBase):
      PictureId = sqp.UUid(uniquegrp="perspicunique")
@@ -49,8 +77,8 @@ class PersonPictureInter(sqp.PBase):
      def __str__(self):
           return "[{}] {}".format(self.picture.readableid, self.picture.title)
 
-class PictureToPersonSel(Picture):
-     PersInter = sqp.JoinedEmbeddedObject(targettype=PersonPictureInter, localid="_id", foreignid="pictureid", autofill=True)
+#class PictureToPersonSel(Picture):
+#     PersInter = sqp.JoinedEmbeddedObject(targettype=PersonPictureInter, localid="_id", foreignid="pictureid", autofill=True)
 
 
 class Person(sqp.PBase):
@@ -73,26 +101,6 @@ class Person(sqp.PBase):
           else:
                return "{0} {1}".format(self.firstname, self.name)
 
-
-
-class DocumentInfoBit(_InfoBit):
-     pass
-
-class Document(sqp.PBase):
-     ReadableId = sqp.String()
-     Title = sqp.String(default="<Titel>")
-     FilePath = sqp.String()
-     Ext = sqp.String()
-     ScanDate = sqp.DateTime()
-     Type = sqp.Catalog(catalogtype=DocType)
-     ProductionDate = sqp.DateTime()
-     DocInfoBits = sqp.JoinedEmbeddedList(targettype=DocumentInfoBit, foreignid=DocumentInfoBit.TargetId, cascadedelete=True)
-
-     def __str__(self):
-          return "[{}] {} {} {}".format(self.readableid, 
-                                      ewn(self.type), 
-                                      ewn(self.productiondate),
-                                      ewn(self.title))
 
 def ewn(val):
      if val is None:

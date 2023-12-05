@@ -103,7 +103,7 @@ class EditPictureDialog(gg.geditPictureDialog):
         if self._picture.filepath is not None:
             GuiHelper.show_error("Bitte entferne zuerst das bereits angehängte Bild")
 
-        with wx.FileDialog(self, "Dateiauswahl", wildcard="PNG Bilder (*.png)|*.png, Bmp Bitmaps (*.bmp)|*.bmp, JPeg Bilder (*.jpg)|*.jpg",
+        with wx.FileDialog(self, "Dateiauswahl", wildcard="Bitmap Dateien |*.png; *.bmp; *.jpg; *.jpeg| Alle Dateien | *.*",
                        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
 
             if fileDialog.ShowModal() == wx.ID_CANCEL:

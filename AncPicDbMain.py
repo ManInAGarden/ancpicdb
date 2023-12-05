@@ -15,6 +15,8 @@ from PicturesViewDialog import PicturesViewDialog
 from DocumentsViewDialog import DocumentsViewDialog
 from EditPictureDialog import EditPictureDialog
 from AddPictureDialog import AddPictureDialog
+from AddDocumentDialog import AddDocumentDialog
+from EditDocumentDialog import EditDocumentDialog
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
@@ -405,6 +407,39 @@ class AncPicDbMain(gg.AncPicDBMain):
         self._fact.flush(picdial.picture)
         self.refresh_dash_forp(perspos)
 
+    def addDocument(self, event):
+        selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)
+        if selpers is None:
+            return
+        
+        dial = AddDocumentDialog(self, self._fact, selpers)
+        res = dial.showmodal()
+
+        if res == wx.ID_OK:
+            for doc in dial.selection:
+                persinterdoc = PersonDocumentInter(personid=selpers._id,
+                                                   documentid=doc._id)
+                self._fact.flush(persinterdoc)
+        selpers.documents = None
+        self._fact.fill_joins(selpers, Person.Documents)
+        self.refresh_dash_forp(perspos)
+
+    def editPersonsDocument(self, event):
+        selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)
+        if selpers is None:
+            return
+        
+        seldocinter, docpos = GuiHelper.get_selected_fromlb(self.m_documentsLB, selpers.documents)
+        if seldocinter is None:
+            return
+
+        docdial = EditDocumentDialog(self, self._fact, seldocinter.document)
+        res = docdial.showmodal()
+        if res == wx.ID_CANCEL:
+            return
+        
+        self._fact.flush(docdial.document)
+        self.refresh_dash_forp(perspos)
 
 if __name__ == '__main__':
     app = wx.App()
