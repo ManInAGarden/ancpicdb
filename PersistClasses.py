@@ -13,10 +13,12 @@ class _InfoBit(sqp.PBase):
      TargetId = sqp.UUid()
      InfoContent = sqp.String()
      InfoDate = sqp.DateTime()
+     SuppliedBy = sqp.String()
 
 class PersonInfoBit(_InfoBit):
      """class for informations according persons"""
      pass
+
 class PictureInfoBit(_InfoBit):
      """class for informations according pictures"""
      pass

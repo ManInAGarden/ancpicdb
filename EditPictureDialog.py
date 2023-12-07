@@ -1,19 +1,25 @@
 import os
 import shutil
 import tempfile as tmpf
+import datetime
 import wx
 import wx.adv
 import GeneratedGUI as gg
-from PersistClasses import Picture
+from PersistClasses import Picture, PictureInfoBit
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from DocArchiver import DocArchiver
+from EditInfoBitDialog import EditInfoBitDialog
 
 class EditPictureDialog(gg.geditPictureDialog):
     
     @property
     def picture(self):
         return self._picture
+    
+    @property
+    def configuration(self):
+        return self._configuration
     
     def __init__(self, parent, fact : sqp.SQFactory, picture : Picture):
         super().__init__(parent)
@@ -27,16 +33,49 @@ class EditPictureDialog(gg.geditPictureDialog):
             self.machlabel = "XXXX"
         self._picture = picture
         self.m_staticBM = None
+        self._create_infobit_cols()
+
+    def _create_infobit_cols(self):
+        self.m_zusatzinfoLCT.InsertColumn(0, 'Datum')
+        self.m_zusatzinfoLCT.InsertColumn(1, 'Quelle')
+        self.m_zusatzinfoLCT.InsertColumn(2, 'Inhalt', width=125)
+
+    def _eds(self, dt):
+        if dt is None:
+            return ""
+        
+        return "{:%d.%m.%Y}".format(dt)
+    
+    def _ess(self, val):
+        if val is None: return ""
+
+        return val.__str__()
+    
+    def _add_ibline(self, dataidx,  ib : PictureInfoBit):
+        lct = self.m_zusatzinfoLCT
+        idx = lct.InsertItem(lct.GetColumnCount(), self._eds(ib.infodate))
+        lct.SetItemData(idx, dataidx)
+        lct.SetItem(idx, 1, self._ess(ib.suppliedby))
+        lct.SetItem(idx, 2,  self._ess(ib.infocontent))
+
+    def _fill_ibcols(self):
+        if self._picture.pictinfobits is None: return
+
+        idx = 0
+        for ib in self._picture.pictinfobits:
+            self._add_ibline(idx, ib)
+            idx += 1
 
     def _fill_dialog(self):
         p = self._picture
+        self._fact.fill_joins(p, Picture.PictInfoBits)
         GuiHelper.set_val(self.m_kennummerTB, p.readableid)
         GuiHelper.set_val(self.m_titelTB, p.title)
         GuiHelper.set_val(self.m_beschreibungTB, p.settledinformation)
         GuiHelper.set_val(self.m_scanDatumDP, p.scandate)
         GuiHelper.set_val(self.m_aufnahmeDatumDP, p.takendate)
         self._display_document()
-
+        self._fill_ibcols()
 
     def showmodal(self):
         self._fill_dialog()
@@ -136,3 +175,45 @@ class EditPictureDialog(gg.geditPictureDialog):
             self.m_bitmapPAN.RemoveChild(self.m_staticBM)
             self.Refresh()
         
+    def addInfoBit(self, event):
+        newib = PictureInfoBit(targetid = self._picture._id,
+                               infocontent="<Infotext hier>",
+                               infodate = datetime.datetime.now())
+        self._fact.flush(newib)
+
+        self._picture.pictinfobits.append(newib)
+        idx = len(self._picture.pictinfobits)-1
+        self._add_ibline(idx, newib)
+
+    def editInfoBit(self, event):
+        selib = GuiHelper.get_selected_fromlctrl(self.m_zusatzinfoLCT, self._picture.pictinfobits)
+        if selib is None: return
+
+        dial =  EditInfoBitDialog(self, self._fact, selib)
+        res = dial.showmodal()
+
+        if res == wx.ID_CANCEL: return
+
+        self.m_zusatzinfoLCT.DeleteAllItems()
+        self._fill_ibcols()
+
+    def removeInfoBit(self, event):
+        selib = GuiHelper.get_selected_fromlctrl(self.m_zusatzinfoLCT, self._picture.pictinfobits)
+        if selib is None: return
+
+        res = wx.MessageBox("Soll die Information wirklich gelöscht werden?", "Rückfrage", style=wx.YES_NO, parent=self)
+        if res == wx.YES:
+            self._fact.delete(selib)
+            
+            self.m_zusatzinfoLCT.DeleteAllItems()
+            remid = -1
+            ct = 0
+            for ib in self._picture.pictinfobits:
+                if ib._id == selib._id:
+                    remid = ct
+                ct += 1
+
+            if remid >= 0:
+                self._picture.pictinfobits.pop(remid)
+
+            self._fill_ibcols()

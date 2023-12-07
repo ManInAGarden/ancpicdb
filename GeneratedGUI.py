@@ -590,8 +590,8 @@ class geditPictureDialog ( wx.Dialog ):
 
 		gbSizer7.Add( self.m_staticText18, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_izusatzinfoLCT = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_AUTOARRANGE|wx.LC_ICON|wx.LC_SINGLE_SEL )
-		gbSizer7.Add( self.m_izusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_zusatzinfoLCT = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
+		gbSizer7.Add( self.m_zusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -662,6 +662,10 @@ class geditPictureDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.m_zusatzinfoLCT.Bind( wx.EVT_LEFT_DCLICK, self.editInfoBit )
+		self.m_addPictBitInfoBU.Bind( wx.EVT_BUTTON, self.addInfoBit )
+		self.m_editPictBitInfoBU.Bind( wx.EVT_BUTTON, self.editInfoBit )
+		self.m_deletePictBitInfoBU.Bind( wx.EVT_BUTTON, self.removeInfoBit )
 		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadDocument )
 		self.m_button23.Bind( wx.EVT_BUTTON, self.removePicture )
 
@@ -670,6 +674,16 @@ class geditPictureDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def editInfoBit( self, event ):
+		event.Skip()
+
+	def addInfoBit( self, event ):
+		event.Skip()
+
+
+	def removeInfoBit( self, event ):
+		event.Skip()
+
 	def uploadDocument( self, event ):
 		event.Skip()
 
@@ -1037,6 +1051,67 @@ class gAddDocumentDialog ( wx.Dialog ):
 		gbSizer8.AddGrowableRow( 6 )
 
 		self.SetSizer( gbSizer8 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
+
+
+###########################################################################
+## Class gEditInfoBitDialog
+###########################################################################
+
+class gEditInfoBitDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 317,304 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer12 = wx.GridBagSizer( 0, 0 )
+		gbSizer12.SetFlexibleDirection( wx.BOTH )
+		gbSizer12.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer8 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer8OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer8.AddButton( self.m_sdbSizer8OK )
+		self.m_sdbSizer8Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer8.AddButton( self.m_sdbSizer8Cancel )
+		m_sdbSizer8.Realize();
+
+		gbSizer12.Add( m_sdbSizer8, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.BOTTOM|wx.EXPAND, 5 )
+
+		self.m_staticText35 = wx.StaticText( self, wx.ID_ANY, u"Infodatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText35.Wrap( -1 )
+
+		gbSizer12.Add( self.m_staticText35, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_infoDatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT|wx.adv.DP_SHOWCENTURY )
+		gbSizer12.Add( self.m_infoDatumDP, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText36 = wx.StaticText( self, wx.ID_ANY, u"Infoquelle:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText36.Wrap( -1 )
+
+		gbSizer12.Add( self.m_staticText36, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_infoquelleTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer12.Add( self.m_infoquelleTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText37 = wx.StaticText( self, wx.ID_ANY, u"Infotext:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText37.Wrap( -1 )
+
+		gbSizer12.Add( self.m_staticText37, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_infoTextTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
+		gbSizer12.Add( self.m_infoTextTB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer12.AddGrowableCol( 1 )
+		gbSizer12.AddGrowableRow( 2 )
+
+		self.SetSizer( gbSizer12 )
 		self.Layout()
 
 		self.Centre( wx.BOTH )
