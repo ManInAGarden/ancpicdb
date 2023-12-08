@@ -22,7 +22,6 @@ class EditInfoBitDialog(gg.gEditInfoBitDialog):
         GuiHelper.set_val(self.m_infoquelleTB, ib.suppliedby)
         GuiHelper.set_val(self.m_infoTextTB, ib.infocontent)
 
-
     def showmodal(self):
         self._filldialog()
 

@@ -38,7 +38,7 @@ class EditPictureDialog(gg.geditPictureDialog):
     def _create_infobit_cols(self):
         self.m_zusatzinfoLCT.InsertColumn(0, 'Datum')
         self.m_zusatzinfoLCT.InsertColumn(1, 'Quelle')
-        self.m_zusatzinfoLCT.InsertColumn(2, 'Inhalt', width=125)
+        self.m_zusatzinfoLCT.InsertColumn(2, 'Inhalt', width=300)
 
     def _eds(self, dt):
         if dt is None:

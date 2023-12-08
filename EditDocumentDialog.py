@@ -1,17 +1,22 @@
 import tempfile as tmpf
 import os, subprocess, platform
+import datetime
 import wx
 import wx.adv
+import sqlitepersist as sqp
+
 from PersistClasses import Document, DocumentInfoBit, DocType
 import GeneratedGUI as gg
 from GuiHelper import GuiHelper
-
-import sqlitepersist as sqp
+from EditInfoBitDialog import EditInfoBitDialog
 
 class EditDocumentDialog(gg.geditDocumentDialog):
     
     @property
     def document(self): return self._document
+
+    @property
+    def configuration(self): return self._configuration
 
     def __init__(self, parent, fact : sqp.SQFactory, document : Document):
         super().__init__(parent)
@@ -20,7 +25,40 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         self._configuration = parent.configuration
         self._document = document
         self._temp = tmpf.gettempdir()
+        self._create_infobit_cols()
 
+
+    def _create_infobit_cols(self):
+        self.m_zusatzinfoLCT.InsertColumn(0, 'Datum')
+        self.m_zusatzinfoLCT.InsertColumn(1, 'Quelle')
+        self.m_zusatzinfoLCT.InsertColumn(2, 'Inhalt', width=300)
+
+    def _eds(self, dt):
+        if dt is None:
+            return ""
+        
+        return "{:%d.%m.%Y}".format(dt)
+    
+    def _ess(self, val):
+        if val is None: return ""
+
+        return val.__str__()
+    
+    def _add_ibline(self, dataidx,  ib : DocumentInfoBit):
+        lct = self.m_zusatzinfoLCT
+        idx = lct.InsertItem(lct.GetColumnCount(), self._eds(ib.infodate))
+        lct.SetItemData(idx, dataidx)
+        lct.SetItem(idx, 1, self._ess(ib.suppliedby))
+        lct.SetItem(idx, 2,  self._ess(ib.infocontent))
+
+    def _fill_ibcols(self):
+        if self._document.docinfobits is None: return
+
+        idx = 0
+        for ib in self._document.docinfobits:
+            self._add_ibline(idx, ib)
+            idx += 1
+            
     def _get_all_types(self):
         return sqp.SQQuery(self._fact, DocType).where(DocType.Type=="DOC_TYPE").order_by(DocType.Value).as_list()
         
@@ -36,6 +74,7 @@ class EditDocumentDialog(gg.geditDocumentDialog):
     
     def _filldialog(self):
         d = self._document
+        self._fact.fill_joins(d, Document.DocInfoBits)
         self._doctypelist = self._get_all_types()
         GuiHelper.set_val(self.m_kennummerTB, d.readableid)
         GuiHelper.set_val(self.m_doctypCB, d.type, fullcat=self._doctypelist)
@@ -44,6 +83,8 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         GuiHelper.set_val(self.m_produktionsDatumDP, d.productiondate)
         GuiHelper.set_val(self.m_archivepathTB, d.filepath)
         GuiHelper.set_val(self.m_docextTB, d.ext)
+        self._fill_ibcols()
+
 
     def _scaleimagetomax(self, img : wx.Image, width : int, height : int):
         """scale image so that it fits into a box with the given width and height without defomation """
@@ -146,3 +187,46 @@ class EditDocumentDialog(gg.geditDocumentDialog):
 
         extrpname = self._downloadtotemp(self._document.filepath)
         self._openbysys(extrpname)
+
+    def addInfoBit(self, event):
+        newib = DocumentInfoBit(targetid = self._document._id,
+                               infocontent="<Infotext hier>",
+                               infodate = datetime.datetime.now())
+        self._fact.flush(newib)
+
+        self._document.docinfobits.append(newib)
+        idx = len(self._document.docinfobits)-1
+        self._add_ibline(idx, newib)
+
+    def editInfoBit(self, event):
+        selib = GuiHelper.get_selected_fromlctrl(self.m_zusatzinfoLCT, self._document.docinfobits)
+        if selib is None: return
+
+        dial =  EditInfoBitDialog(self, self._fact, selib)
+        res = dial.showmodal()
+
+        if res == wx.ID_CANCEL: return
+
+        self.m_zusatzinfoLCT.DeleteAllItems()
+        self._fill_ibcols()
+
+    def removeInfoBit(self, event):
+        selib = GuiHelper.get_selected_fromlctrl(self.m_zusatzinfoLCT, self.document.docinfobits)
+        if selib is None: return
+
+        res = wx.MessageBox("Soll die Information wirklich gelöscht werden?", "Rückfrage", style=wx.YES_NO, parent=self)
+        if res == wx.YES:
+            self._fact.delete(selib)
+            
+            self.m_zusatzinfoLCT.DeleteAllItems()
+            remid = -1
+            ct = 0
+            for ib in self._document.docinfobits:
+                if ib._id == selib._id:
+                    remid = ct
+                ct += 1
+
+            if remid >= 0:
+                self._document.docinfobits.pop(remid)
+
+            self._fill_ibcols()

@@ -327,8 +327,8 @@ class geditDocumentDialog ( wx.Dialog ):
 
 		gbSizer7.Add( self.m_staticText18, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_izusatzinfoLCT = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_AUTOARRANGE|wx.LC_ICON|wx.LC_SINGLE_SEL )
-		gbSizer7.Add( self.m_izusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_zusatzinfoLCT = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
+		gbSizer7.Add( self.m_zusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -405,6 +405,9 @@ class geditDocumentDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.m_addPictBitInfoBU.Bind( wx.EVT_BUTTON, self.addInfoBit )
+		self.m_editPictBitInfoBU.Bind( wx.EVT_BUTTON, self.editInfoBit )
+		self.m_deletePictBitInfoBU.Bind( wx.EVT_BUTTON, self.removeInfoBit )
 		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadDocument )
 		self.m_viewDocumentBU.Bind( wx.EVT_BUTTON, self.viewDocument )
 		self.m_downloadBU.Bind( wx.EVT_BUTTON, self.downloadDocument )
@@ -415,6 +418,15 @@ class geditDocumentDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def addInfoBit( self, event ):
+		event.Skip()
+
+	def editInfoBit( self, event ):
+		event.Skip()
+
+	def removeInfoBit( self, event ):
+		event.Skip()
+
 	def uploadDocument( self, event ):
 		event.Skip()
 
