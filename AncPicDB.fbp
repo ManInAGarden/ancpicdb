@@ -1389,7 +1389,7 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
@@ -2975,7 +2975,7 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
@@ -3550,7 +3550,7 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
@@ -4987,14 +4987,14 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
             <property name="minimum_size"></property>
             <property name="name">gPicturesViewDialog</property>
             <property name="pos"></property>
-            <property name="size">739,519</property>
+            <property name="size">847,603</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Bilder sichten</property>
@@ -5533,7 +5533,7 @@
                     <property name="colspan">1</property>
                     <property name="column">0</property>
                     <property name="flag">wxALL|wxEXPAND</property>
-                    <property name="row">4</property>
+                    <property name="row">3</property>
                     <property name="rowspan">1</property>
                     <object class="wxStdDialogButtonSizer" expanded="0">
                         <property name="Apply">0</property>
@@ -5551,7 +5551,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -5562,14 +5562,14 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
             <property name="minimum_size"></property>
             <property name="name">gPersonEditDialog</property>
             <property name="pos"></property>
-            <property name="size">479,602</property>
+            <property name="size">845,670</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Person bearbeiten</property>
@@ -6293,7 +6293,7 @@
                         <property name="resize">Resizable</property>
                         <property name="show">1</property>
                         <property name="size"></property>
-                        <property name="style">wxHSCROLL|wxTE_MULTILINE</property>
+                        <property name="style">wxHSCROLL|wxTE_CHARWRAP|wxTE_MULTILINE</property>
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
                         <property name="tooltip"></property>
@@ -6673,7 +6673,7 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
@@ -7531,7 +7531,7 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
@@ -8378,7 +8378,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="1">
+        <object class="Dialog" expanded="0">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -8389,7 +8389,7 @@
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
             <property name="fg"></property>
-            <property name="font"></property>
+            <property name="font">Arial,90,400,11,74,0</property>
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
@@ -8405,7 +8405,7 @@
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
-            <object class="wxGridBagSizer" expanded="1">
+            <object class="wxGridBagSizer" expanded="0">
                 <property name="empty_cell_size"></property>
                 <property name="flexible_direction">wxBOTH</property>
                 <property name="growablecols">1</property>
@@ -8416,14 +8416,14 @@
                 <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_SPECIFIED</property>
                 <property name="permission">none</property>
                 <property name="vgap">0</property>
-                <object class="gbsizeritem" expanded="1">
+                <object class="gbsizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="colspan">2</property>
                     <property name="column">0</property>
                     <property name="flag">wxBOTTOM|wxEXPAND</property>
                     <property name="row">3</property>
                     <property name="rowspan">1</property>
-                    <object class="wxStdDialogButtonSizer" expanded="1">
+                    <object class="wxStdDialogButtonSizer" expanded="0">
                         <property name="Apply">0</property>
                         <property name="Cancel">1</property>
                         <property name="ContextHelp">0</property>
@@ -8437,14 +8437,14 @@
                         <property name="permission">protected</property>
                     </object>
                 </object>
-                <object class="gbsizeritem" expanded="1">
+                <object class="gbsizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">0</property>
                     <property name="flag">wxALL</property>
                     <property name="row">0</property>
                     <property name="rowspan">1</property>
-                    <object class="wxStaticText" expanded="1">
+                    <object class="wxStaticText" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -8501,14 +8501,14 @@
                         <property name="wrap">-1</property>
                     </object>
                 </object>
-                <object class="gbsizeritem" expanded="1">
+                <object class="gbsizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">1</property>
                     <property name="flag">wxALL</property>
                     <property name="row">0</property>
                     <property name="rowspan">1</property>
-                    <object class="wxDatePickerCtrl" expanded="1">
+                    <object class="wxDatePickerCtrl" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -8566,14 +8566,14 @@
                         <property name="window_style"></property>
                     </object>
                 </object>
-                <object class="gbsizeritem" expanded="1">
+                <object class="gbsizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">0</property>
                     <property name="flag">wxALL</property>
                     <property name="row">1</property>
                     <property name="rowspan">1</property>
-                    <object class="wxStaticText" expanded="1">
+                    <object class="wxStaticText" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -8630,14 +8630,14 @@
                         <property name="wrap">-1</property>
                     </object>
                 </object>
-                <object class="gbsizeritem" expanded="1">
+                <object class="gbsizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">1</property>
                     <property name="flag">wxALL|wxEXPAND</property>
                     <property name="row">1</property>
                     <property name="rowspan">1</property>
-                    <object class="wxTextCtrl" expanded="1">
+                    <object class="wxTextCtrl" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -8697,14 +8697,14 @@
                         <property name="window_style"></property>
                     </object>
                 </object>
-                <object class="gbsizeritem" expanded="1">
+                <object class="gbsizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">0</property>
                     <property name="flag">wxALL</property>
                     <property name="row">2</property>
                     <property name="rowspan">1</property>
-                    <object class="wxStaticText" expanded="1">
+                    <object class="wxStaticText" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -8761,14 +8761,14 @@
                         <property name="wrap">-1</property>
                     </object>
                 </object>
-                <object class="gbsizeritem" expanded="1">
+                <object class="gbsizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">1</property>
                     <property name="flag">wxALL|wxEXPAND</property>
                     <property name="row">2</property>
                     <property name="rowspan">1</property>
-                    <object class="wxTextCtrl" expanded="1">
+                    <object class="wxTextCtrl" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>

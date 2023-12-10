@@ -6,7 +6,7 @@ class GuiHelper:
     """ class to help with ever repeating gui oprations"""
 
     @classmethod 
-    def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list):
+    def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list) -> (object, int):
         """get the currently selected item of a ListBox. Returns None when nothing was selected"""
         if lst is None or len(lst)==0:
             return None, None

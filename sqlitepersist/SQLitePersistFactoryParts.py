@@ -120,22 +120,7 @@ class SQFactory():
         else:
             raise Exception("unexpected parametertype for database debug level. Use str here")
 
-    # OLD delete me next time
-    # def set_db_dbglevel(self, filepath : str, levelstr : str):
-    #     if type(levelstr) is str:
-    #         lowlev = levelstr.lower()
-    #         if lowlev == "none":
-    #             level = DbgStmtLevel.NONE
-    #         elif lowlev == "stmts":
-    #             level = DbgStmtLevel.STMTS
-    #         elif lowlev == "datafill":
-    #             level = DbgStmtLevel.DATAFILL
-    #         else:
-    #             raise Exception("unknown debuglevel <{0}>".format(levelstr))
-    #         self._stmtlogger = SQPLogger(filepath, level)
-    #     else:
-    #         raise Exception("unexpected parametertype for database debug level. Use str here")
-
+    
     def try_droptable(self, pinstclass):
         try:
             self.droptable(pinstclass)
