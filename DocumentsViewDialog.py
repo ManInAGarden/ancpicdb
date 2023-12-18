@@ -61,6 +61,20 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         if seldoc is None:
             return
         
+        if seldoc.readableid is not None:
+            name = seldoc.readableid
+        elif seldoc.title is not None:
+            name = seldoc.title
+        else:
+            name = "kein Name"
+
+        res = wx.MessageBox("Soll das Dokument <{}> tatsächlich gelöscht werden?".format(name),
+                            "Rückfrage",
+                            style=wx.YES_NO)
+        
+        if res != wx.YES:
+            return 
+        
         self._fact.delete(seldoc)
         self.m_documentsLB.Delete(seldocpos)
 

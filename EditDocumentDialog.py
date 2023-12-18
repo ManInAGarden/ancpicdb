@@ -126,7 +126,7 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         if self._document.filepath is not None:
             GuiHelper.show_error("Bitte entferne zuerst das bereits angehängte Dokument")
 
-        with wx.FileDialog(self, "Dateiauswahl", wildcard="Archivierte Dokument Dateien (PDF) |*.pdf | Alle Dateien | *.*",
+        with wx.FileDialog(self, "Dateiauswahl", wildcard="PDFs | *.pdf; | Alle Dateien | *.*",
                        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
 
             if fileDialog.ShowModal() == wx.ID_CANCEL:
