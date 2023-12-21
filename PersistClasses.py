@@ -98,10 +98,15 @@ class Person(sqp.PBase):
      Pictures = sqp.IntersectedList(targettype=PersonPictureInter, interupid="personid", interdownid="pictureid")
 
      def __str__(self):
+          answ = "{0} {1}".format(self.firstname, self.name)
+
           if self.birthdate is not None:
-               return "{0} {1} ({2:%d.%m.%Y})".format(self.firstname, self.name, self.birthdate)
-          else:
-               return "{0} {1}".format(self.firstname, self.name)
+               answ += ": *{:%d.%m.%Y}".format(self.birthdate)
+          
+          if self.deathdate is not None:
+               answ += ", +{:%d.%m.%Y}".format(self.deathdate)
+          
+          return answ
 
 
 def ewn(val):

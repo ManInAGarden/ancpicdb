@@ -12,6 +12,10 @@
             {"type": "DOC_TYPE", "code":"HEIRATSURKUNDE", "value":"Heiratsurkunde", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"AUSWEIS", "value":"Ausweis", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"ZEUGNIS", "value":"Zeugnis", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"DANKTOT", "value":"Danksagung Beerdigung", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"TOTENBRIEF", "value":"Totenbrief", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"DANKGEB", "value":"Danksagung Geburtstag", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"GEBANZ", "value":"Geburtsanzeige", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"NSP", "value":"nicht spez.", "langcode":"DEU"}
         ]
   

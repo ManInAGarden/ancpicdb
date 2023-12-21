@@ -79,7 +79,11 @@ class GuiHelper:
             else:
                 ctrl.SetValue(wx.InvalidDateTime)
         elif ct is wx.ComboBox:
-            if issubclass(type(val), sqp.PCatalog):
+            if val is None:
+                itemss = list(map(lambda p: p.value, fullcat))
+                ctrl.AppendItems(itemss)
+                ctrl.SetSelection(wx.NOT_FOUND)
+            elif issubclass(type(val), sqp.PCatalog):
                 itemss = list(map(lambda p: p.value, fullcat))
                 ctrl.AppendItems(itemss)
                 ct = 0
@@ -88,9 +92,9 @@ class GuiHelper:
                         ctrl.SetSelection(ct)
                         break
                     ct += 1
-                    
+   
             else:
-                raise Exception("Combobox with non catalog not yet handled in GUIHelper.SetVal")
+                raise Exception("Combobox with non catalog data value not yet handled in GUIHelper.SetVal")
         else:
             raise Exception("Unknown control type in _set_val")
         
