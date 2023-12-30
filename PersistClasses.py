@@ -5,9 +5,17 @@ class SexCat(sqp.PCatalog):
      _cattype = "BIO_SEX"
      _langsensitive = True
 
-class DocType(sqp.PCatalog):
+class PicQualityCat(sqp.PCatalog):
+     _cattype = "PICT_QUAL"
+     _langsensitive = True
+
+class DocTypeCat(sqp.PCatalog):
      _cattype = "DOC_TYPE"
      _langsensitive = False
+
+class GroupTypeCat(sqp.PCatalog):
+     _cattype = "GRP_TYPE"
+     _langsensitive = True
 
 class _InfoBit(sqp.PBase):
      TargetId = sqp.UUid()
@@ -26,16 +34,28 @@ class PictureInfoBit(_InfoBit):
 class DocumentInfoBit(_InfoBit):
      pass
 
+class DataGroup(sqp.PBase):
+     Name = sqp.String()
+     OrderNum = sqp.Int(default=0)
+     GroupType = sqp.Catalog(catalogtype=GroupTypeCat)
+
+     def __str__(self):
+          return "[{}] {} - {}".format(self.ordernum,
+                                self.name,
+                                self.grouptype)
 
 class Picture(sqp.PBase):
      """class for pictures normally with people on them"""
      ReadableId = sqp.String()
+     GroupId = sqp.UUid()
+     PicureGroup = sqp.JoinedEmbeddedObject(targettype=DataGroup, localid=GroupId)
      FilePath = sqp.String()
      Ext = sqp.String()
      ScanDate = sqp.DateTime()
      TakenDate = sqp.DateTime()
      Title = sqp.String(default="<Titel>")
      SettledInformation = sqp.String()
+     Quality = sqp.Catalog(catalogtype=PicQualityCat)
      PictInfoBits = sqp.JoinedEmbeddedList(targettype=PictureInfoBit, foreignid=PictureInfoBit.TargetId, cascadedelete=True)
  
      def __str__(self):
@@ -48,7 +68,7 @@ class Document(sqp.PBase):
      FilePath = sqp.String()
      Ext = sqp.String()
      ScanDate = sqp.DateTime()
-     Type = sqp.Catalog(catalogtype=DocType)
+     Type = sqp.Catalog(catalogtype=DocTypeCat)
      ProductionDate = sqp.DateTime()
      DocInfoBits = sqp.JoinedEmbeddedList(targettype=DocumentInfoBit, foreignid=DocumentInfoBit.TargetId, cascadedelete=True)
 

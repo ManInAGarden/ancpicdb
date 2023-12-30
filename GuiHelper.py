@@ -43,6 +43,7 @@ class GuiHelper:
         if lidx < 0 or lidx > len(lst):
             raise Exception("Index <{}> found in item data is out of range for list of length <{}>".format(lidx, len(lst)))
 
+        #return the selected data object
         return lst[lidx]
 
     @classmethod
@@ -119,6 +120,9 @@ class GuiHelper:
             selpo = ctrl.GetSelection()
             if selpo != wx.NOT_FOUND:
                 return datal[selpo]
+        elif ctt is wx.SpinCtrl:
+            val = ctrl.GetValue()
+            return val
         else:
             raise Exception("Unknown type {} in _get_val()".format(ctt))
         

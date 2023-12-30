@@ -16,7 +16,17 @@
             {"type": "DOC_TYPE", "code":"TOTENBRIEF", "value":"Totenbrief", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"DANKGEB", "value":"Danksagung Geburtstag", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"GEBANZ", "value":"Geburtsanzeige", "langcode":"DEU"},
-            {"type": "DOC_TYPE", "code":"NSP", "value":"nicht spez.", "langcode":"DEU"}
+            {"type": "DOC_TYPE", "code":"NSP", "value":"nicht spez.", "langcode":"DEU"},
+            {"type": "PICT_QUAL", "code":"BEST", "value":"hervorragend", "langcode":"DEU"},
+            {"type": "PICT_QUAL", "code":"AVG", "value":"mittelmäßig", "langcode":"DEU"},
+            {"type": "PICT_QUAL", "code":"LOW", "value":"schlecht", "langcode":"DEU"},
+            {"type": "PICT_QUAL", "code":"BEST", "value":"best", "langcode":"GBR"},
+            {"type": "PICT_QUAL", "code":"AVG", "value":"average", "langcode":"GBR"},
+            {"type": "PICT_QUAL", "code":"LOW", "value":"bad", "langcode":"GBR"},
+            {"type": "GRP_TYPE", "code":"PICT", "value":"Bild", "langcode":"DEU"},
+            {"type": "GRP_TYPE", "code":"DOC", "value":"Dokument", "langcode":"DEU"},
+            {"type": "GRP_TYPE", "code":"PICT", "value":"picture", "langcode":"GBR"},
+            {"type": "GRP_TYPE", "code":"DOC", "value":"document", "langcode":"GBR"}
         ]
   
 }

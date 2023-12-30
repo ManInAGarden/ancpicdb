@@ -5,7 +5,7 @@ import wx
 import wx.adv
 import sqlitepersist as sqp
 
-from PersistClasses import Document, DocumentInfoBit, DocType
+from PersistClasses import Document, DocumentInfoBit, DocTypeCat
 import GeneratedGUI as gg
 from GuiHelper import GuiHelper
 from EditInfoBitDialog import EditInfoBitDialog
@@ -60,7 +60,7 @@ class EditDocumentDialog(gg.geditDocumentDialog):
             idx += 1
             
     def _get_all_types(self):
-        return sqp.SQQuery(self._fact, DocType).where(DocType.Type=="DOC_TYPE").order_by(DocType.Value).as_list()
+        return sqp.SQQuery(self._fact, DocTypeCat).where(DocTypeCat.Type=="DOC_TYPE").order_by(DocTypeCat.Value).as_list()
         
     def isempty(self, val):
         if val is None:

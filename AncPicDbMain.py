@@ -17,9 +17,10 @@ from EditPictureDialog import EditPictureDialog
 from AddPictureDialog import AddPictureDialog
 from AddDocumentDialog import AddDocumentDialog
 from EditDocumentDialog import EditDocumentDialog
+from GroupsViewDialog import GroupsViewDialog
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
-from PersistClasses import Person, PersonInfoBit, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
+from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
 
 
 class AncPicDbMain(gg.AncPicDBMain):
@@ -168,6 +169,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         pclasses = [sqp.PCatalog, sqp.CommonInter,
 			Person, 
             PersonInfoBit,
+            DataGroup,
 			Picture,
             PictureInfoBit,
             Document,
@@ -357,6 +359,11 @@ class AncPicDbMain(gg.AncPicDBMain):
         pos = self.get_selected_ppos()
         if pos is not wx.NOT_FOUND:
             self.refresh_dash_forp(pos)
+
+    def openViewGroupsDialog(self, event):
+        grdial = GroupsViewDialog(self, self._fact, self._configuration)
+        res = grdial.showmodal()
+
 
     def addPicture(self, event):
         selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)

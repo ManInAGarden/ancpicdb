@@ -3,7 +3,7 @@ import wx
 import wx.adv
 import GeneratedGUI as gg
 from GuiHelper import GuiHelper
-from PersistClasses import Document, DocType
+from PersistClasses import Document, DocTypeCat
 import sqlitepersist as sqp
 from ConfigReader import ConfigReader
 from EditDocumentDialog import EditDocumentDialog
@@ -50,7 +50,7 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
     def addNewRow(self, event):
         readid = self._create_readid()
         doc = Document(readableid=readid)
-        doc.type = self._fact.getcat(DocType, "NSP") #initialse as unspecified
+        doc.type = self._fact.getcat(DocTypeCat, "NSP") #initialse as unspecified
         self._fact.flush(doc)
         self._documents.append(doc)
         self.m_documentsLB.Append(doc.__str__())

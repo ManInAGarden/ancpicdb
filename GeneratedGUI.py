@@ -37,11 +37,14 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_mainMenuBar.Append( self.m_fileMenu, u"Datei" )
 
 		self.m_editMenu = wx.Menu()
-		self.m_picsMI = wx.MenuItem( self.m_editMenu, wx.ID_ANY, u"Bilder"+ u"\t" + u"CTRL+B", u"Bilder sichten", wx.ITEM_NORMAL )
-		self.m_editMenu.Append( self.m_picsMI )
+		self.m_groupsMI = wx.MenuItem( self.m_editMenu, wx.ID_ANY, u"Gruppen", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_editMenu.Append( self.m_groupsMI )
 
 		self.m_documentsMI = wx.MenuItem( self.m_editMenu, wx.ID_ANY, u"Dokumente"+ u"\t" + u"CTRL+D", u"Dokumente sichten", wx.ITEM_NORMAL )
 		self.m_editMenu.Append( self.m_documentsMI )
+
+		self.m_picsMI = wx.MenuItem( self.m_editMenu, wx.ID_ANY, u"Bilder"+ u"\t" + u"CTRL+B", u"Bilder sichten", wx.ITEM_NORMAL )
+		self.m_editMenu.Append( self.m_picsMI )
 
 		self.m_mainMenuBar.Append( self.m_editMenu, u"Bearbeiten" )
 
@@ -192,8 +195,9 @@ class AncPicDBMain ( wx.Frame ):
 
 		# Connect Events
 		self.Bind( wx.EVT_MENU, self.quit, id = self.m_exitMI.GetId() )
-		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.openViewGroupsDialog, id = self.m_groupsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewDocumentsDialog, id = self.m_documentsMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX, self.personSelected )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editExistingPerson )
 		self.m_newPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editNewPerson )
@@ -217,10 +221,13 @@ class AncPicDBMain ( wx.Frame ):
 	def quit( self, event ):
 		event.Skip()
 
-	def openViewPicturesDialog( self, event ):
+	def openViewGroupsDialog( self, event ):
 		event.Skip()
 
 	def openViewDocumentsDialog( self, event ):
+		event.Skip()
+
+	def openViewPicturesDialog( self, event ):
 		event.Skip()
 
 	def personSelected( self, event ):
@@ -1138,5 +1145,154 @@ class gEditInfoBitDialog ( wx.Dialog ):
 
 	def __del__( self ):
 		pass
+
+
+###########################################################################
+## Class gGroupsDialog
+###########################################################################
+
+class gGroupsDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Gruppen", pos = wx.DefaultPosition, size = wx.Size( 762,530 ), style = wx.DEFAULT_DIALOG_STYLE )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer13 = wx.GridBagSizer( 0, 0 )
+		gbSizer13.SetFlexibleDirection( wx.BOTH )
+		gbSizer13.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		self.m_staticText38 = wx.StaticText( self, wx.ID_ANY, u"Gruppen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText38.Wrap( -1 )
+
+		gbSizer13.Add( self.m_staticText38, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_groupsLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer13.Add( self.m_groupsLCTRL, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_newGroupBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_newGroupBU.SetBitmap( wx.Bitmap( u"ressources/Add-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_newGroupBU, 0, wx.ALL, 5 )
+
+		self.m_editGroupBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_editGroupBU.SetBitmap( wx.Bitmap( u"ressources/Edit.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_editGroupBU, 0, wx.ALL, 5 )
+
+		self.m_deleteGroupBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_deleteGroupBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_deleteGroupBU, 0, wx.ALL, 5 )
+
+
+		gbSizer13.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		m_sdbSizer10 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer10OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer10.AddButton( self.m_sdbSizer10OK )
+		m_sdbSizer10.Realize();
+
+		gbSizer13.Add( m_sdbSizer10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer13.AddGrowableCol( 0 )
+		gbSizer13.AddGrowableRow( 1 )
+
+		self.SetSizer( gbSizer13 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_newGroupBU.Bind( wx.EVT_BUTTON, self.addNewGroup )
+		self.m_editGroupBU.Bind( wx.EVT_BUTTON, self.editGroup )
+		self.m_deleteGroupBU.Bind( wx.EVT_BUTTON, self.removeGroup )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def addNewGroup( self, event ):
+		event.Skip()
+
+	def editGroup( self, event ):
+		event.Skip()
+
+	def removeGroup( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gGroupEditDialog
+###########################################################################
+
+class gGroupEditDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Gruppe bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 401,187 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer14 = wx.GridBagSizer( 0, 0 )
+		gbSizer14.SetFlexibleDirection( wx.BOTH )
+		gbSizer14.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		self.m_staticText39 = wx.StaticText( self, wx.ID_ANY, u"Typ:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText39.Wrap( -1 )
+
+		gbSizer14.Add( self.m_staticText39, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_typeCBChoices = []
+		self.m_typeCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_typeCBChoices, 0 )
+		gbSizer14.Add( self.m_typeCB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText40 = wx.StaticText( self, wx.ID_ANY, u"Bezeichnung:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText40.Wrap( -1 )
+
+		gbSizer14.Add( self.m_staticText40, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_nameTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer14.Add( self.m_nameTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText41 = wx.StaticText( self, wx.ID_ANY, u"Ordnungsnummer:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText41.Wrap( -1 )
+
+		gbSizer14.Add( self.m_staticText41, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_orderNumberSPCTRL = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 1000, 0 )
+		gbSizer14.Add( self.m_orderNumberSPCTRL, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		m_sdbSizer11 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer11OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer11.AddButton( self.m_sdbSizer11OK )
+		self.m_sdbSizer11Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer11.AddButton( self.m_sdbSizer11Cancel )
+		m_sdbSizer11.Realize();
+
+		gbSizer14.Add( m_sdbSizer11, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
+
+
+		gbSizer14.AddGrowableCol( 1 )
+		gbSizer14.AddGrowableRow( 3 )
+
+		self.SetSizer( gbSizer14 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_sdbSizer11OK.Bind( wx.EVT_BUTTON, self.editok )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def editok( self, event ):
+		event.Skip()
 
 
