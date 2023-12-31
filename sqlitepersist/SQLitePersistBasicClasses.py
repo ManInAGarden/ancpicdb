@@ -546,7 +546,7 @@ class PCatalog(PBase):
     """Basic class for Attributes defining a catalog"""
     _collectionname = "catalog"
     _cattype = None #overriden in each catalog derived from this class
-    _langsensitive = False # by default no language sensititivity, bur may be overriden by derived catalogs
+    _langsensitive = False # by default no language sensititivity, but may be overriden by derived catalogs
     Type = String(uniquegrp="_CAT_UNI_01")
     Code = String(uniquegrp="_CAT_UNI_01")
     Value = String()

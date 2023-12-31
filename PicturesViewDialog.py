@@ -5,9 +5,19 @@ import GeneratedGUI as gg
 from PersistClasses import Picture, PictureInfoBit, PersonPictureInter
 import sqlitepersist as sqp
 from EditPictureDialog import EditPictureDialog
+from PictureFilterDialog import PictureFilterDialog
 from ConfigReader import ConfigReader
 from GuiHelper import GuiHelper
 from DocArchiver import DocArchiver
+
+class FilterData():
+    def __init__(self):
+        self.kennummer = None
+        self.title = None
+        self.daytaken = None
+        self.monthtaken = None
+        self.yeartaken = None
+        self.group = None
 
 class PicturesViewDialog(gg.gPicturesViewDialog):
     @property
@@ -23,6 +33,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         self._fact = fact
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration
+        self._filter = FilterData()
         self.logger = parent.logger
         self.machlabel = self._configuration.get_value("gui", "machlabel")
         if self.machlabel is None:
@@ -35,7 +46,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
     
     def _filldialog(self):
         """fill dialog with all the pictures"""
-        q = sqp.SQQuery(self._fact, Picture).order_by(Picture.ScanDate)
+        q = sqp.SQQuery(self._fact, Picture).order_by(sqp.OrderInfo(Picture.ScanDate, sqp.OrderDirection.DESCENDING))
         self._pictures = list(q)
         piclstrs = []
 
@@ -110,5 +121,12 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
                 self._pictures.pop(selpos)
                 self.m_picturesLB.Delete(selpos)
 
+    def applyFilter(self, event):
+        edifiltdial = PictureFilterDialog(self, self._fact, self._filter)
+
+        res = edifiltdial.showmodal()
+
+        if res == wx.ID_CANCEL:
+            return
             
         

@@ -35,8 +35,10 @@ class GroupEditDialog(gg.gGroupEditDialog):
 
     def _filldialog(self):
         g = self._group
-        self.m_typeCB.Set(self._get_catdisplay_list(self._grouptypes))
+        #self.m_typeCB.Set(self._get_catdisplay_list(self._grouptypes))
+        GuiHelper.set_val(self.m_typeCB, g.grouptype, self._grouptypes)
         GuiHelper.set_val(self.m_nameTB, g.name)
+        GuiHelper.set_val(self.m_orderNumberSPCTRL, g.ordernum)
 
     def showmodal(self):
         self._filldialog()

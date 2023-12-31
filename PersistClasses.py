@@ -17,6 +17,10 @@ class GroupTypeCat(sqp.PCatalog):
      _cattype = "GRP_TYPE"
      _langsensitive = True
 
+class FluffyMonthCat(sqp.PCatalog):
+     _cattype = "FLUF_MONTH"
+     _langsensitive = True
+
 class _InfoBit(sqp.PBase):
      TargetId = sqp.UUid()
      InfoContent = sqp.String()
@@ -40,30 +44,32 @@ class DataGroup(sqp.PBase):
      GroupType = sqp.Catalog(catalogtype=GroupTypeCat)
 
      def __str__(self):
-          return "[{}] {} - {}".format(self.ordernum,
-                                self.name,
-                                self.grouptype)
-
+          return "{}".format(self.name)
+     
 class Picture(sqp.PBase):
      """class for pictures normally with people on them"""
      ReadableId = sqp.String()
      GroupId = sqp.UUid()
-     PicureGroup = sqp.JoinedEmbeddedObject(targettype=DataGroup, localid=GroupId)
+     PictureGroup = sqp.JoinedEmbeddedObject(targettype=DataGroup, localid=GroupId, autofill=True)
      FilePath = sqp.String()
      Ext = sqp.String()
      ScanDate = sqp.DateTime()
      TakenDate = sqp.DateTime()
+     FlufTakenMonth = sqp.Catalog(catalogtype=FluffyMonthCat)
+     FlufTakenYear = sqp.Int()
      Title = sqp.String(default="<Titel>")
      SettledInformation = sqp.String()
      Quality = sqp.Catalog(catalogtype=PicQualityCat)
      PictInfoBits = sqp.JoinedEmbeddedList(targettype=PictureInfoBit, foreignid=PictureInfoBit.TargetId, cascadedelete=True)
  
      def __str__(self):
-          return "[{}] {} {}".format(self.readableid, 
+          return "[{}] /{}/ {} {}".format(self.readableid, 
+                                      ewn(self.picturegroup),
                                       ewn(self.title), 
                                       ewn(self.takendate))
 class Document(sqp.PBase):
      ReadableId = sqp.String()
+     GroupId = sqp.UUid()
      Title = sqp.String(default="<Titel>")
      FilePath = sqp.String()
      Ext = sqp.String()
@@ -141,6 +147,8 @@ def ewn(val):
           return "{}".format(val)
      elif issubclass(type(val), sqp.PCatalog):
           return "{}".format(val.value)
+     elif issubclass(type(val), sqp.PBase):
+          return val.__str__()
      else:
           raise Exception("Unbekannter Datentyp in PersistClasses.py ewn()")
          

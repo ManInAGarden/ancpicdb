@@ -65,6 +65,31 @@ class GuiHelper:
         return msb.ShowModal()
     
     @classmethod
+    def set_sqp_objval(cls, ctrl, val, strfunc, fullcat=None):
+        """set value to the ctrl assuming val is an sqp-objeck and its str representation shall be displayed"""
+
+        ct = type(ctrl)
+        if ct is wx.ComboBox:
+            if val is None:
+                itemss = list(map(lambda p: strfunc(p), fullcat))
+                ctrl.AppendItems(itemss)
+                ctrl.SetSelection(wx.NOT_FOUND)
+            elif issubclass(type(val), sqp.PBase):
+                itemss = list(map(lambda p: strfunc(p), fullcat))
+                ctrl.AppendItems(itemss)
+                ct = 0
+                for obj in fullcat:
+                    if obj._id == val._id:
+                        ctrl.SetSelection(ct)
+                        break
+                    ct += 1
+   
+            else:
+                raise Exception("Combobox with non sqlite persist data type value not yet handled in GUIHelper.set_sqp_objval")
+        else:
+            raise Exception("Unhandled control type in set_sqp_objval")
+        
+    @classmethod
     def set_val(cls, ctrl, val, fullcat=None):
         """set value to the ctrl if not none"""
 
@@ -79,6 +104,11 @@ class GuiHelper:
                 ctrl.SetValue(wx.pydate2wxdate(val))
             else:
                 ctrl.SetValue(wx.InvalidDateTime)
+        elif ct is wx.SpinCtrl:
+            if val is not None:
+                ctrl.SetValue(val)
+            else:
+                ctrl.SetValue(0)
         elif ct is wx.ComboBox:
             if val is None:
                 itemss = list(map(lambda p: p.value, fullcat))
@@ -126,3 +156,16 @@ class GuiHelper:
         else:
             raise Exception("Unknown type {} in _get_val()".format(ctt))
         
+    @classmethod
+    def get_sqp_objval(cls, ctrl, datal : list=None):
+        """get value from the ctrl assuming its a sqp object"""
+        
+        ctt = type(ctrl)
+        if ctt is wx.ComboBox:
+            selpo = ctrl.GetSelection()
+            if selpo != wx.NOT_FOUND:
+                return datal[selpo]
+            else:
+                return None
+        else:
+            raise Exception("Unknown control type {} in get_sqp_objval()".format(ctt))

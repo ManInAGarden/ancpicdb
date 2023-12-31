@@ -5,7 +5,7 @@ import datetime
 import wx
 import wx.adv
 import GeneratedGUI as gg
-from PersistClasses import Picture, PictureInfoBit
+from PersistClasses import Picture, PictureInfoBit, FluffyMonthCat, DataGroup, GroupTypeCat
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from DocArchiver import DocArchiver
@@ -26,6 +26,8 @@ class EditPictureDialog(gg.geditPictureDialog):
         self._fact = fact
         self._configuration = parent._configuration
         self._docarchive = parent.docarchive
+        self._fluffymonths = self._get_fluffy_months()
+        self._pictgroups = self._get_pictgroups()
         tdir = tmpf.gettempdir()
         self.extdir = tdir + os.path.sep + self._configuration.get_value("archivestore", "localtemp")
         self.machlabel = self._configuration.get_value("gui", "machlabel")
@@ -35,6 +37,13 @@ class EditPictureDialog(gg.geditPictureDialog):
         self.m_staticBM = None
         self._create_infobit_cols()
 
+    def _get_fluffy_months(self):
+        langcode = self._configuration.get_value("gui", "language") 
+        return sqp.SQQuery(self._fact, FluffyMonthCat).where(FluffyMonthCat.LangCode==langcode).as_list()
+    
+    def _get_pictgroups(self):
+        return sqp.SQQuery(self._fact, DataGroup).where(DataGroup.GroupType=="PICT").order_by(DataGroup.OrderNum).as_list()
+    
     def _create_infobit_cols(self):
         self.m_zusatzinfoLCT.InsertColumn(0, 'Datum')
         self.m_zusatzinfoLCT.InsertColumn(1, 'Quelle')
@@ -66,14 +75,21 @@ class EditPictureDialog(gg.geditPictureDialog):
             self._add_ibline(idx, ib)
             idx += 1
 
+    def pgshow(self, arg):
+        return arg.name
+    
     def _fill_dialog(self):
         p = self._picture
-        self._fact.fill_joins(p, Picture.PictInfoBits)
+        self._fact.fill_joins(p, Picture.PictInfoBits, 
+                              Picture.PictureGroup)
         GuiHelper.set_val(self.m_kennummerTB, p.readableid)
+        GuiHelper.set_sqp_objval(self.m_groupCB, p.picturegroup, self.pgshow, self._pictgroups)
         GuiHelper.set_val(self.m_titelTB, p.title)
         GuiHelper.set_val(self.m_beschreibungTB, p.settledinformation)
         GuiHelper.set_val(self.m_scanDatumDP, p.scandate)
         GuiHelper.set_val(self.m_aufnahmeDatumDP, p.takendate)
+        GuiHelper.set_val(self.m_fluffytakenmonthCB, p.fluftakenmonth, self._fluffymonths)
+        GuiHelper.set_val(self.m_fluffytakenyearSPCTRL, p.fluftakenyear)
         self._display_document()
         self._fill_ibcols()
 
@@ -85,11 +101,18 @@ class EditPictureDialog(gg.geditPictureDialog):
         
         p = self._picture
         p.readableid = GuiHelper.get_val(self.m_kennummerTB)
+        p.picturegroup = GuiHelper.get_sqp_objval(self.m_groupCB, self._pictgroups)
+        if p.picturegroup is not None:
+            p.groupid = p.picturegroup._id
+        else:
+            p.groupid = None
         p.title = GuiHelper.get_val(self.m_titelTB)
         p.settledinformation = GuiHelper.get_val(self.m_beschreibungTB)
         p.scandate = GuiHelper.get_val(self.m_scanDatumDP)
         p.takendate = GuiHelper.get_val(self.m_aufnahmeDatumDP)
-        
+        p.fluftakenmonth = GuiHelper.get_val(self.m_fluffytakenmonthCB, self._fluffymonths)
+        p.fluftakenyear = GuiHelper.get_val(self.m_fluffytakenyearSPCTRL)
+
         return res
     
     def _scaleimagetomax(self, img : wx.Image, width : int, height : int):

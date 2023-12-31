@@ -20,7 +20,7 @@ class GroupsViewDialog(gg.gGroupsDialog):
 
     def _create_grlist_cols(self):
         self.m_groupsLCTRL.InsertColumn(0, "Gruppentyp")
-        self.m_groupsLCTRL.InsertColumn(1, "Bezeichnung")
+        self.m_groupsLCTRL.InsertColumn(1, "Bezeichnung", width=300)
         self.m_groupsLCTRL.InsertColumn(2, "Ordnungszahl")
 
     def showmodal(self):

@@ -552,7 +552,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 class geditPictureDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 606,794 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 737,798 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -568,7 +568,7 @@ class geditPictureDialog ( wx.Dialog ):
 		m_sdbSizer3.AddButton( self.m_sdbSizer3Cancel )
 		m_sdbSizer3.Realize();
 
-		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
+		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 4 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 		self.m_staticText13 = wx.StaticText( self, wx.ID_ANY, u"Kennummer:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText13.Wrap( -1 )
@@ -578,13 +578,22 @@ class geditPictureDialog ( wx.Dialog ):
 		self.m_kennummerTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		gbSizer7.Add( self.m_kennummerTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
+		self.m_staticText42 = wx.StaticText( self, wx.ID_ANY, u"Bildgruppe:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText42.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText42, wx.GBPosition( 0, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_groupCBChoices = []
+		self.m_groupCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_groupCBChoices, 0 )
+		gbSizer7.Add( self.m_groupCB, wx.GBPosition( 0, 3 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
 		self.m_staticText14 = wx.StaticText( self, wx.ID_ANY, u"Titel:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText14.Wrap( -1 )
 
 		gbSizer7.Add( self.m_staticText14, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_titelTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer7.Add( self.m_titelTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer7.Add( self.m_titelTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText15 = wx.StaticText( self, wx.ID_ANY, u"Aufnahmedatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText15.Wrap( -1 )
@@ -593,6 +602,23 @@ class geditPictureDialog ( wx.Dialog ):
 
 		self.m_aufnahmeDatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer7.Add( self.m_aufnahmeDatumDP, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText43 = wx.StaticText( self, wx.ID_ANY, u"oder", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText43.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText43, wx.GBPosition( 2, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		bSizer11 = wx.BoxSizer( wx.HORIZONTAL )
+
+		m_fluffytakenmonthCBChoices = []
+		self.m_fluffytakenmonthCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_fluffytakenmonthCBChoices, 0 )
+		bSizer11.Add( self.m_fluffytakenmonthCB, 0, wx.ALL, 5 )
+
+		self.m_fluffytakenyearSPCTRL = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 2100, 0 )
+		bSizer11.Add( self.m_fluffytakenyearSPCTRL, 0, wx.ALL, 5 )
+
+
+		gbSizer7.Add( bSizer11, wx.GBPosition( 2, 3 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
 
 		self.m_staticText16 = wx.StaticText( self, wx.ID_ANY, u"Scandatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText16.Wrap( -1 )
@@ -605,7 +631,7 @@ class geditPictureDialog ( wx.Dialog ):
 		gbSizer7.Add( self.m_staticText17, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_beschreibungTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE|wx.TE_RICH2 )
-		gbSizer7.Add( self.m_beschreibungTB, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer7.Add( self.m_beschreibungTB, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText18 = wx.StaticText( self, wx.ID_ANY, u"Informationen:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText18.Wrap( -1 )
@@ -613,7 +639,7 @@ class geditPictureDialog ( wx.Dialog ):
 		gbSizer7.Add( self.m_staticText18, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_zusatzinfoLCT = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
-		gbSizer7.Add( self.m_zusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer7.Add( self.m_zusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -644,7 +670,7 @@ class geditPictureDialog ( wx.Dialog ):
 		gbSizer7.Add( self.m_staticText181, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_bitmapPAN = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		gbSizer7.Add( self.m_bitmapPAN, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+		gbSizer7.Add( self.m_bitmapPAN, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 3 ), wx.EXPAND |wx.ALL, 5 )
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -674,6 +700,7 @@ class geditPictureDialog ( wx.Dialog ):
 
 
 		gbSizer7.AddGrowableCol( 1 )
+		gbSizer7.AddGrowableCol( 3 )
 		gbSizer7.AddGrowableRow( 4 )
 		gbSizer7.AddGrowableRow( 6 )
 		gbSizer7.AddGrowableRow( 7 )
@@ -735,10 +762,10 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_ApplyFilterBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+		self.m_applyFilterBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
-		self.m_ApplyFilterBU.SetBitmap( wx.Bitmap( u"ressources/Filled-Filter.png", wx.BITMAP_TYPE_ANY ) )
-		bSizer10.Add( self.m_ApplyFilterBU, 0, wx.ALL, 5 )
+		self.m_applyFilterBU.SetBitmap( wx.Bitmap( u"ressources/Filled-Filter.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_applyFilterBU, 0, wx.ALL, 5 )
 
 		self.m_addPictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
@@ -786,6 +813,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		# Connect Events
 		self.m_picturesLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editPicture )
+		self.m_applyFilterBU.Bind( wx.EVT_BUTTON, self.applyFilter )
 		self.m_addPictureBU.Bind( wx.EVT_BUTTON, self.addNewPicture )
 		self.m_editBU.Bind( wx.EVT_BUTTON, self.editPicture )
 		self.m_downloadPictureBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
@@ -797,6 +825,9 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 	# Virtual event handlers, override them in your derived class
 	def editPicture( self, event ):
+		event.Skip()
+
+	def applyFilter( self, event ):
 		event.Skip()
 
 	def addNewPicture( self, event ):
@@ -1157,6 +1188,7 @@ class gGroupsDialog ( wx.Dialog ):
 		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Gruppen", pos = wx.DefaultPosition, size = wx.Size( 762,530 ), style = wx.DEFAULT_DIALOG_STYLE )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
 
 		gbSizer13 = wx.GridBagSizer( 0, 0 )
 		gbSizer13.SetFlexibleDirection( wx.BOTH )
@@ -1167,7 +1199,7 @@ class gGroupsDialog ( wx.Dialog ):
 
 		gbSizer13.Add( self.m_staticText38, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_groupsLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		self.m_groupsLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
 		gbSizer13.Add( self.m_groupsLCTRL, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
@@ -1207,6 +1239,7 @@ class gGroupsDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.m_groupsLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.editGroup )
 		self.m_newGroupBU.Bind( wx.EVT_BUTTON, self.addNewGroup )
 		self.m_editGroupBU.Bind( wx.EVT_BUTTON, self.editGroup )
 		self.m_deleteGroupBU.Bind( wx.EVT_BUTTON, self.removeGroup )
@@ -1216,11 +1249,12 @@ class gGroupsDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def editGroup( self, event ):
+		event.Skip()
+
 	def addNewGroup( self, event ):
 		event.Skip()
 
-	def editGroup( self, event ):
-		event.Skip()
 
 	def removeGroup( self, event ):
 		event.Skip()
@@ -1236,6 +1270,7 @@ class gGroupEditDialog ( wx.Dialog ):
 		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Gruppe bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 401,187 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
 
 		gbSizer14 = wx.GridBagSizer( 0, 0 )
 		gbSizer14.SetFlexibleDirection( wx.BOTH )
@@ -1294,5 +1329,89 @@ class gGroupEditDialog ( wx.Dialog ):
 	# Virtual event handlers, override them in your derived class
 	def editok( self, event ):
 		event.Skip()
+
+
+###########################################################################
+## Class gPictureFilterDialog
+###########################################################################
+
+class gPictureFilterDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bildfilter", pos = wx.DefaultPosition, size = wx.Size( 559,213 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
+
+		gbSizer15 = wx.GridBagSizer( 0, 0 )
+		gbSizer15.SetFlexibleDirection( wx.BOTH )
+		gbSizer15.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer11 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer11OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer11.AddButton( self.m_sdbSizer11OK )
+		self.m_sdbSizer11Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer11.AddButton( self.m_sdbSizer11Cancel )
+		m_sdbSizer11.Realize();
+
+		gbSizer15.Add( m_sdbSizer11, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 4 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText44 = wx.StaticText( self, wx.ID_ANY, u"Kennummer:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText44.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText44, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_kennummerTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer15.Add( self.m_kennummerTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText45 = wx.StaticText( self, wx.ID_ANY, u"Bildtitel:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText45.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText45, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_titelTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer15.Add( self.m_titelTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText46 = wx.StaticText( self, wx.ID_ANY, u"Bildgruppe:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText46.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText46, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_groupCBChoices = []
+		self.m_groupCB = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, m_groupCBChoices, 0 )
+		gbSizer15.Add( self.m_groupCB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText47 = wx.StaticText( self, wx.ID_ANY, u"Aufgenommen am:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText47.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText47, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_dayTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_dayTB.SetHelpText( u"Geben si ehier den Tag des Aufnahmedatums ein oder lassen sie das Feld leer wenn das Datum nicht so exakt bekannt ist" )
+
+		gbSizer15.Add( self.m_dayTB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_monthTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_monthTB.SetHelpText( u"Geben sie hier den Monat des Aufnahmedatums ein oder lassen sie das Feld leer wenn der Monat nicht exakt bekannt ist." )
+
+		gbSizer15.Add( self.m_monthTB, wx.GBPosition( 3, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_yearTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_yearTB.SetHelpText( u"geben sie hier das Jahr des Aufnahmedatums ein oder lassen sie das Feld leer wenn nicht nach derm Aufnahmedatum gescuht werden soll." )
+
+		gbSizer15.Add( self.m_yearTB, wx.GBPosition( 3, 3 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+
+		gbSizer15.AddGrowableCol( 1 )
+		gbSizer15.AddGrowableCol( 2 )
+		gbSizer15.AddGrowableCol( 3 )
+
+		self.SetSizer( gbSizer15 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
 
 
