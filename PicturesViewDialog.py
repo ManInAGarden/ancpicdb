@@ -11,13 +11,53 @@ from GuiHelper import GuiHelper
 from DocArchiver import DocArchiver
 
 class FilterData():
-    def __init__(self):
+    def __init__(self, fact : sqp.SQFactory):
         self.kennummer = None
         self.title = None
         self.daytaken = None
         self.monthtaken = None
         self.yeartaken = None
         self.group = None
+        self._fact = fact
+
+    def is_defined(self, arg):
+        return arg is not None and len(arg) > 0
+    
+    def is_strict(self, arg):
+        return arg is not None and len(arg) > 0 and not '*' in arg
+    
+    def add2exp(self, exp, exppart):
+        if exp is None: 
+            return exppart
+        else:
+            exp = (exp) & (exppart)
+
+    def get_query(self) -> sqp.SQQuery:
+        """create and return the query for the current filter"""
+        q = sqp.SQQuery(self._fact, Picture)
+
+        # when a readable id is searche dwithout wildcard (*) any other search is useless 
+        # and will not be taken into account
+        if self.is_strict(self.kennummer):
+            return q.where(Picture.ReadableId==self.kennummer)
+        
+        exp = None
+        if self.is_defined(self.title):
+            if self.is_strict(self.title):
+                exp = self.add2exp(exp, Picture.Title==self.title)
+            else:
+                exp = self.add2exp(exp, sqp.IsIn())
+
+        if self.is_strict(self.yeartaken):
+            exp = self.add2exp(exp, Picture.FlufTakenYear==self.yeartaken)
+        
+        if self.is_strict(self.monthtaken):
+            exp = self.add2exp(exp, Picture.FlufTakenMonth==self.monthtaken)
+
+        return q.where(exp)
+            
+        
+
 
 class PicturesViewDialog(gg.gPicturesViewDialog):
     @property
@@ -33,7 +73,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         self._fact = fact
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration
-        self._filter = FilterData()
+        self._filter = FilterData(fact) #current active filter for the data
         self.logger = parent.logger
         self.machlabel = self._configuration.get_value("gui", "machlabel")
         if self.machlabel is None:
@@ -44,16 +84,19 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
         return self.ShowModal()
     
-    def _filldialog(self):
-        """fill dialog with all the pictures"""
-        q = sqp.SQQuery(self._fact, Picture).order_by(sqp.OrderInfo(Picture.ScanDate, sqp.OrderDirection.DESCENDING))
-        self._pictures = list(q)
+    def _fill_piclist(self):
         piclstrs = []
-
+        self.m_picturesLB.Clear()
         for pic in self._pictures:
             piclstrs.append(pic.__str__())
 
         self.m_picturesLB.AppendItems(piclstrs)
+
+    def _filldialog(self):
+        """fill dialog with all the pictures"""
+        q = sqp.SQQuery(self._fact, Picture).order_by(sqp.OrderInfo(Picture.ScanDate, sqp.OrderDirection.DESCENDING))
+        self._pictures = list(q)
+        self._fill_piclist()
 
     def _create_readid(self):
         dt = datetime.now()
@@ -129,4 +172,11 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         if res == wx.ID_CANCEL:
             return
             
+        self._filter = edifiltdial.filter
         
+        #requery the picture data
+        q = self._filter.get_query()
+
+        self._pictures = q.as_list()
+
+        self._fill_piclist()

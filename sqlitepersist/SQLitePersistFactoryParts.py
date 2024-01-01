@@ -499,7 +499,7 @@ class SQFactory():
             return self._do_select(cls, findpar, orderlist, limit)
         elif type(findpar) is dict:
             return self._do_select(cls, findpar,  orderlist, limit)
-        elif issubclass(type(findpar), PBase): #we have an object which shuld be read agoin from the db
+        elif issubclass(type(findpar), PBase): #we have an object which shall be read agoin from the db
             if findpar._id is None:
                 raise Exception("SqFactory.find() with an Mpbase derived instance only works when this instance contains an _id")
 
@@ -517,7 +517,7 @@ class SQFactory():
         elif od is OrderDirection.DESCENDING:
             return " DESC"
         else:
-            raise Exception("unknpwn order direction!")
+            raise Exception("unknown order direction!")
 
     def _do_select(self, cls, findpar, orderlist, limit):
         stmt = "SELECT * FROM {0}".format(cls._getclstablename())

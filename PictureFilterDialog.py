@@ -1,4 +1,4 @@
-import datetime
+import copy
 from dateutil.relativedelta import relativedelta
 import wx
 import wx.adv
@@ -10,10 +10,14 @@ from GuiHelper import GuiHelper
 
 class PictureFilterDialog(gg.gPictureFilterDialog):
     
+    @property
+    def filter(self):
+        return self._filter
+    
     def __init__(self, parent, fact, dta):
         super().__init__(parent)
         self._fact = fact
-        self._filter = dta
+        self._filter = copy.copy(dta) #calling dialog keeps an independent version of this, so we need a copy
 
     def _fill_dialog(self):
         f = self._filter
@@ -24,7 +28,12 @@ class PictureFilterDialog(gg.gPictureFilterDialog):
         GuiHelper.set_val(self.m_yearTB, f.yeartaken)
 
     def _fill_filterdata(self):
-        pass
+        f = self._filter
+        f.title = GuiHelper.get_val(self.m_titelTB)
+        f.kennummer = GuiHelper.get_val(self.m_kennummerTB)
+        f.daytaken = GuiHelper.get_val(self.m_dayTB)
+        f.monthtaken = GuiHelper.get_val(self.m_monthTB)
+        f.yeartaken = GuiHelper.get_val(self.m_yearTB)
 
     def showmodal(self):
         self._fill_dialog()
