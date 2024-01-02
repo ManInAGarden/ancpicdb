@@ -565,6 +565,8 @@ class SQFactory():
             "$lte":"<=",
             "$nin": "NOT IN",
             "$in": "IN",
+            "$islike" : "LIKE",
+            "$notislike" : "NOT LIKE",
             "$and" : "AND",
             "$or": "OR"}
         return mapping[ops]

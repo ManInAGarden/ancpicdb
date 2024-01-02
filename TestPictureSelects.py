@@ -71,3 +71,21 @@ class TestPictureSelects(TestBase):
         assert len(pics_r)==1
         pic_r = pics_r[0]
         assert pic_r.fluftakenmonth.Code=="MONTH10" and pic_r.fluftakenyear==1963
+
+    def test_likequery01(self):
+        titles = ["AddLikeQuerPic01", "AddLikeQuerPic02", "AddLikeQuerPic03", "AddNotQueryPic04"]
+        monthes = ["MONTH09", "MONTH10", "MONTH11", "MONTH12"]
+        tm = 0
+        for tit in titles:
+            moca = self.Spf.getcat(FluffyMonthCat, monthes[tm])
+            pic = self.Mck.create_picture(title=tit, scandate=dt.datetime.now(),
+                                          yeartaken=1963,
+                                          monthtaken=moca)
+            tm += 1
+            self.Spf.flush(pic)
+
+        pics_r = sqp.SQQuery(self.Spf, Picture).where(sqp.IsLike(Picture.Title, "%Like%")).as_list()
+        assert len(pics_r) == 3
+
+        pics_r = sqp.SQQuery(self.Spf, Picture).where(sqp.NotIsLike(Picture.Title, "%Like%")).as_list()
+        assert len(pics_r) == 1

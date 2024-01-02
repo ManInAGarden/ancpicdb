@@ -17,7 +17,7 @@ class FilterData():
         self.daytaken = None
         self.monthtaken = None
         self.yeartaken = None
-        self.group = None
+        self.gruppe = None
         self._fact = fact
 
     def is_defined(self, arg):
@@ -30,31 +30,93 @@ class FilterData():
         if exp is None: 
             return exppart
         else:
-            exp = (exp) & (exppart)
+            return (exp) & (exppart)
 
+        
+    def add2exps(self, exps : str, adds : str) -> str:
+        if exps is None:
+            return adds
+        else:
+            return exps + " und " + adds
+        
+    def _get_monthcode(self, ms : int) -> str:
+        if ms is None:
+            return "NOMONTH"
+        
+        if ms > 0 and ms < 12:
+            return "MONTH{:02d}".format(ms)
+        
     def get_query(self) -> sqp.SQQuery:
         """create and return the query for the current filter"""
         q = sqp.SQQuery(self._fact, Picture)
 
-        # when a readable id is searche dwithout wildcard (*) any other search is useless 
+        # when a readable id is searched without wildcard (*) any other search is useless 
         # and will not be taken into account
         if self.is_strict(self.kennummer):
             return q.where(Picture.ReadableId==self.kennummer)
         
         exp = None
+        if self.is_defined(self.kennummer): #kennummer contains an asterix
+            exp = self.add2exp(exp, sqp.IsLike(Picture.ReadableId, self.kennummer.replace("*", "%")))
+        
         if self.is_defined(self.title):
             if self.is_strict(self.title):
                 exp = self.add2exp(exp, Picture.Title==self.title)
             else:
-                exp = self.add2exp(exp, sqp.IsIn())
+                exp = self.add2exp(exp, sqp.IsLike(Picture.Title, self.title.replace("*", "%")))
 
-        if self.is_strict(self.yeartaken):
-            exp = self.add2exp(exp, Picture.FlufTakenYear==self.yeartaken)
-        
-        if self.is_strict(self.monthtaken):
-            exp = self.add2exp(exp, Picture.FlufTakenMonth==self.monthtaken)
+        if self.gruppe is not None:
+            exp = self.add2exp(exp, Picture.GroupId==self.gruppe._id)
+
+        if self.is_strict(self.yeartaken) and self.is_strict(self.monthtaken) and self.is_strict(self.daytaken):
+            yr = int(self.yeartaken)
+            m = int(self.monthtaken)
+            d = int(self.daytaken)
+            exaktdt = datetime(yr, m, d)
+            exp = self.add2exp(exp, Picture.TakenDate==exaktdt)
+        else:
+            if self.is_strict(self.yeartaken):
+                exp = self.add2exp(exp, Picture.FlufTakenYear==self.yeartaken)
+            
+            if self.is_strict(self.monthtaken):
+                m = int(self.monthtaken)
+                mc = self._get_monthcode(m)
+                exp = self.add2exp(exp, Picture.FlufTakenMonth==mc)
 
         return q.where(exp)
+    
+    def get_query_info(self) -> str:
+        if self.is_strict(self.kennummer):
+            return "Kennung ist '{}'".format(self.kennummer)
+        
+        exps = None
+
+        if self.is_defined(self.kennummer):
+            self.add2exps(exps, "Kennung gleich '{}'".format(self.kennummer))
+
+        if self.is_defined(self.title):
+            if self.is_strict(self.title):
+                exps = self.add2exps(exps, "Titel ist '{}'".format(self.title))
+            else:
+                exps = self.add2exps(exps, "Titel gleicht '{}'".format(self.title))
+
+        if self.gruppe is not None:
+            exps = self.add2exps(exps, "Gruppe ist '{}'".format(self.gruppe.name))
+
+        if self.is_strict(self.yeartaken) and self.is_strict(self.monthtaken) and self.is_strict(self.daytaken):
+            yr = int(self.yeartaken)
+            m = int(self.monthtaken)
+            d = int(self.daytaken)
+            exaktdt = datetime(yr, m, d)
+            exps = self.add2exps(exps, "Aufnahmedatum ist {:%d.%m.%Y}".format(exaktdt))
+        else:
+            if self.is_strict(self.yeartaken):
+                exps = self.add2exps(exps, "aufgenommen im Jahr {}".format(self.yeartaken))
+            
+            if self.is_strict(self.monthtaken):
+                exps = self.add2exps(exps, "aufgenommen im Monat {}".format(self.monthtaken))
+                                     
+        return exps
             
         
 
@@ -91,6 +153,8 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
             piclstrs.append(pic.__str__())
 
         self.m_picturesLB.AppendItems(piclstrs)
+        
+        GuiHelper.set_val(self.m_filterInfoTB, self._filter.get_query_info())
 
     def _filldialog(self):
         """fill dialog with all the pictures"""

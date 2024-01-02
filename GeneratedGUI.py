@@ -756,9 +756,14 @@ class gPicturesViewDialog ( wx.Dialog ):
 		gbSizer6.SetFlexibleDirection( wx.BOTH )
 		gbSizer6.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
+		self.m_staticText11 = wx.StaticText( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText11.Wrap( -1 )
+
+		gbSizer6.Add( self.m_staticText11, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
 		m_picturesLBChoices = []
 		self.m_picturesLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_picturesLBChoices, wx.LB_SINGLE )
-		gbSizer6.Add( self.m_picturesLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer6.Add( self.m_picturesLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -788,22 +793,25 @@ class gPicturesViewDialog ( wx.Dialog ):
 		bSizer10.Add( self.deletePictureBU, 0, wx.ALL, 5 )
 
 
-		gbSizer6.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
-
-		self.m_staticText11 = wx.StaticText( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText11.Wrap( -1 )
-
-		gbSizer6.Add( self.m_staticText11, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer6.Add( bSizer10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		m_sdbSizer2 = wx.StdDialogButtonSizer()
 		self.m_sdbSizer2OK = wx.Button( self, wx.ID_OK )
 		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
 		m_sdbSizer2.Realize();
 
-		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText49 = wx.StaticText( self, wx.ID_ANY, u"Filter:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText49.Wrap( -1 )
+
+		gbSizer6.Add( self.m_staticText49, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_filterInfoTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer6.Add( self.m_filterInfoTB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 
-		gbSizer6.AddGrowableCol( 0 )
+		gbSizer6.AddGrowableCol( 1 )
 		gbSizer6.AddGrowableRow( 1 )
 
 		self.SetSizer( gbSizer6 )
@@ -1387,17 +1395,15 @@ class gPictureFilterDialog ( wx.Dialog ):
 		gbSizer15.Add( self.m_staticText47, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_dayTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_dayTB.SetHelpText( u"Geben si ehier den Tag des Aufnahmedatums ein oder lassen sie das Feld leer wenn das Datum nicht so exakt bekannt ist" )
+		self.m_dayTB.SetToolTip( u"Geben si ehier den Tag des Aufnahmedatums ein oder lassen sie das Feld leer wenn das Datum nicht so exakt bekannt ist" )
 
 		gbSizer15.Add( self.m_dayTB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_monthTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_monthTB.SetHelpText( u"Geben sie hier den Monat des Aufnahmedatums ein oder lassen sie das Feld leer wenn der Monat nicht exakt bekannt ist." )
-
 		gbSizer15.Add( self.m_monthTB, wx.GBPosition( 3, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_yearTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_yearTB.SetHelpText( u"geben sie hier das Jahr des Aufnahmedatums ein oder lassen sie das Feld leer wenn nicht nach derm Aufnahmedatum gescuht werden soll." )
+		self.m_yearTB.SetToolTip( u"geben sie hier das Jahr des Aufnahmedatums ein oder lassen sie das Feld leer wenn nicht nach derm Aufnahmedatum gescuht werden soll." )
 
 		gbSizer15.Add( self.m_yearTB, wx.GBPosition( 3, 3 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 

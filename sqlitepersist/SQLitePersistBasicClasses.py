@@ -24,9 +24,13 @@ class OperationStackElement(object):
         self._right = right
         self._op = op
 
+    #Overrides bitwise and. Unfortunately logical and cannot be overridden
+    #So use & instead of logical and in query expressions when you need a logical and
     def __and__(self, other):
         return OperationStackElement(self, "&", other)
 
+    #Overrides bitwise or. Unfortunately logical or cannot be overridden
+    #so use | in query expressions instead of or
     def __or__(self, other):
         return OperationStackElement(self, "|", other)
 
@@ -249,12 +253,16 @@ class SpecialWhereInfo(object):
         self._infotype = infotype
         self._infodata = infodata
 
+    #Overrides the bitwise and ('&') to make it useabel as logical and in query expressions
     def __and__(self, other):
         return OperationStackElement(self, "&", other)
-
+    
+    #same as with bitwise and. Here it's or instead
     def __or__(self, other):
         return OperationStackElement(self, "|", other)
 
+    #overrides bitwise inversion instead of logical not. 
+    #So ~ must be used instead of not in query expressions
     def __invert__(self):
         return OperationStackElement(None, "~", self)
 
@@ -275,9 +283,19 @@ class NotIsIn(SpecialWhereInfo):
     def __init__(self, field, infodata):
         super().__init__(field, infotype="NOTISIN", infodata=infodata)
 
-class Regex(SpecialWhereInfo):
+#not available with sqlite relational datbase
+#class Regex(SpecialWhereInfo):
+#    def __init__(self, field, infodata):
+#        super().__init__(field, infotype="REGEX", infodata=infodata)
+
+class IsLike(SpecialWhereInfo):
     def __init__(self, field, infodata):
-        super().__init__(field, infotype="REGEX", infodata=infodata)
+        super().__init__(field, infotype="ISLIKE", infodata=infodata)
+
+class NotIsLike(SpecialWhereInfo):
+    def __init__(self, field, infodata):
+        super().__init__(field, infotype="NOTISLIKE", infodata=infodata)
+
 
 # special data declarations
 
