@@ -200,7 +200,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         self.refresh_dash()
 
-    def refresh_dash(self):
+    def refresh_dash(self, prevsel : Person = None):
         """do a complete refresh of the main GUI with the list of persons and the dependent list of documnents and oictures"""
 
         self._persons = self.get_all_persons()
@@ -208,13 +208,18 @@ class AncPicDbMain(gg.AncPicDBMain):
             
         if len(self._persons) > 0:
             ps = []
+            ct = 0
+            sl = wx.NOT_FOUND
             for p in self._persons:
                 ps.append(p.__str__())
+                if prevsel is not None and prevsel._id == p._id:
+                    sl = ct
+                ct += 1
         
             self.m_personsLB.InsertItems(ps, 0)
-            self.m_personsLB.SetSelection(wx.NOT_FOUND)
-            
-        #self.m_personsLB.Refresh()
+            self.m_personsLB.SetSelection(sl)
+            if sl != wx.NOT_FOUND:
+                self.refresh_dash_forp(sl)
         
 
     def get_all_persons(self):
@@ -321,7 +326,7 @@ class AncPicDbMain(gg.AncPicDBMain):
             return
         edp = pedial.flushnget()
 
-        self.refresh_dash()
+        self.refresh_dash(edp)
         
 
     def deletePerson(self, event):
