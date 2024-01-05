@@ -5,6 +5,7 @@ import wx.adv
 import GeneratedGUI as gg
 from PersistClasses import Person, SexCat
 import sqlitepersist as sqp
+from GuiHelper import GuiHelper
 
 class PersonEditDialog(gg.gPersonEditDialog):
     def __init__(self, parent, fact, dta : Person):
@@ -18,39 +19,39 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
         return self.ShowModal()
     
-    def _set_val(self, ctrl, val):
-        """set value if not none"""
+    # def _set_val(self, ctrl, val):
+    #     """set value if not none"""
 
-        ct = type(ctrl)
-        if ct is wx.TextCtrl:
-            if val is not None:
-                ctrl.SetValue(val)
-            else:
-                ctrl.SetValue("")
-        elif ct is wx.adv.DatePickerCtrl:
-            if val is not None:
-                ctrl.SetValue(wx.pydate2wxdate(val))
-            else:
-                ctrl.SetValue(wx.InvalidDateTime)
-        else:
-            raise Exception("Unknown control type in _set_val")
+    #     ct = type(ctrl)
+    #     if ct is wx.TextCtrl:
+    #         if val is not None:
+    #             ctrl.SetValue(val)
+    #         else:
+    #             ctrl.SetValue("")
+    #     elif ct is wx.adv.DatePickerCtrl:
+    #         if val is not None:
+    #             ctrl.SetValue(wx.pydate2wxdate(val))
+    #         else:
+    #             ctrl.SetValue(wx.InvalidDateTime)
+    #     else:
+    #         raise Exception("Unknown control type in _set_val")
         
-    def _get_val(self, ctrl):
-        ctt = type(ctrl)
-        if ctt is wx.adv.DatePickerCtrl:
-            val = ctrl.GetValue()
-            if val is wx.InvalidDateTime:
-                return None
-            else:
-                return wx.wxdate2pydate(val)
-        elif ctt is wx.TextCtrl:
-            val = ctrl.GetValue()
-            if val is None or len(val)==0:
-                return None
-            else:
-                return val
-        else:
-            raise Exception("Unknown type {} in _get_val()".format(ctt))
+    # def _get_val(self, ctrl):
+    #     ctt = type(ctrl)
+    #     if ctt is wx.adv.DatePickerCtrl:
+    #         val = ctrl.GetValue()
+    #         if val is wx.InvalidDateTime:
+    #             return None
+    #         else:
+    #             return wx.wxdate2pydate(val)
+    #     elif ctt is wx.TextCtrl:
+    #         val = ctrl.GetValue()
+    #         if val is None or len(val)==0:
+    #             return None
+    #         else:
+    #             return val
+    #     else:
+    #         raise Exception("Unknown type {} in _get_val()".format(ctt))
 
     def _get_strlist(self, itera):
         answ = []
@@ -102,12 +103,13 @@ class PersonEditDialog(gg.gPersonEditDialog):
         return perslist + [mustpers]
             
     def _filldialog(self, p):
-        self._set_val(self.m_NameTB, p.name)
-        self._set_val(self.m_vornameTB, p.firstname)
-        self._set_val(self.m_geburtsnameTB, p.nameofbirth)
-        self._set_val(self.m_infotextTB, p.infotext)
-        self._set_val(self.m_geburtsdatumDP, p.birthdate)
-        self._set_val(self.m_todesdatumDP, p.deathdate)
+        GuiHelper.set_val(self.m_NameTB, p.name)
+        GuiHelper.set_val(self.m_vornameTB, p.firstname)
+        GuiHelper.set_val(self.m_rufnameTB, p.rufname)
+        GuiHelper.set_val(self.m_geburtsnameTB, p.nameofbirth)
+        GuiHelper.set_val(self.m_infotextTB, p.infotext)
+        GuiHelper.set_val(self.m_geburtsdatumDP, p.birthdate)
+        GuiHelper.set_val(self.m_todesdatumDP, p.deathdate)
         
         #now fill mother and father
         #manipulate combo-boxes so that only older persons can be selected and not the person himself can be selected
@@ -149,22 +151,24 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
 
     def flushnget(self):
-        self._person.firstname = self._get_val(self.m_vornameTB)
-        self._person.name = self._get_val(self.m_NameTB)
-        self._person.birthdate = self._get_val(self.m_geburtsdatumDP)
-        self._person.deathdate = self._get_val(self.m_todesdatumDP)
-        self._person.infotext = self._get_val(self.m_infotextTB)
-        self._person.nameofbirth = self._get_val(self.m_geburtsnameTB)
-
-        biosexp = self.m_bioSexCB.GetSelection()
-        if biosexp is not wx.NOT_FOUND:
-            self._person.biosex = self._biosexes[biosexp]
+        self._person.firstname = GuiHelper.get_val(self.m_vornameTB)
+        self._person.name = GuiHelper.get_val(self.m_NameTB)
+        self._person.rufname = GuiHelper.get_val(self.m_rufnameTB)
+        self._person.birthdate = GuiHelper.get_val(self.m_geburtsdatumDP)
+        self._person.deathdate = GuiHelper.get_val(self.m_todesdatumDP)
+        self._person.infotext = GuiHelper.get_val(self.m_infotextTB)
+        self._person.nameofbirth = GuiHelper.get_val(self.m_geburtsnameTB)
+        self._person.biosex = GuiHelper.get_val(self.m_bioSexCB, self._biosexes)
+        
+        # biosexp = self.m_bioSexCB.GetSelection()
+        # if biosexp is not wx.NOT_FOUND:
+        #     self._person.biosex = self._biosexes[biosexp]
 
         if len(self._pmothers)>0:
             motherp = self.m_motherCB.GetSelection()
             if motherp is not wx.NOT_FOUND:
                 self._person.motherid = self._pmothers[motherp]._id
-        
+
         if len(self._pfathers)>0:
             fatherp = self.m_fatherCB.GetSelection()
             if fatherp is not wx.NOT_FOUND:

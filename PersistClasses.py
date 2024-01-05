@@ -112,6 +112,7 @@ class PersonPictureInter(sqp.PBase):
 class Person(sqp.PBase):
      Name = sqp.String()
      FirstName = sqp.String()
+     Rufname = sqp.String()
      BioSex = sqp.Catalog(catalogtype=SexCat)
      NameOfBirth = sqp.String()
      Birthdate = sqp.DateTime()
@@ -125,6 +126,9 @@ class Person(sqp.PBase):
 
      def __str__(self):
           answ = "{0} {1}".format(self.firstname, self.name)
+
+          if self.rufname is not None:
+               answ += " ({})".format(self.rufname)
 
           if self.birthdate is not None:
                answ += ": *{:%d.%m.%Y}".format(self.birthdate)
