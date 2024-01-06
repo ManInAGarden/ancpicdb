@@ -17,6 +17,8 @@
             {"type": "DOC_TYPE", "code":"DANKGEB", "value":"Danksagung Geburtstag", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"GEBANZ", "value":"Geburtsanzeige", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"WEHRPASS", "value":"Wehrpass", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"ZEITAUS", "value":"Zeitungsausschnitt", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"BRIEF", "value":"Brief", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"NSP", "value":"nicht spez.", "langcode":"DEU"},
             {"type": "PICT_QUAL", "code":"BEST", "value":"hervorragend", "langcode":"DEU"},
             {"type": "PICT_QUAL", "code":"AVG", "value":"mittelmäßig", "langcode":"DEU"},
