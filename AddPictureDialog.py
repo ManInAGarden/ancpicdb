@@ -5,6 +5,15 @@ from PersistClasses import Person, Picture
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 
+class PictureSelectionFilter:
+    def __init__(self):
+        self.title = None
+        self.datetaken = None
+        self.datescanned = None
+        self.kennung = None
+        self.datetakenop = None
+        self.datescannedop = None
+
 class AddPictureDialog(gg.gAddPictureDialog):
     
     @property
@@ -37,14 +46,67 @@ class AddPictureDialog(gg.gAddPictureDialog):
         
         return "{:%d.%m.%Y}".format(dt)
 
+   
+    def _add2exp(self, exp, newpart):
+        if exp is None: 
+            return newpart
+
+        return (exp) & (newpart)
+                
+    def _get_current_filter(self) -> PictureSelectionFilter:
+        opl = ["=", ">", "<"]
+        answ = PictureSelectionFilter()
+        answ.title = GuiHelper.get_val(self.m_titleTB)
+        answ.kennung = GuiHelper.get_val(self.m_kennungTB)
+        answ.datetaken = GuiHelper.get_val(self.m_dateTakenDP)
+        answ.datetakenop = GuiHelper.get_val(self.m_operatorTakenCB, opl)
+        answ.datescanned = GuiHelper.get_val(self.m_scanDateDP)
+        answ.datescannedop = GuiHelper.get_val(self.m_operatorScannedCB, opl)
+
+        return answ
+
+
+    def _get_current_expr(self, pf : PictureSelectionFilter):
+        answ = None
+        if is_strict(pf.kennung):
+            answ = Picture.ReadableId == pf.kennung
+            return answ
+        elif is_def(pf.kennung):
+            answ = sqp.IsLike(Picture.ReadableId, pf.kennung.replace("*", "%"))
+
+        if is_strict(pf.title):
+            answ = self._add2exp(answ, Picture.Title==pf.title)
+        elif is_def(pf.title):
+            answ = self._add2exp(answ, sqp.IsLike(Picture.Title, pf.title.replace("*", "%")))
+
+        if pf.datetaken is not None:
+            if pf.datetakenop == "=":
+                answ = self._add2exp(answ, Picture.TakenDate == pf.datetaken)
+            elif pf.datetakenop == ">":
+                answ = self._add2exp(answ, Picture.TakenDate > pf.datetaken)
+            elif pf.datetakenop == "<":
+                answ = self._add2exp(answ, Picture.TakenDate < pf.datetaken)
+
+        if pf.datescanned is not None:
+            if pf.datescannedop == "=":
+                answ = self._add2exp(answ, Picture.ScanDate == pf.datescanned)
+            elif pf.datescannedop == ">":
+                answ = self._add2exp(answ, Picture.ScanDate > pf.datescanned)
+            elif pf.datescannedop == "<":
+                answ = self._add2exp(answ, Picture.ScanDate < pf.datescanned)
+
+
+        return answ
+    
     def _fill_dialog(self):
         #find all those pictures that have not been connected to the current person
-
-        
-        q = sqp.SQQuery(self._fact, Picture).order_by(sqp.OrderInfo(Picture.Created, sqp.OrderDirection.DESCENDING))
+        f = self._get_current_filter()
+        exp = self._get_current_expr(f)
+        q = sqp.SQQuery(self._fact, Picture).where(exp).order_by(sqp.OrderInfo(Picture.Created, sqp.OrderDirection.DESCENDING))
 
         ct = 0
         self._picdata = []
+        self.m_picturesLCTRL.DeleteAllItems()
         for ppi in q:
             if ct >= 100:
                 break
@@ -76,3 +138,16 @@ class AddPictureDialog(gg.gAddPictureDialog):
             selidx = self.m_picturesLCTRL.GetNextSelected(selidx)
 
         return res
+    
+    def applyFilter(self, event):
+        self._fill_dialog()
+
+#module defs
+def is_def(val : str) -> bool:
+    return val is not None and len(val) > 0
+
+def is_strict(val : str) -> bool:
+    if not is_def(val):
+        return False
+    
+    return not "*" in val

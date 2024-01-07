@@ -865,7 +865,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		gbSizer2.SetFlexibleDirection( wx.BOTH )
 		gbSizer2.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-		self.m_staticText8 = wx.StaticText( self, wx.ID_ANY, u"Vorname/Rufname:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText8 = wx.StaticText( self, wx.ID_ANY, u"Vorname/genannt:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText8.Wrap( -1 )
 
 		gbSizer2.Add( self.m_staticText8, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
@@ -1012,9 +1012,9 @@ class gAddPictureDialog ( wx.Dialog ):
 
 		gbSizer8.Add( self.m_staticText20, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		m_operatorCBChoices = [ u"=", u">", u"<" ]
-		self.m_operatorCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_operatorCBChoices, 0 )
-		gbSizer8.Add( self.m_operatorCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		m_operatorTakenCBChoices = [ u"=", u">", u"<" ]
+		self.m_operatorTakenCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_operatorTakenCBChoices, 0 )
+		gbSizer8.Add( self.m_operatorTakenCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_dateTakenDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer8.Add( self.m_dateTakenDP, wx.GBPosition( 1, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
@@ -1024,9 +1024,9 @@ class gAddPictureDialog ( wx.Dialog ):
 
 		gbSizer8.Add( self.m_staticText21, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		m_comboBox5Choices = [ u"=", u">", u"<" ]
-		self.m_comboBox5 = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_comboBox5Choices, 0 )
-		gbSizer8.Add( self.m_comboBox5, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		m_operatorScannedCBChoices = [ u"=", u">", u"<" ]
+		self.m_operatorScannedCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_operatorScannedCBChoices, 0 )
+		gbSizer8.Add( self.m_operatorScannedCB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_scanDateDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer8.Add( self.m_scanDateDP, wx.GBPosition( 2, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
@@ -1048,8 +1048,16 @@ class gAddPictureDialog ( wx.Dialog ):
 
 		self.Centre( wx.BOTH )
 
+		# Connect Events
+		self.m_button21.Bind( wx.EVT_BUTTON, self.applyFilter )
+
 	def __del__( self ):
 		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def applyFilter( self, event ):
+		event.Skip()
 
 
 ###########################################################################
