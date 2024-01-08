@@ -247,6 +247,10 @@ class Catalog(BaseVarType):
         return self._catalogtype
 
 # classes for queries
+class AllowedNone(object):
+    """class to handle allowed none arguments"""
+    pass 
+
 class SpecialWhereInfo(object):
     def __init__(self, field, infotype, infodata):
         self._field = field
@@ -295,6 +299,14 @@ class IsLike(SpecialWhereInfo):
 class NotIsLike(SpecialWhereInfo):
     def __init__(self, field, infodata):
         super().__init__(field, infotype="NOTISLIKE", infodata=infodata)
+
+class IsNone(SpecialWhereInfo):
+    def __init__(self, field):
+        super().__init__(field, infotype="ISNONE", infodata=AllowedNone())
+
+class IsNotNone(SpecialWhereInfo):
+    def __init__(self, field):
+        super().__init__(field, infotype="ISNOTNONE", infodata=AllowedNone())
 
 
 # special data declarations

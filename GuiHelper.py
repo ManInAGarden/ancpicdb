@@ -56,6 +56,15 @@ class GuiHelper:
         wx.MessageBox(message.format(*args))
 
     @classmethod
+    def show_message(cls, message, *args):
+        logger = logging.getLogger("mainprog")
+        if logger is not None:
+            logformstr = cls._get_loggerformstr(message)
+            logger.info(logformstr, *args)
+
+        wx.MessageBox(message.format(*args))
+
+    @classmethod
     def _get_loggerformstr(cls, msg):
         return msg.replace("{}", "%s")
     

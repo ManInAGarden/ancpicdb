@@ -3,7 +3,7 @@ from dateutil.relativedelta import relativedelta
 import wx
 import wx.adv
 import GeneratedGUI as gg
-from PersistClasses import Person, SexCat
+from PersistClasses import Person, SexCat, FluffyMonthCat
 import sqlitepersist as sqp
 from GuiHelper import GuiHelper
 
@@ -12,6 +12,16 @@ class PersonEditDialog(gg.gPersonEditDialog):
         super().__init__(parent)
         self._fact = fact
         self._person = dta
+        self._init_cats()
+
+    def _init_cats(self):
+        #fluffymonth combo (new way of initializing)
+        q = sqp.SQQuery(self._fact, FluffyMonthCat).where(FluffyMonthCat.LangCode=="DEU").order_by(FluffyMonthCat.Code)
+        self._flufmonths = q.as_list()
+
+        #biosexes
+        q = sqp.SQQuery(self._fact, SexCat).where(SexCat.LangCode=="DEU").order_by(SexCat.Value)
+        self._biosexes = list(q)
 
     def showmodal(self):
         if self._person != None:
@@ -19,40 +29,7 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
         return self.ShowModal()
     
-    # def _set_val(self, ctrl, val):
-    #     """set value if not none"""
-
-    #     ct = type(ctrl)
-    #     if ct is wx.TextCtrl:
-    #         if val is not None:
-    #             ctrl.SetValue(val)
-    #         else:
-    #             ctrl.SetValue("")
-    #     elif ct is wx.adv.DatePickerCtrl:
-    #         if val is not None:
-    #             ctrl.SetValue(wx.pydate2wxdate(val))
-    #         else:
-    #             ctrl.SetValue(wx.InvalidDateTime)
-    #     else:
-    #         raise Exception("Unknown control type in _set_val")
-        
-    # def _get_val(self, ctrl):
-    #     ctt = type(ctrl)
-    #     if ctt is wx.adv.DatePickerCtrl:
-    #         val = ctrl.GetValue()
-    #         if val is wx.InvalidDateTime:
-    #             return None
-    #         else:
-    #             return wx.wxdate2pydate(val)
-    #     elif ctt is wx.TextCtrl:
-    #         val = ctrl.GetValue()
-    #         if val is None or len(val)==0:
-    #             return None
-    #         else:
-    #             return val
-    #     else:
-    #         raise Exception("Unknown type {} in _get_val()".format(ctt))
-
+    
     def _get_strlist(self, itera):
         answ = []
         for p in itera:
@@ -101,7 +78,21 @@ class PersonEditDialog(gg.gPersonEditDialog):
         #mustpers = self._fact.find(Person, personid)
 
         return perslist + [mustpers]
-            
+    
+    def _tune_fluffies(self):
+        bdate = GuiHelper.get_val(self.m_geburtsdatumDP)
+        if bdate is None:
+            self.m_fluffyMonthCB.Enable()
+            self.m_fluffyYearSPC.Enable()
+        else:
+            self.m_fluffyMonthCB.Disable()
+            self.m_fluffyYearSPC.Disable()
+        
+    def _getmonthnumber(self, mocode):
+        mocodes = ["MONTH01", "MONTH02", "MONTH03", "MONTH04", "MONTH05", "MONTH06", 
+                   "MONTH07", "MONTH08", "MONTH09", "MONTH10", "MONTH11", "MONTH12"]
+        return mocodes.index(mocode) + 1
+    
     def _filldialog(self, p):
         GuiHelper.set_val(self.m_NameTB, p.name)
         GuiHelper.set_val(self.m_vornameTB, p.firstname)
@@ -110,37 +101,48 @@ class PersonEditDialog(gg.gPersonEditDialog):
         GuiHelper.set_val(self.m_infotextTB, p.infotext)
         GuiHelper.set_val(self.m_geburtsdatumDP, p.birthdate)
         GuiHelper.set_val(self.m_todesdatumDP, p.deathdate)
+        GuiHelper.set_val(self.m_bioSexCB, p.biosex, self._biosexes)
+        GuiHelper.set_val(self.m_fluffyMonthCB, p.birthmonth, self._flufmonths)
+        GuiHelper.set_val(self.m_fluffyYearSPC, p.birthyear)
         
+        self._tune_fluffies()
+
         #now fill mother and father
         #manipulate combo-boxes so that only older persons can be selected and not the person himself can be selected
-        if p.birthdate is not None:
-            cdd = self.Parent.configuration.get_value("gui", "childdeltayears")
-            if cdd is None: cdd = 16
-            refdate = p.birthdate - relativedelta(years=cdd)
-        else:
-            refdate = datetime.datetime.today()
-
-        #fill biosex combo
-        q = sqp.SQQuery(self._fact, SexCat).where(SexCat.LangCode=="DEU").order_by(SexCat.Value)
-        self._biosexes = list(q)
-        bios = self._get_catdisplay_list(self._biosexes) #rember the biosexes for selection change
-        self.m_bioSexCB.Set(bios)
+        cdd = self.Parent.configuration.get_value("gui", "childdeltayears")
+        if cdd is None: cdd = 16
         
-        biosexp = self._get_first_biosexidx(p.biosex)
-        if biosexp is not wx.NOT_FOUND:
-            self.m_bioSexCB.Select(biosexp)
+        if p.birthdate is not None:
+            bd = p.birthdate
+        elif p.birthyear is not None and p.birthyear > 0:
+            if p.birthmonth is not None and p.birthmonth.code != "NOMONTH":
+                bm = self._getmonthnumber(p.birthmonth.code)
+                bd = datetime.datetime(p.birthyear, bm, 12)
+            else: 
+                bd = datetime.datetime(p.birthyear, 12, 31)
+        else:
+            bd = datetime.datetime.today()
 
+        refdate = bd - relativedelta(years=cdd)
+        refyear = refdate.year
+        
         #fill mother and father combos
-        q = sqp.SQQuery(self._fact, Person).where((Person.Birthdate < refdate) & (Person.BioSex == "MALE")).order_by(Person.FirstName)
+        q = sqp.SQQuery(self._fact, Person).where(((Person.Birthdate < refdate) 
+                                                    | (Person.BirthYear < refyear)
+                                                    | (sqp.IsNone(Person.Birthdate)))
+                                                  & (Person.BioSex == "MALE")).order_by(Person.FirstName)
         self._pfathers = list(q) #rember possible fathers for selection change
-        self._pfathers = self._assurecontains(self._pfathers, self._person.fatherid)
+        self._pfathers = self._assurecontains(self._pfathers, p.fatherid)
         pfs = self._get_strlist(self._pfathers)
         self.m_fatherCB.Set(pfs)
         fatherp = self._getfirst_personidx(self._pfathers, p.fatherid)
         if fatherp is not wx.NOT_FOUND:
             self.m_fatherCB.Select(fatherp)
 
-        q = sqp.SQQuery(self._fact, Person).where((Person.Birthdate < refdate) & (Person.BioSex == "FEMALE")).order_by(Person.FirstName)
+        q = sqp.SQQuery(self._fact, Person).where(((Person.Birthdate < refdate) 
+                                                    | (Person.BirthYear < refyear)
+                                                    | (sqp.IsNone(Person.Birthdate))) 
+                                                    & (Person.BioSex == "FEMALE")).order_by(Person.FirstName)
         self._pmothers = list(q) #rember possible mothers for selection change
         self._pmothers = self._assurecontains(self._pmothers, self._person.motherid)
         pms = self._get_strlist(self._pmothers)
@@ -149,21 +151,23 @@ class PersonEditDialog(gg.gPersonEditDialog):
         if motherp is not wx.NOT_FOUND:
             self.m_motherCB.Select(motherp)
 
+    def birthDateChanged(self, event):
+        self._tune_fluffies()
+
 
     def flushnget(self):
-        self._person.firstname = GuiHelper.get_val(self.m_vornameTB)
-        self._person.name = GuiHelper.get_val(self.m_NameTB)
-        self._person.rufname = GuiHelper.get_val(self.m_rufnameTB)
-        self._person.birthdate = GuiHelper.get_val(self.m_geburtsdatumDP)
-        self._person.deathdate = GuiHelper.get_val(self.m_todesdatumDP)
-        self._person.infotext = GuiHelper.get_val(self.m_infotextTB)
-        self._person.nameofbirth = GuiHelper.get_val(self.m_geburtsnameTB)
-        self._person.biosex = GuiHelper.get_val(self.m_bioSexCB, self._biosexes)
+        p = self._person
+        p.firstname = GuiHelper.get_val(self.m_vornameTB)
+        p.name = GuiHelper.get_val(self.m_NameTB)
+        p.rufname = GuiHelper.get_val(self.m_rufnameTB)
+        p.birthdate = GuiHelper.get_val(self.m_geburtsdatumDP)
+        p.deathdate = GuiHelper.get_val(self.m_todesdatumDP)
+        p.infotext = GuiHelper.get_val(self.m_infotextTB)
+        p.nameofbirth = GuiHelper.get_val(self.m_geburtsnameTB)
+        p.biosex = GuiHelper.get_val(self.m_bioSexCB, self._biosexes)
+        p.birthmonth = GuiHelper.get_val(self.m_fluffyMonthCB, self._flufmonths)
+        p.birthyear = GuiHelper.get_val(self.m_fluffyYearSPC)
         
-        # biosexp = self.m_bioSexCB.GetSelection()
-        # if biosexp is not wx.NOT_FOUND:
-        #     self._person.biosex = self._biosexes[biosexp]
-
         if len(self._pmothers)>0:
             motherp = self.m_motherCB.GetSelection()
             if motherp is not wx.NOT_FOUND:

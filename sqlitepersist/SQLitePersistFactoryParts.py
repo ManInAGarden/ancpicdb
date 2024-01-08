@@ -567,6 +567,8 @@ class SQFactory():
             "$in": "IN",
             "$islike" : "LIKE",
             "$notislike" : "NOT LIKE",
+            "$isnone" : "IS",
+            "$isnotnone" : "IS NOT",
             "$and" : "AND",
             "$or": "OR"}
         return mapping[ops]
@@ -605,6 +607,8 @@ class SQFactory():
             return "datetime('{0:04d}-{1:02d}-{2:02d}T{3:02d}:{4:02d}:{5:02d}.{6}')".format(operand.year, operand.month, operand.day, operand.hour, operand.minute, operand.second, operand.microsecond)
         elif t is bool:
             return operand
+        elif t is AllowedNone:
+            return "NULL"
         elif t is list:
             answ = "("
             first = True
@@ -637,11 +641,11 @@ class SQFactory():
         for operand in operands:
             if first:
                 first = False
-                answ = self._getoperand(operand)
+                answ = "(" + self._getoperand(operand)
             else:
                 #answ += " AND "
                 answ += " " + self._backmap(op) + " "
-                answ += self._getoperand(operand)
+                answ += self._getoperand(operand) + ")"
 
         return answ
 
@@ -666,7 +670,7 @@ class SQFactory():
             raise Exception("first layer value must be a dictionary containing the operands")
 
         if self._ismulti(op):
-            answ = self._getmultipart(op, oplist)            
+            answ = self._getmultipart(op, oplist)
         elif self._isbinary(op):
             answ = self._getbinarypart(op, oplist)
 

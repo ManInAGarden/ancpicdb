@@ -16,7 +16,9 @@ class SQQueryDictGenerator:
         "NOTISIN":"$nin",
         #"REGEX" : "$regex",
         "NOTISLIKE": "$notislike",
-        "ISLIKE" : "$islike"}
+        "ISLIKE" : "$islike",
+        "ISNONE" : "$isnone",
+        "ISNOTNONE" : "$isnotnone"}
 
     def __init__(self):
         self.mapping = {**self.opmapping, **self.logmapping, **self.specsmapping} #merge mappings

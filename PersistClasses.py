@@ -116,6 +116,8 @@ class Person(sqp.PBase):
      BioSex = sqp.Catalog(catalogtype=SexCat)
      NameOfBirth = sqp.String()
      Birthdate = sqp.DateTime()
+     BirthYear = sqp.Int()
+     BirthMonth = sqp.Catalog(catalogtype=FluffyMonthCat)
      DeathDate = sqp.DateTime()
      FatherId = sqp.UUid()
      MotherId = sqp.UUid()
@@ -132,6 +134,8 @@ class Person(sqp.PBase):
 
           if self.birthdate is not None:
                answ += ": *{:%d.%m.%Y}".format(self.birthdate)
+          elif self.birthyear is not None and self.birthyear > 0:
+               answ += ": *{}".format(self.birthyear)
           
           if self.deathdate is not None:
                answ += ", +{:%d.%m.%Y}".format(self.deathdate)

@@ -79,13 +79,35 @@ class TestPictureSelects(TestBase):
         for tit in titles:
             moca = self.Spf.getcat(FluffyMonthCat, monthes[tm])
             pic = self.Mck.create_picture(title=tit, scandate=dt.datetime.now(),
-                                          yeartaken=1963,
+                                          yeartaken=1965,
                                           monthtaken=moca)
             tm += 1
             self.Spf.flush(pic)
 
-        pics_r = sqp.SQQuery(self.Spf, Picture).where(sqp.IsLike(Picture.Title, "%Like%")).as_list()
+        pics_r = sqp.SQQuery(self.Spf, Picture).where((Picture.FlufTakenYear==1965) 
+                                                      & sqp.IsLike(Picture.Title, "%Like%")).as_list()
         assert len(pics_r) == 3
 
-        pics_r = sqp.SQQuery(self.Spf, Picture).where(sqp.NotIsLike(Picture.Title, "%Like%")).as_list()
+        pics_r = sqp.SQQuery(self.Spf, Picture).where((Picture.FlufTakenYear==1965) 
+                                                      & sqp.NotIsLike(Picture.Title, "%Like%")).as_list()
         assert len(pics_r) == 1
+    
+    def test_isnone01(self):
+        titles = ["AddQuerPic10", "AddQuerPic20", "AddQuerPic30"]
+        yt = 1970
+        for tit in titles:
+            pic = self.Mck.create_picture(title=tit, scandate=dt.datetime.now(),
+                                          yeartaken=yt)
+            self.Spf.flush(pic)
+
+        pics_r = sqp.SQQuery(self.Spf, Picture).where((Picture.FlufTakenYear==1970)
+                                                      & sqp.IsNone(Picture.ScanDate)).as_list()
+        assert len(pics_r) == 0
+        pics_r = sqp.SQQuery(self.Spf, Picture).where((Picture.FlufTakenYear==1970)
+                                                      & sqp.IsNone(Picture.TakenDate)).as_list()
+        assert len(pics_r) == 3
+        pics_r = sqp.SQQuery(self.Spf, Picture).where((Picture.FlufTakenYear==1970)
+                                                      &sqp.IsNotNone(Picture.ScanDate)).as_list()
+        assert len(pics_r) == 3
+
+        

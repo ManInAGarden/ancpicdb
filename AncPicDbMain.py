@@ -4,6 +4,7 @@ import shutil
 import logging
 import logging.config
 import tempfile as tmpf
+import datetime
 
 import wx
 import wx.adv
@@ -19,6 +20,7 @@ from AddDocumentDialog import AddDocumentDialog
 from EditDocumentDialog import EditDocumentDialog
 from GroupsViewDialog import GroupsViewDialog
 from GuiHelper import GuiHelper
+from PathZipper import PathZipper
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
 
@@ -452,6 +454,29 @@ class AncPicDbMain(gg.AncPicDBMain):
         
         self._fact.flush(docdial.document)
         self.refresh_dash_forp(perspos)
+
+    def backupDb(self, event):
+        """creates a backup of the Database and the file archive"""
+        dird = wx.DirDialog(self, "Verzeichnis für die Ablage der Sicherung wählen",
+                            "",
+                            wx.DD_DIR_MUST_EXIST)
+        res = dird.ShowModal()
+        if res != wx.ID_OK:
+            return
+        
+        targpath = dird.GetPath()
+        srcpath = self._configuration.get_value_interp("backup", "sourcepath")
+        fname = self._configuration.get_value("backup", "zipname")
+        dstr = "{:%Y%m%d}".format(datetime.datetime.now())
+        fname = fname.replace("${CreaDate}", dstr)
+        pz = PathZipper(srcpath, targpath, fname, self.logger)
+        try:
+            pz.dozip()
+            GuiHelper.show_message("Sicherungskopie unter {} erfolgreich geschrieben.",
+                                   pz.fullpath)
+        except Exception as exc:
+            GuiHelper.show_error("Unbehandelter Fehler in backupdb: {}", exc)
+
 
 if __name__ == '__main__':
     app = wx.App()

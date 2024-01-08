@@ -1,3 +1,4 @@
 
 AncPicDb.conf
 *.pyc
+AncPicDbTest.sqlite
