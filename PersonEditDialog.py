@@ -87,7 +87,15 @@ class PersonEditDialog(gg.gPersonEditDialog):
         else:
             self.m_fluffyMonthCB.Disable()
             self.m_fluffyYearSPC.Disable()
-        
+
+        ddate = GuiHelper.get_val(self.m_todesdatumDP)
+        if ddate is None:
+            self.m_fluffyDeathMonthCB.Enable()
+            self.m_fluffyDeathYearSPC.Enable()
+        else:
+            self.m_fluffyDeathMonthCB.Disable()
+            self.m_fluffyDeathYearSPC.Disable()
+
     def _getmonthnumber(self, mocode):
         mocodes = ["MONTH01", "MONTH02", "MONTH03", "MONTH04", "MONTH05", "MONTH06", 
                    "MONTH07", "MONTH08", "MONTH09", "MONTH10", "MONTH11", "MONTH12"]
@@ -104,6 +112,8 @@ class PersonEditDialog(gg.gPersonEditDialog):
         GuiHelper.set_val(self.m_bioSexCB, p.biosex, self._biosexes)
         GuiHelper.set_val(self.m_fluffyMonthCB, p.birthmonth, self._flufmonths)
         GuiHelper.set_val(self.m_fluffyYearSPC, p.birthyear)
+        GuiHelper.set_val(self.m_fluffyDeathMonthCB, p.deathmonth, self._flufmonths)
+        GuiHelper.set_val(self.m_fluffyDeathYearSPC, p.deathyear, self._flufmonths)
         
         self._tune_fluffies()
 
@@ -154,6 +164,9 @@ class PersonEditDialog(gg.gPersonEditDialog):
     def birthDateChanged(self, event):
         self._tune_fluffies()
 
+    def deathDateChanged(self, event):
+        self._tune_fluffies()
+
 
     def flushnget(self):
         p = self._person
@@ -167,6 +180,8 @@ class PersonEditDialog(gg.gPersonEditDialog):
         p.biosex = GuiHelper.get_val(self.m_bioSexCB, self._biosexes)
         p.birthmonth = GuiHelper.get_val(self.m_fluffyMonthCB, self._flufmonths)
         p.birthyear = GuiHelper.get_val(self.m_fluffyYearSPC)
+        p.deathmonth = GuiHelper.get_val(self.m_fluffyDeathMonthCB, self._flufmonths)
+        p.deathyear = GuiHelper.get_val(self.m_fluffyDeathYearSPC)
         
         if len(self._pmothers)>0:
             motherp = self.m_motherCB.GetSelection()

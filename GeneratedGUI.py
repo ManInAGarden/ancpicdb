@@ -915,7 +915,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		self.m_geburtsdatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer2.Add( self.m_geburtsdatumDP, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_staticText49 = wx.StaticText( self, wx.ID_ANY, u"oder unscharfes Datum:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText49 = wx.StaticText( self, wx.ID_ANY, u"oder unscharfes Geburtsdatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText49.Wrap( -1 )
 
 		gbSizer2.Add( self.m_staticText49, wx.GBPosition( 3, 2 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
@@ -934,6 +934,18 @@ class gPersonEditDialog ( wx.Dialog ):
 
 		self.m_todesdatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer2.Add( self.m_todesdatumDP, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText50 = wx.StaticText( self, wx.ID_ANY, u"oder unscharfes Todesdatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText50.Wrap( -1 )
+
+		gbSizer2.Add( self.m_staticText50, wx.GBPosition( 4, 2 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
+
+		m_fluffyDeathMonthCBChoices = []
+		self.m_fluffyDeathMonthCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_fluffyDeathMonthCBChoices, 0 )
+		gbSizer2.Add( self.m_fluffyDeathMonthCB, wx.GBPosition( 4, 3 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_fluffyDeathYearSPC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 2100, 0 )
+		gbSizer2.Add( self.m_fluffyDeathYearSPC, wx.GBPosition( 4, 4 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_infotextTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.TE_MULTILINE|wx.TE_WORDWRAP )
 		self.m_infotextTB.SetMinSize( wx.Size( -1,100 ) )
@@ -987,6 +999,7 @@ class gPersonEditDialog ( wx.Dialog ):
 
 		# Connect Events
 		self.m_geburtsdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.birthDateChanged )
+		self.m_todesdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.deathDateChanged )
 
 	def __del__( self ):
 		pass
@@ -994,6 +1007,9 @@ class gPersonEditDialog ( wx.Dialog ):
 
 	# Virtual event handlers, override them in your derived class
 	def birthDateChanged( self, event ):
+		event.Skip()
+
+	def deathDateChanged( self, event ):
 		event.Skip()
 
 

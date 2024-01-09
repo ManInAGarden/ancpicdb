@@ -119,6 +119,8 @@ class Person(sqp.PBase):
      BirthYear = sqp.Int()
      BirthMonth = sqp.Catalog(catalogtype=FluffyMonthCat)
      DeathDate = sqp.DateTime()
+     DeathMonth = sqp.Catalog(catalogtype=FluffyMonthCat)
+     DeathYear = sqp.Int()
      FatherId = sqp.UUid()
      MotherId = sqp.UUid()
      Infotext = sqp.String()
@@ -139,10 +141,17 @@ class Person(sqp.PBase):
           
           if self.deathdate is not None:
                answ += ", +{:%d.%m.%Y}".format(self.deathdate)
+          elif self.deathyear is not None and self.deathyear > 0:
+               answ += ", +{}".format(self.deathyear)
           
           return answ
 
-
+class FullPerson(Person):
+     Father = sqp.JoinedEmbeddedObject(targettype=Person, localid = Person.FatherId)
+     Mother = sqp.JoinedEmbeddedObject(targettype=Person, localid = Person.MotherId)
+     ChildrenAsFather = sqp.JoinedEmbeddedList(targettype=Person, foreignid=Person.FatherId)
+     ChildrenAsMother = sqp.JoinedEmbeddedList(targettype=Person, foreignid=Person.MotherId)
+     
 def ewn(val):
      if val is None:
           return ""
