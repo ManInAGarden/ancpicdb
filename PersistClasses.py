@@ -101,14 +101,14 @@ class PersonPictureInter(sqp.PBase):
      PictureId = sqp.UUid(uniquegrp="perspicunique")
      PersonId = sqp.UUid(uniquegrp="perspicunique")
      Picture = sqp.JoinedEmbeddedObject(targettype=Picture, localid="pictureid", autofill=True)
+     Subtitle = sqp.String()
+     Position = sqp.Int(default=0)
 
      def __str__(self):
-          return "[{}] {}".format(self.picture.readableid, self.picture.title)
-
-#class PictureToPersonSel(Picture):
-#     PersInter = sqp.JoinedEmbeddedObject(targettype=PersonPictureInter, localid="_id", foreignid="pictureid", autofill=True)
-
-
+          if self.position is None or self.position==0:
+               return "x. [{}] {}".format(self.picture.readableid, self.picture.title)
+          else:
+               return "{}. [{}] {}".format(self.position, self.picture.readableid, self.subtitle)
 class Person(sqp.PBase):
      Name = sqp.String()
      FirstName = sqp.String()
@@ -147,11 +147,16 @@ class Person(sqp.PBase):
           return answ
 
 class FullPerson(Person):
+     _collectionname = "Person" #do not use a separate table for this class. It's only 
+     #another version of the person
+     
      Father = sqp.JoinedEmbeddedObject(targettype=Person, localid = Person.FatherId)
      Mother = sqp.JoinedEmbeddedObject(targettype=Person, localid = Person.MotherId)
      ChildrenAsFather = sqp.JoinedEmbeddedList(targettype=Person, foreignid=Person.FatherId)
      ChildrenAsMother = sqp.JoinedEmbeddedList(targettype=Person, foreignid=Person.MotherId)
      
+
+
 def ewn(val):
      if val is None:
           return ""

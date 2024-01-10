@@ -3,16 +3,29 @@ from dateutil.relativedelta import relativedelta
 import wx
 import wx.adv
 import GeneratedGUI as gg
-from PersistClasses import Person, SexCat, FluffyMonthCat
+from PersistClasses import Person, SexCat, FluffyMonthCat, PersonPictureInter
 import sqlitepersist as sqp
 from GuiHelper import GuiHelper
+from AddPictureDialog import AddPictureDialog
+from EditSignifcPictureDialog import EditSignifcPictureDialog
 
 class PersonEditDialog(gg.gPersonEditDialog):
     def __init__(self, parent, fact, dta : Person):
         super().__init__(parent)
         self._fact = fact
         self._person = dta
+        self._configuration = parent.configuration
+        self._init_gui()
+        
+
+    def _init_gui(self):
         self._init_cats()
+        self.m_significantPictursLCTRL.ClearAll()        
+        self.m_significantPictursLCTRL.InsertColumn(0, "Position")
+        self.m_significantPictursLCTRL.InsertColumn(1, "Untertitel", width=300)
+        self.m_significantPictursLCTRL.InsertColumn(2, "Kennung")
+        self.m_significantPictursLCTRL.InsertColumn(3, "Titel")
+
 
     def _init_cats(self):
         #fluffymonth combo (new way of initializing)
@@ -101,6 +114,20 @@ class PersonEditDialog(gg.gPersonEditDialog):
                    "MONTH07", "MONTH08", "MONTH09", "MONTH10", "MONTH11", "MONTH12"]
         return mocodes.index(mocode) + 1
     
+    def _fillpicturelist(self, p : Person):
+        ctrl = self.m_significantPictursLCTRL
+        ctrl.DeleteAllItems()
+        self._fact.fill_joins(p, Person.Pictures)
+
+        ct = 0
+        for pic in p.pictures:
+            idx = ctrl.InsertItem(ctrl.GetColumnCount(), GuiHelper.get_eos(pic.position))
+            ctrl.SetItemData(idx, ct)
+            ctrl.SetItem(idx, 1, GuiHelper.get_eos(pic.subtitle))
+            ctrl.SetItem(idx, 2, GuiHelper.get_eos(pic.picture.readableid))
+            ctrl.SetItem(idx, 3, GuiHelper.get_eos(pic.picture.title))
+            ct += 1
+
     def _filldialog(self, p):
         GuiHelper.set_val(self.m_NameTB, p.name)
         GuiHelper.set_val(self.m_vornameTB, p.firstname)
@@ -114,6 +141,8 @@ class PersonEditDialog(gg.gPersonEditDialog):
         GuiHelper.set_val(self.m_fluffyYearSPC, p.birthyear)
         GuiHelper.set_val(self.m_fluffyDeathMonthCB, p.deathmonth, self._flufmonths)
         GuiHelper.set_val(self.m_fluffyDeathYearSPC, p.deathyear, self._flufmonths)
+        
+        self._fillpicturelist(p)
         
         self._tune_fluffies()
 
@@ -161,12 +190,12 @@ class PersonEditDialog(gg.gPersonEditDialog):
         if motherp is not wx.NOT_FOUND:
             self.m_motherCB.Select(motherp)
 
+
     def birthDateChanged(self, event):
         self._tune_fluffies()
 
     def deathDateChanged(self, event):
         self._tune_fluffies()
-
 
     def flushnget(self):
         p = self._person
@@ -195,3 +224,49 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
         self._fact.flush(self._person)
         return self._person
+    
+    def addPicture(self, event):
+        """add a picture to the person"""
+        
+        p = self._person
+        dial = AddPictureDialog(self, self._fact, p)
+        res = dial.showmodal()
+
+        if res == wx.ID_OK:
+            for pic in dial.selection:
+                persinterpic = PersonPictureInter(personid=p._id,
+                                                  pictureid=pic._id)
+                self._fact.flush(persinterpic)
+
+        p.pictures = None #that means a new select wirll be done by the following fill_joins
+        self._fact.fill_joins(p, Person.Pictures)
+        self._fillpicturelist(p)
+
+    def removePicture(self, event):
+        p = self._person
+        selpicinter = GuiHelper.get_selected_fromlctrl(self.m_significantPictursLCTRL, p.pictures)
+        if selpicinter is None:
+            return
+        
+        res = GuiHelper.ask_user(self, 
+                                 "Soll das Bild '{}' wirklich von der Person abgetrennt werden?".format(selpicinter.picture.readableid))
+        if res != wx.ID_YES:
+            return
+        
+        self._fact.delete(selpicinter)
+        p.pictures = None #that means a new select wirll be done by the following fill_joins
+        self._fact.fill_joins(p, Person.Pictures)
+        self._fillpicturelist(p)
+
+    def editPictureInfo(self, event):
+        p = self._person
+        selpicinter = GuiHelper.get_selected_fromlctrl(self.m_significantPictursLCTRL, p.pictures)
+        if selpicinter is None:
+            return
+        
+        picintdial = EditSignifcPictureDialog(self, self._fact, selpicinter)
+        res = picintdial.showmodal()
+        #flushing of intersection is done by the dialog itself, but wen need to to some refreshs here
+        p.pictures = None #that means a new select wirll be done by the following fill_joins
+        self._fact.fill_joins(p, Person.Pictures)
+        self._fillpicturelist(p)

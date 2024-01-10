@@ -3,8 +3,19 @@ import logging
 import sqlitepersist as sqp
 
 class GuiHelper:
-    """ class to help with ever repeating gui oprations"""
+    """ class to help with ever repeating gui oprations. Uses a formstr when given."""
 
+    @classmethod
+    def get_eos(cls, val, formstr = None):
+        """Get string repr. for val or an empty string when val is None"""
+        if val is None:
+            return ""
+        
+        if formstr is not None:
+            formstr.format(val)
+
+        return val.__str__()
+    
     @classmethod 
     def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list) -> (object, int):
         """get the currently selected item of a ListBox. Returns None when nothing was selected"""
@@ -118,6 +129,14 @@ class GuiHelper:
                 ctrl.SetValue(val)
             else:
                 ctrl.SetValue(0)
+        elif ct is wx.CheckBox:
+            if val is not None:
+                if type(val) is bool:
+                    ctrl.SetValue(val)
+                else:
+                    raise Exception("Unknown data type in GuiHelper.SetVal for a wx.CtrlBox")
+            else:
+                ctrl.SetVal(False)
         elif ct is wx.ComboBox:
             if val is None:
                 itemss = list(map(lambda p: p.value, fullcat))
@@ -160,6 +179,9 @@ class GuiHelper:
             if selpo != wx.NOT_FOUND:
                 return datal[selpo]
         elif ctt is wx.SpinCtrl:
+            val = ctrl.GetValue()
+            return val
+        elif ctt is wx.CheckBox:
             val = ctrl.GetValue()
             return val
         else:

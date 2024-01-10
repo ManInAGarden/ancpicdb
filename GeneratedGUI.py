@@ -51,6 +51,12 @@ class AncPicDBMain ( wx.Frame ):
 
 		self.m_mainMenuBar.Append( self.m_editMenu, u"Bearbeiten" )
 
+		self.m_menu4 = wx.Menu()
+		self.m_menuItem9 = wx.MenuItem( self.m_menu4, wx.ID_ANY, u"Steckbriefe produzieren", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu4.Append( self.m_menuItem9 )
+
+		self.m_mainMenuBar.Append( self.m_menu4, u"Extras" )
+
 		self.m_helpMenu = wx.Menu()
 		self.m_help = wx.MenuItem( self.m_helpMenu, wx.ID_ANY, u"Hilfe", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_helpMenu.Append( self.m_help )
@@ -202,6 +208,7 @@ class AncPicDBMain ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.openViewGroupsDialog, id = self.m_groupsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewDocumentsDialog, id = self.m_documentsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.printWantedPosters, id = self.m_menuItem9.GetId() )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX, self.personSelected )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editExistingPerson )
 		self.m_newPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editNewPerson )
@@ -235,6 +242,9 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def openViewPicturesDialog( self, event ):
+		event.Skip()
+
+	def printWantedPosters( self, event ):
 		event.Skip()
 
 	def personSelected( self, event ):
@@ -974,7 +984,35 @@ class gPersonEditDialog ( wx.Dialog ):
 		m_personSDBSI.AddButton( self.m_personSDBSICancel )
 		m_personSDBSI.Realize();
 
-		gbSizer2.Add( m_personSDBSI, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer2.Add( m_personSDBSI, wx.GBPosition( 8, 0 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText51 = wx.StaticText( self, wx.ID_ANY, u"Signifikante Bilder:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText51.Wrap( -1 )
+
+		gbSizer2.Add( self.m_staticText51, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_significantPictursLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer2.Add( self.m_significantPictursLCTRL, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+
+		bSizer12 = wx.BoxSizer( wx.VERTICAL )
+
+		self.m_addSignPicBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_addSignPicBU.SetBitmap( wx.Bitmap( u"ressources/Add-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer12.Add( self.m_addSignPicBU, 0, wx.ALL, 5 )
+
+		self.m_editSignPicBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_editSignPicBU.SetBitmap( wx.Bitmap( u"ressources/Edit.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer12.Add( self.m_editSignPicBU, 0, wx.ALL, 5 )
+
+		self.m_removeSignPicBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_removeSignPicBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer12.Add( self.m_removeSignPicBU, 0, wx.ALL, 5 )
+
+
+		gbSizer2.Add( bSizer12, wx.GBPosition( 7, 4 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
 
 		self.m_staticText12 = wx.StaticText( self, wx.ID_ANY, u"Infotext:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText12.Wrap( -1 )
@@ -1000,6 +1038,9 @@ class gPersonEditDialog ( wx.Dialog ):
 		# Connect Events
 		self.m_geburtsdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.birthDateChanged )
 		self.m_todesdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.deathDateChanged )
+		self.m_addSignPicBU.Bind( wx.EVT_BUTTON, self.addPicture )
+		self.m_editSignPicBU.Bind( wx.EVT_BUTTON, self.editPictureInfo )
+		self.m_removeSignPicBU.Bind( wx.EVT_BUTTON, self.removePicture )
 
 	def __del__( self ):
 		pass
@@ -1010,6 +1051,15 @@ class gPersonEditDialog ( wx.Dialog ):
 		event.Skip()
 
 	def deathDateChanged( self, event ):
+		event.Skip()
+
+	def addPicture( self, event ):
+		event.Skip()
+
+	def editPictureInfo( self, event ):
+		event.Skip()
+
+	def removePicture( self, event ):
 		event.Skip()
 
 
@@ -1484,5 +1534,147 @@ class gPictureFilterDialog ( wx.Dialog ):
 
 	def __del__( self ):
 		pass
+
+
+###########################################################################
+## Class gEditSignifcPictureDialog
+###########################################################################
+
+class gEditSignifcPictureDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bildzuordnung an Person bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 349,189 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer16 = wx.GridBagSizer( 0, 0 )
+		gbSizer16.SetFlexibleDirection( wx.BOTH )
+		gbSizer16.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		self.m_staticText52 = wx.StaticText( self, wx.ID_ANY, u"Kennung:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText52.Wrap( -1 )
+
+		gbSizer16.Add( self.m_staticText52, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_kennungTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer16.Add( self.m_kennungTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText53 = wx.StaticText( self, wx.ID_ANY, u"Titel:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText53.Wrap( -1 )
+
+		gbSizer16.Add( self.m_staticText53, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_titleTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer16.Add( self.m_titleTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText54 = wx.StaticText( self, wx.ID_ANY, u"Position an Person:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText54.Wrap( -1 )
+
+		gbSizer16.Add( self.m_staticText54, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_positionSPC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 10000, 0 )
+		gbSizer16.Add( self.m_positionSPC, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText55 = wx.StaticText( self, wx.ID_ANY, u"Untertitel:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText55.Wrap( -1 )
+
+		gbSizer16.Add( self.m_staticText55, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_subtitleTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer16.Add( self.m_subtitleTB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		m_sdbSizer12 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer12OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer12.AddButton( self.m_sdbSizer12OK )
+		self.m_sdbSizer12Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer12.AddButton( self.m_sdbSizer12Cancel )
+		m_sdbSizer12.Realize();
+
+		gbSizer16.Add( m_sdbSizer12, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.EXPAND, 5 )
+
+
+		gbSizer16.AddGrowableCol( 1 )
+
+		self.SetSizer( gbSizer16 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
+
+
+###########################################################################
+## Class gWantedPosterPrintDialog
+###########################################################################
+
+class gWantedPosterPrintDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Einstellungen zur Steckbriefproduktion", pos = wx.DefaultPosition, size = wx.Size( 594,355 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
+
+		gbSizer17 = wx.GridBagSizer( 0, 0 )
+		gbSizer17.SetFlexibleDirection( wx.BOTH )
+		gbSizer17.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		self.m_personenL = wx.StaticText( self, wx.ID_ANY, u"Personen:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_personenL.Wrap( -1 )
+
+		gbSizer17.Add( self.m_personenL, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_personsCHLBChoices = []
+		self.m_personsCHLB = wx.CheckListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_personsCHLBChoices, wx.LB_MULTIPLE )
+		self.m_personsCHLB.SetToolTip( u"Markierte Personen werden bei der Steckbriefproduktion behandelt" )
+
+		gbSizer17.Add( self.m_personsCHLB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_newPagePerPersoneCB = wx.CheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_newPagePerPersoneCB.SetValue(True)
+		gbSizer17.Add( self.m_newPagePerPersoneCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_LEFT|wx.ALL, 5 )
+
+		self.m_staticline1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer17.Add( self.m_staticline1, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText57 = wx.StaticText( self, wx.ID_ANY, u"Neue Seite je Person:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText57.Wrap( -1 )
+
+		gbSizer17.Add( self.m_staticText57, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_createPostersBU = wx.Button( self, wx.ID_ANY, u"Verarbeitung starten", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer17.Add( self.m_createPostersBU, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_closeBU = wx.Button( self, wx.ID_ANY, u"Schließen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer17.Add( self.m_closeBU, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
+
+		self.m_percdoneGA = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_percdoneGA.SetValue( 0 )
+		gbSizer17.Add( self.m_percdoneGA, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 5 )
+
+
+		gbSizer17.AddGrowableCol( 1 )
+		gbSizer17.AddGrowableRow( 0 )
+
+		self.SetSizer( gbSizer17 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_createPostersBU.Bind( wx.EVT_BUTTON, self.doPrinting )
+		self.m_closeBU.Bind( wx.EVT_BUTTON, self.doClose )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def doPrinting( self, event ):
+		event.Skip()
+
+	def doClose( self, event ):
+		event.Skip()
 
 

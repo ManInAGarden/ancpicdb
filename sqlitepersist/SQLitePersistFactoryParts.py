@@ -506,8 +506,7 @@ class SQFactory():
             res = self.find_with_dict(cls, {"_id": findpar._id})
             return self._first_or_default(res)
         elif type(findpar) is uuid.UUID: #we have an id to be searched for
-            res = self.find_with_dict(cls, {"_id": findpar})
-            return self._first_or_default(res)
+            return self._do_select(cls, {"$eq": ["_id", findpar]}, orderlist, limit)
         else:
             raise NotImplementedError("Unsupported type <{}> in findpar.".format(type(findpar)))
 
