@@ -154,6 +154,11 @@ class GuiHelper:
    
             else:
                 raise Exception("Combobox with non catalog data value not yet handled in GUIHelper.SetVal")
+        elif ct is wx.FilePickerCtrl:
+            if val is not None:
+                ctrl.SetPath(val)
+            else:
+                ctrl.SetPath("")
         else:
             raise Exception("Unknown control type in _set_val")
         
@@ -184,6 +189,8 @@ class GuiHelper:
         elif ctt is wx.CheckBox:
             val = ctrl.GetValue()
             return val
+        elif ctt is wx.FilePickerCtrl:
+            return ctrl.GetPath()
         else:
             raise Exception("Unknown type {} in _get_val()".format(ctt))
         

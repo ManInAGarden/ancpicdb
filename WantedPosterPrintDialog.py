@@ -1,11 +1,14 @@
 import copy
+import os
+import tempfile as tmpf
 import wx
 import wx.adv
 import GeneratedGUI as gg
 from PersistClasses import Person, FullPerson
 import sqlitepersist as sqp
 from GuiHelper import GuiHelper
-from WantedPoster import WantedPoster, PosterConfig
+from WantedPoster import WantedPoster
+from DocArchiver import DocArchiver
 
 def getbm(mocode : str):
     mos = ["NOMONTH",
@@ -24,21 +27,36 @@ def getbm(mocode : str):
     
     return mos.index(mocode)
     
-class WantedConfig(object):
-
-    def __init__(self):
-        self._handledpers = []
-        self._newpagepp = False
 
 class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
 
+    class WantedConfig(object):
+        @property
+        def posterconf(self):
+            return self._posterconf
+        
+        @property
+        def handledpers(self):
+            return self._handledpers
+        
+        
+        def __init__(self):
+            self._handledpers = []
+            self._posterconf = WantedPoster.PosterConfig()
+            self._archpath = None
+           
     @property
     def wpconf(self):
         return self._wpconf
     
-    def __init__(self, parent, fact : sqp.SQFactory, conf : WantedConfig):
+    def __init__(self, parent, fact : sqp.SQFactory, archiver : DocArchiver, conf : WantedConfig):
         super().__init__(parent)
         self._fact = fact
+        tdir = tmpf.gettempdir()
+        self._configuration = parent.configuration
+        self._archiver = archiver
+        self._localarchtemp = tdir + os.path.sep + self._configuration.get_value("archivestore", "localtemp")
+
         self._wpconf = copy.deepcopy(conf)
         self._allpersons = self._get_all_persons()
 
@@ -83,7 +101,7 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
         ps = []
         seli = []
         for p in self._allpersons:
-            ps.append(p.__str__())
+            ps.append(p.as_string())
             ct += 1
             if self._contains(self._wpconf._handledpers, p):
                 seli.append(ct)
@@ -94,7 +112,9 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
         
     def _fill_gui(self):
         self._fillplist()
-        GuiHelper.set_val(self.m_newPagePerPersoneCB, self._wpconf._newpagepp)
+        GuiHelper.set_val(self.m_newPagePerPersoneCB, self._wpconf.posterconf.newpgperperson)
+        GuiHelper.set_val(self.m_addSignificantPicturesCB, self._wpconf.posterconf.includepics)
+        GuiHelper.set_val(self.m_targetFileFPI, self._wpconf.posterconf.targetfile)
 
     def _refresh_handled_persons(self):
         checkits = self.m_personsCHLB.GetCheckedItems()
@@ -116,7 +136,9 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
         return res
         
     def _refresh_wpconfig(self):
-        self._wpconf._newpagepp = GuiHelper.get_val(self.m_newPagePerPersoneCB)
+        self._wpconf.posterconf.newpgperperson = GuiHelper.get_val(self.m_newPagePerPersoneCB)
+        self._wpconf.posterconf.includepics = GuiHelper.get_val(self.m_addSignificantPicturesCB)
+        self._wpconf.posterconf.targetfile = GuiHelper.get_val(self.m_targetFileFPI)
 
     def doClose(self, event):
         self.EndModal(wx.ID_OK)
@@ -125,19 +147,22 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
         self._refresh_handled_persons()
         fullps = []
         for pers in self._wpconf._handledpers:
+            #get current person as FullPerson and fill it's joins to get the person's full data for printing
             fullp = sqp.SQQuery(self._fact, FullPerson).where(FullPerson.Id==pers._id).first_or_default(None)
             self._fact.fill_joins(fullp,
                                   FullPerson.Father,
                                   FullPerson.Mother,
                                   FullPerson.ChildrenAsFather,
-                                  FullPerson.ChildrenAsMother)
+                                  FullPerson.ChildrenAsMother,
+                                  FullPerson.Pictures)
             if fullp is None:
                 raise Exception("Unbehandelte Ausnahme. FullPerson nicht gefunden in doPrinting")
             fullps.append(fullp)
 
-        conf = PosterConfig()
         self._refresh_wpconfig()
-        conf.newlperperson = self._wpconf._newpagepp
-        wp = WantedPoster(fullps, "Steckbriefe.pdf", conf)
+        wp = WantedPoster(fullps, 
+                          self._archiver, 
+                          self._localarchtemp,
+                          self._wpconf.posterconf)
         wp.do_create()
         

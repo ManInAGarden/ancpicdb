@@ -145,6 +145,27 @@ class Person(sqp.PBase):
                answ += ", +{}".format(self.deathyear)
           
           return answ
+     
+     def as_string(self):
+          """The difference to __str__() is that last name and first name are mixed and the name of birth is given.
+               That leads to a more official dispay of the names
+          """
+          answ = "{}, {}".format(self.name, self.firstname)
+
+          if self.nameofbirth is not None:
+               answ += " geb. {}".format(self.nameofbirth)
+
+          if self.birthdate is not None:
+               answ += ": *{:%d.%m.%Y}".format(self.birthdate)
+          elif self.birthyear is not None and self.birthyear > 0:
+               answ += ": *{}".format(self.birthyear)
+          
+          if self.deathdate is not None:
+               answ += ", +{:%d.%m.%Y}".format(self.deathdate)
+          elif self.deathyear is not None and self.deathyear > 0:
+               answ += ", +{}".format(self.deathyear)
+          
+          return answ
 
 class FullPerson(Person):
      _collectionname = "Person" #do not use a separate table for this class. It's only 

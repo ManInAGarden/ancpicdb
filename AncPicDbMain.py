@@ -21,7 +21,7 @@ from EditDocumentDialog import EditDocumentDialog
 from GroupsViewDialog import GroupsViewDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
-from WantedPosterPrintDialog import WantedPosterPrintDialog, WantedConfig
+from WantedPosterPrintDialog import WantedPosterPrintDialog
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
 
@@ -102,7 +102,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         self._ensure_config(cnfname)
         self._configuration = ConfigReader(os.path.join(self._apppath, cnfname))
-        self._wantedconfig = WantedConfig()
+        self._wantedconfig = WantedPosterPrintDialog.WantedConfig()
 
     def _ensure_config(self, cnfname):
         """make sure the config exists. if not try to create it from a distributed version
@@ -153,6 +153,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         #we are starting for the first time, so we initialize the document archive here
         DocArchiver.prepare_archive(apath, dnum)
         self._docarchive = DocArchiver(apath) #use new archive
+        self._wantedconfig._archiver = self._docarchive
 
     def init_db(self):
         dbfilename = self._configuration.get_value_interp("database", "filename")
@@ -480,7 +481,7 @@ class AncPicDbMain(gg.AncPicDBMain):
             GuiHelper.show_error("Unbehandelter Fehler in backupdb: {}", exc)
 
     def printWantedPosters(self, event):
-        wpdial = WantedPosterPrintDialog(self, self._fact, self._wantedconfig)
+        wpdial = WantedPosterPrintDialog(self, self._fact, self._docarchive, self._wantedconfig)
 
         res = wpdial.showmodal()
         if res == wx.ID_OK:
