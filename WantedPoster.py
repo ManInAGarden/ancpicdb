@@ -165,6 +165,36 @@ class WantedPoster(object):
             st = self._calc_subtitle(pic)
             story.append(Paragraph(st, style=picsub))
             #append subitle
+        
+    def _get_children_sortkey(self, child):
+        #init to the max
+        byear = 20000
+        bmonth = 12
+        bday = 31
+
+        if child.birthdate is not None:
+            bday = child.birthdate.day
+            bmonth = child.birthdate.month
+            byear = child.birthdate.year
+        else:
+            if child.birthyear is not None and child.birthyear!=0:
+                byear = child.birthyear
+
+            if child.birthmonth is not None and child.birthmonth.code != "NOMONTH":
+                bmonth = child.birthmonth._as_number()
+
+        return (byear, bmonth, bday)
+
+    def _get_children(self, p : FullPerson):
+        children = []
+        if p.childrenasfather is not None:
+            children = children + p.childrenasfather
+        if p.childrenasmother is not None:
+            children = children + p.childrenasmother
+
+        #now sort them by birthdate
+        children.sort(key=lambda x: self._get_children_sortkey(x))
+        return children
 
     def do_create(self):
         story = [Spacer(1, 2.0*cm)]
@@ -194,13 +224,9 @@ class WantedPoster(object):
             story.append(Spacer(1, 0.4*cm))
             self._addparagraph(story, bstyle, p.infotext)
 
-            children = []
-            if p.childrenasfather is not None:
-                children = children + p.childrenasfather
-            if p.childrenasmother is not None:
-                children = children + p.childrenasmother
-
+            children = self._get_children(p)
             if len(children) > 0:
+
                 self._addparagraph(story, head3s, "Kinder")
                 for child in children:
                     self._addparagraph(story, bstyle, self._getshortinfo(child))

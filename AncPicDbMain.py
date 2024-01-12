@@ -216,7 +216,7 @@ class AncPicDbMain(gg.AncPicDBMain):
             ct = 0
             sl = wx.NOT_FOUND
             for p in self._persons:
-                ps.append(p.__str__())
+                ps.append(p.as_string())
                 if prevsel is not None and prevsel._id == p._id:
                     sl = ct
                 ct += 1
@@ -228,7 +228,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         
 
     def get_all_persons(self):
-        q = sqp.SQQuery(self._fact, Person).order_by(Person.FirstName)
+        q = sqp.SQQuery(self._fact, Person).order_by(Person.Name, Person.FirstName)
         answ = list(q)
 
         return answ

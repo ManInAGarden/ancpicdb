@@ -957,7 +957,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		self.m_fluffyDeathYearSPC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 2100, 0 )
 		gbSizer2.Add( self.m_fluffyDeathYearSPC, wx.GBPosition( 4, 4 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
-		self.m_infotextTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.TE_MULTILINE|wx.TE_WORDWRAP )
+		self.m_infotextTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_BESTWRAP|wx.TE_MULTILINE )
 		self.m_infotextTB.SetMinSize( wx.Size( -1,100 ) )
 		self.m_infotextTB.SetMaxSize( wx.Size( 400,300 ) )
 

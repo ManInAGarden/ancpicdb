@@ -21,6 +21,23 @@ class FluffyMonthCat(sqp.PCatalog):
      _cattype = "FLUF_MONTH"
      _langsensitive = True
 
+     def _as_number(self):
+          months = ["NOMONTH", 
+                  "MONTH01",
+                  "MONTH02"
+                  "MONTH03"
+                  "MONTH04"
+                  "MONTH05"
+                  "MONTH06"
+                  "MONTH07"
+                  "MONTH08"
+                  "MONTH09"
+                  "MONTH10"
+                  "MONTH11"
+                  "MONTH12"]
+          
+          return months.index(self.code)
+
 class _InfoBit(sqp.PBase):
      TargetId = sqp.UUid()
      InfoContent = sqp.String()
