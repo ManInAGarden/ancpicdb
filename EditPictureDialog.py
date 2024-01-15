@@ -161,9 +161,10 @@ class EditPictureDialog(gg.geditPictureDialog):
 
         self.m_staticBM = wx.StaticBitmap(self.m_bitmapPAN, bitmap=bm)
         
-    def uploadDocument(self, event):
+    def uploadPicture(self, event):
         if self._picture.filepath is not None:
             GuiHelper.show_error("Bitte entferne zuerst das bereits angehängte Bild")
+            return
 
         with wx.FileDialog(self, "Dateiauswahl", wildcard="Bitmap Dateien |*.png; *.bmp; *.jpg; *.jpeg| Alle Dateien | *.*",
                        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
@@ -181,6 +182,20 @@ class EditPictureDialog(gg.geditPictureDialog):
                 wx.LogError("Cannot open file '%s'." % pathname)
 
         self._display_document()
+
+    def downloadPicture(self, event):
+        if self._picture.filepath is None:
+            return
+        
+        dd = wx.DirDialog(self, "Zielpfad auswählen")
+        ddres = dd.ShowModal()
+        if ddres != wx.ID_OK:
+            return
+        
+        targpath = dd.GetPath()
+        fname = self._docarchive.extract_file(self._picture.filepath, targpath)
+
+        GuiHelper.show_message("Die Datei wurde nach {} aus dem Archiv heruntergeladen".format(fname))
 
     def removePicture(self, event):
         res = wx.MessageBox(parent=self,
@@ -240,3 +255,5 @@ class EditPictureDialog(gg.geditPictureDialog):
                 self._picture.pictinfobits.pop(remid)
 
             self._fill_ibcols()
+
+        

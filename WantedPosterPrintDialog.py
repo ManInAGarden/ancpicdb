@@ -7,26 +7,8 @@ import GeneratedGUI as gg
 from PersistClasses import Person, FullPerson
 import sqlitepersist as sqp
 from GuiHelper import GuiHelper
-from WantedPoster import WantedPoster
+from WantedPoster import WantedPoster, PicSizeEnum
 from DocArchiver import DocArchiver
-
-def getbm(mocode : str):
-    mos = ["NOMONTH",
-           "MONTH01", 
-           "MONTH02", 
-           "MONTH03", 
-           "MONTH04", 
-           "MONTH05", 
-           "MONTH06", 
-           "MONTH07", 
-           "MONTH08", 
-           "MONTH09", 
-           "MONTH10", 
-           "MONTH11", 
-           "MONTH12"]
-    
-    return mos.index(mocode)
-    
 
 class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
 
@@ -78,7 +60,7 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
             else:
                 by = 0
             if p.birthmonth is not None:
-                bm = getbm(p.birthmonth.code)
+                bm = p.birthmonth._as_number()
             else:
                 bm = 0
 
@@ -110,11 +92,20 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
         self.m_personsCHLB.InsertItems(ps, 0)
         self.m_personsCHLB.SetCheckedItems(seli)
         
+    def _set_picsize(self, pics):
+        match pics:
+            case PicSizeEnum.PS6X9:
+                self.m_6x9RB.SetValue(True)
+            case PicSizeEnum.PS9X13:
+                self.m_9X13RB.SetValue(True)
+
     def _fill_gui(self):
         self._fillplist()
         GuiHelper.set_val(self.m_newPagePerPersoneCB, self._wpconf.posterconf.newpgperperson)
         GuiHelper.set_val(self.m_addSignificantPicturesCB, self._wpconf.posterconf.includepics)
         GuiHelper.set_val(self.m_targetFileFPI, self._wpconf.posterconf.targetfile)
+        GuiHelper.set_val(self.m_numPicsPerPersSPCT, self._wpconf.posterconf.maxpic)
+        self._set_picsize(self._wpconf.posterconf.picsize)
 
     def _refresh_handled_persons(self):
         checkits = self.m_personsCHLB.GetCheckedItems()
@@ -135,10 +126,20 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
 
         return res
         
+    def _get_picsize(self):
+        if self.m_6x9RB.GetValue() == True:
+            return PicSizeEnum.PS6X9
+        elif self.m_9X13RB.GetValue() == True:
+            return PicSizeEnum.PS9X13
+        else:
+            raise Exception("Bildgröße konnte aus den GUI Elementen nicht ermittelt werden.")
+        
     def _refresh_wpconfig(self):
         self._wpconf.posterconf.newpgperperson = GuiHelper.get_val(self.m_newPagePerPersoneCB)
         self._wpconf.posterconf.includepics = GuiHelper.get_val(self.m_addSignificantPicturesCB)
         self._wpconf.posterconf.targetfile = GuiHelper.get_val(self.m_targetFileFPI)
+        self._wpconf.posterconf.maxpic = GuiHelper.get_val(self.m_numPicsPerPersSPCT)
+        self._wpconf.posterconf.picsize = self._get_picsize()
 
     def doClose(self, event):
         self.EndModal(wx.ID_OK)

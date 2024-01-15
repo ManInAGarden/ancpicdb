@@ -1,5 +1,6 @@
 
 import copy
+from enum import Enum
 from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -11,6 +12,10 @@ import PIL as pil
 from PersistClasses import Person, FullPerson
 from DocArchiver import DocArchiver
 
+class PicSizeEnum(Enum):
+    PS6X9 = 0
+    PS9X13 = 1
+
 class WantedPoster(object):
     
     class PosterConfig(object):
@@ -19,6 +24,7 @@ class WantedPoster(object):
             self.targetfile = None
             self.includepics = False
             self.maxpic = 3
+            self.picsize = PicSizeEnum(0)
 
     def __init__(self, plist : list, archiver : DocArchiver, tmppath : str, config : PosterConfig = None):
         self.styles = getSampleStyleSheet()
@@ -120,7 +126,12 @@ class WantedPoster(object):
         dt = self._get_besttakendate(pic.picture)
         return "{} {}".format(pic.subtitle, dt)
 
-    def _get_optimal_imagesize(self, fname : str, desiwidth, desiheight) -> tuple():
+    def _get_optimal_imagesize(self, fname : str, desisize) -> tuple():
+        if desisize == PicSizeEnum.PS6X9:
+            desiheight = desiwidth = 9*cm
+        elif desisize == PicSizeEnum.PS9X13:
+            desiheight = desiwidth = 13*cm
+        
         with pil.Image.open(fname) as img: 
             width, height = img.size
         
@@ -156,11 +167,15 @@ class WantedPoster(object):
         picsub = ParagraphStyle(self.styles["Normal"], alignment=TA_CENTER)
         
         story.append(Paragraph("Bilder", head3s))
+        picct = 0
         for pic in qualipics:
             #append picture
+            picct += 1
+            if picct > self._posterconfig.maxpic:
+                break
             
             path_to_file = self._archiver.extract_file(pic.picture.filepath, self._archtemp)
-            w,h = self._get_optimal_imagesize(path_to_file, 13.0*cm, 13.0*cm)
+            w,h = self._get_optimal_imagesize(path_to_file, self._posterconfig.picsize)
             story.append(Image(path_to_file, w, h))
             st = self._calc_subtitle(pic)
             story.append(Paragraph(st, style=picsub))

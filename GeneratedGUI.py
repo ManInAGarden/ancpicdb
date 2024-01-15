@@ -18,7 +18,7 @@ import wx.adv
 class AncPicDBMain ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AncPicDB", pos = wx.DefaultPosition, size = wx.Size( 964,619 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AncPicDB", pos = wx.DefaultPosition, size = wx.Size( 1061,602 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -732,7 +732,8 @@ class geditPictureDialog ( wx.Dialog ):
 		self.m_addPictBitInfoBU.Bind( wx.EVT_BUTTON, self.addInfoBit )
 		self.m_editPictBitInfoBU.Bind( wx.EVT_BUTTON, self.editInfoBit )
 		self.m_deletePictBitInfoBU.Bind( wx.EVT_BUTTON, self.removeInfoBit )
-		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadDocument )
+		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadPicture )
+		self.m_downloadBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
 		self.m_button23.Bind( wx.EVT_BUTTON, self.removePicture )
 
 	def __del__( self ):
@@ -750,7 +751,10 @@ class geditPictureDialog ( wx.Dialog ):
 	def removeInfoBit( self, event ):
 		event.Skip()
 
-	def uploadDocument( self, event ):
+	def uploadPicture( self, event ):
+		event.Skip()
+
+	def downloadPicture( self, event ):
 		event.Skip()
 
 	def removePicture( self, event ):
@@ -1543,7 +1547,7 @@ class gPictureFilterDialog ( wx.Dialog ):
 class gEditSignifcPictureDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bildzuordnung an Person bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 349,189 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bildzuordnung an Person bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 517,252 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -1590,7 +1594,7 @@ class gEditSignifcPictureDialog ( wx.Dialog ):
 		m_sdbSizer12.AddButton( self.m_sdbSizer12Cancel )
 		m_sdbSizer12.Realize();
 
-		gbSizer16.Add( m_sdbSizer12, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.EXPAND, 5 )
+		gbSizer16.Add( m_sdbSizer12, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 
 		gbSizer16.AddGrowableCol( 1 )
@@ -1629,7 +1633,7 @@ class gWantedPosterPrintDialog ( wx.Dialog ):
 		self.m_personsCHLB = wx.CheckListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_personsCHLBChoices, wx.LB_MULTIPLE )
 		self.m_personsCHLB.SetToolTip( u"Markierte Personen werden bei der Steckbriefproduktion behandelt" )
 
-		gbSizer17.Add( self.m_personsCHLB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer17.Add( self.m_personsCHLB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_newPagePerPersoneCB = wx.CheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_newPagePerPersoneCB.SetValue(True)
@@ -1643,16 +1647,40 @@ class gWantedPosterPrintDialog ( wx.Dialog ):
 		self.m_addSignificantPicturesCB = wx.CheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		gbSizer17.Add( self.m_addSignificantPicturesCB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
+		self.m_staticText60 = wx.StaticText( self, wx.ID_ANY, u"Anzahl Bilder/Person:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText60.Wrap( -1 )
+
+		gbSizer17.Add( self.m_staticText60, wx.GBPosition( 3, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_numPicsPerPersSPCT = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 0, 10, 3 )
+		gbSizer17.Add( self.m_numPicsPerPersSPCT, wx.GBPosition( 3, 3 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText62 = wx.StaticText( self, wx.ID_ANY, u"Bildgröße:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText62.Wrap( -1 )
+
+		gbSizer17.Add( self.m_staticText62, wx.GBPosition( 3, 4 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		bSizer13 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_6x9RB = wx.RadioButton( self, wx.ID_ANY, u"6x9cm", wx.DefaultPosition, wx.DefaultSize, wx.RB_GROUP )
+		bSizer13.Add( self.m_6x9RB, 0, wx.ALL, 5 )
+
+		self.m_9X13RB = wx.RadioButton( self, wx.ID_ANY, u"9x13cm", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer13.Add( self.m_9X13RB, 0, wx.ALL, 5 )
+
+
+		gbSizer17.Add( bSizer13, wx.GBPosition( 3, 5 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+
 		self.m_staticText58 = wx.StaticText( self, wx.ID_ANY, u"Dateiname für Ergebnis:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText58.Wrap( -1 )
 
 		gbSizer17.Add( self.m_staticText58, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_targetFileFPI = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Wähle eine Datei aus", u"*.pdf", wx.DefaultPosition, wx.DefaultSize, wx.FLP_SAVE|wx.FLP_SMALL|wx.FLP_USE_TEXTCTRL )
-		gbSizer17.Add( self.m_targetFileFPI, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer17.Add( self.m_targetFileFPI, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-		gbSizer17.Add( self.m_staticline1, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+		gbSizer17.Add( self.m_staticline1, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 6 ), wx.EXPAND |wx.ALL, 5 )
 
 		self.m_staticText57 = wx.StaticText( self, wx.ID_ANY, u"Neue Seite je Person:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText57.Wrap( -1 )
@@ -1660,17 +1688,19 @@ class gWantedPosterPrintDialog ( wx.Dialog ):
 		gbSizer17.Add( self.m_staticText57, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_createPostersBU = wx.Button( self, wx.ID_ANY, u"Verarbeitung starten", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer17.Add( self.m_createPostersBU, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer17.Add( self.m_createPostersBU, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_closeBU = wx.Button( self, wx.ID_ANY, u"Schließen", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer17.Add( self.m_closeBU, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
+		gbSizer17.Add( self.m_closeBU, wx.GBPosition( 7, 5 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 		self.m_percdoneGA = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
 		self.m_percdoneGA.SetValue( 0 )
-		gbSizer17.Add( self.m_percdoneGA, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 5 )
+		gbSizer17.Add( self.m_percdoneGA, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 6 ), wx.ALIGN_CENTER_HORIZONTAL|wx.ALL, 5 )
 
 
 		gbSizer17.AddGrowableCol( 1 )
+		gbSizer17.AddGrowableCol( 3 )
+		gbSizer17.AddGrowableCol( 5 )
 		gbSizer17.AddGrowableRow( 0 )
 
 		self.SetSizer( gbSizer17 )
