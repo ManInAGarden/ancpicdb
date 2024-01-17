@@ -69,6 +69,8 @@ class AncPicDBMain ( wx.Frame ):
 		self.SetMenuBar( self.m_mainMenuBar )
 
 		self.m_mainWindowSB = self.CreateStatusBar( 1, wx.STB_SIZEGRIP, wx.ID_ANY )
+		bSizer15 = wx.BoxSizer( wx.VERTICAL )
+
 		m_mainGBSIZER = wx.GridBagSizer( 0, 0 )
 		m_mainGBSIZER.SetFlexibleDirection( wx.BOTH )
 		m_mainGBSIZER.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -122,7 +124,7 @@ class AncPicDBMain ( wx.Frame ):
 		gbSizer4.Add( self.m_staticText10, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		m_picturesLBChoices = []
-		self.m_picturesLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_picturesLBChoices, 0 )
+		self.m_picturesLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_picturesLBChoices, wx.LB_HSCROLL )
 		gbSizer4.Add( self.m_picturesLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		m_personsEditButtonsSIZER1 = wx.BoxSizer( wx.HORIZONTAL )
@@ -157,7 +159,7 @@ class AncPicDBMain ( wx.Frame ):
 		gbSizer5.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
 		m_documentsLBChoices = []
-		self.m_documentsLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_documentsLBChoices, 0 )
+		self.m_documentsLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_documentsLBChoices, wx.LB_HSCROLL )
 		gbSizer5.Add( self.m_documentsLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText9 = wx.StaticText( self, wx.ID_ANY, u"Dokumente", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -197,7 +199,10 @@ class AncPicDBMain ( wx.Frame ):
 		m_mainGBSIZER.AddGrowableRow( 0 )
 		m_mainGBSIZER.AddGrowableRow( 1 )
 
-		self.SetSizer( m_mainGBSIZER )
+		bSizer15.Add( m_mainGBSIZER, 1, wx.EXPAND, 5 )
+
+
+		self.SetSizer( bSizer15 )
 		self.Layout()
 
 		self.Centre( wx.BOTH )
@@ -768,10 +773,12 @@ class geditPictureDialog ( wx.Dialog ):
 class gPicturesViewDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bilder sichten", pos = wx.DefaultPosition, size = wx.Size( 919,606 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bilder sichten", pos = wx.DefaultPosition, size = wx.Size( 1002,590 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
+
+		bSizer16 = wx.BoxSizer( wx.VERTICAL )
 
 		gbSizer6 = wx.GridBagSizer( 0, 0 )
 		gbSizer6.SetFlexibleDirection( wx.BOTH )
@@ -783,7 +790,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 		gbSizer6.Add( self.m_staticText11, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		m_picturesLBChoices = []
-		self.m_picturesLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_picturesLBChoices, wx.LB_SINGLE )
+		self.m_picturesLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_picturesLBChoices, wx.LB_HSCROLL|wx.LB_SINGLE )
 		gbSizer6.Add( self.m_picturesLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
@@ -821,7 +828,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
 		m_sdbSizer2.Realize();
 
-		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 		self.m_staticText49 = wx.StaticText( self, wx.ID_ANY, u"Filter:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText49.Wrap( -1 )
@@ -835,7 +842,10 @@ class gPicturesViewDialog ( wx.Dialog ):
 		gbSizer6.AddGrowableCol( 1 )
 		gbSizer6.AddGrowableRow( 1 )
 
-		self.SetSizer( gbSizer6 )
+		bSizer16.Add( gbSizer6, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+		self.SetSizer( bSizer16 )
 		self.Layout()
 
 		self.Centre( wx.BOTH )
@@ -995,7 +1005,7 @@ class gPersonEditDialog ( wx.Dialog ):
 
 		gbSizer2.Add( self.m_staticText51, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_significantPictursLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		self.m_significantPictursLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
 		gbSizer2.Add( self.m_significantPictursLCTRL, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer12 = wx.BoxSizer( wx.VERTICAL )
@@ -1042,6 +1052,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		# Connect Events
 		self.m_geburtsdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.birthDateChanged )
 		self.m_todesdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.deathDateChanged )
+		self.m_significantPictursLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.editPictureInfo )
 		self.m_addSignPicBU.Bind( wx.EVT_BUTTON, self.addPicture )
 		self.m_editSignPicBU.Bind( wx.EVT_BUTTON, self.editPictureInfo )
 		self.m_removeSignPicBU.Bind( wx.EVT_BUTTON, self.removePicture )
@@ -1057,11 +1068,12 @@ class gPersonEditDialog ( wx.Dialog ):
 	def deathDateChanged( self, event ):
 		event.Skip()
 
+	def editPictureInfo( self, event ):
+		event.Skip()
+
 	def addPicture( self, event ):
 		event.Skip()
 
-	def editPictureInfo( self, event ):
-		event.Skip()
 
 	def removePicture( self, event ):
 		event.Skip()
