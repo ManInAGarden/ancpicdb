@@ -165,5 +165,9 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
                           self._archiver, 
                           self._localarchtemp,
                           self._wpconf.posterconf)
-        wp.do_create()
+        try:
+            wp.do_create()
+            GuiHelper.show_message("Steckbriefe wurde erfolgreich nach {} geschrieben.".format(self._wpconf.posterconf.targetfile))
+        except Exception as exc:
+            GuiHelper.show_error("Unerwarter Fehler bei der Steckbriefproduktion. Text der Originalmeldung {}".format(exc))
         

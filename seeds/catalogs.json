@@ -16,6 +16,7 @@
             {"type": "DOC_TYPE", "code":"TOTENBRIEF", "value":"Totenbrief", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"DANKGEB", "value":"Danksagung Geburtstag", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"GEBANZ", "value":"Geburtsanzeige", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"ARBEITSBUCH", "value":"Arbeitsbuch", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"WEHRPASS", "value":"Wehrpass", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"ZEITAUS", "value":"Zeitungsausschnitt", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"BRIEF", "value":"Brief", "langcode":"DEU"},
