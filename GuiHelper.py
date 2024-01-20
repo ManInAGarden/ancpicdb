@@ -207,3 +207,22 @@ class GuiHelper:
                 return None
         else:
             raise Exception("Unknown control type {} in get_sqp_objval()".format(ctt))
+        
+    @classmethod
+    def _add_node(cls, ctrl, topnode, under):
+        if under is None:
+            return
+        
+        if type(under) is dict:
+            for key, val in under.items():
+                node = ctrl.AppendItem(topnode, key)
+                cls._add_node(ctrl, node, val)
+        else:
+            raise Exception("Unhandled datatype in node hierarchy")
+
+    @classmethod
+    def add_nodes(cls, ctrl, strdict : dict):
+        root = ctrl.AddRoot('invisible root')
+        for key, val in strdict.items():
+            partnode = ctrl.AppendItem(root, key)
+            cls._add_node(ctrl, partnode, val)

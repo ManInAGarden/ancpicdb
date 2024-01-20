@@ -887,7 +887,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 class gPersonEditDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Person bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 939,649 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Person bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 984,826 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -975,7 +975,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		self.m_infotextTB.SetMinSize( wx.Size( -1,100 ) )
 		self.m_infotextTB.SetMaxSize( wx.Size( 400,300 ) )
 
-		gbSizer2.Add( self.m_infotextTB, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 4 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer2.Add( self.m_infotextTB, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 4 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText7 = wx.StaticText( self, wx.ID_ANY, u"Mutter/Vater:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText7.Wrap( -1 )
@@ -998,15 +998,15 @@ class gPersonEditDialog ( wx.Dialog ):
 		m_personSDBSI.AddButton( self.m_personSDBSICancel )
 		m_personSDBSI.Realize();
 
-		gbSizer2.Add( m_personSDBSI, wx.GBPosition( 8, 0 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer2.Add( m_personSDBSI, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText51 = wx.StaticText( self, wx.ID_ANY, u"Signifikante Bilder:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText51.Wrap( -1 )
 
-		gbSizer2.Add( self.m_staticText51, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer2.Add( self.m_staticText51, wx.GBPosition( 8, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_significantPictursLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
-		gbSizer2.Add( self.m_significantPictursLCTRL, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer2.Add( self.m_significantPictursLCTRL, wx.GBPosition( 8, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer12 = wx.BoxSizer( wx.VERTICAL )
 
@@ -1026,12 +1026,20 @@ class gPersonEditDialog ( wx.Dialog ):
 		bSizer12.Add( self.m_removeSignPicBU, 0, wx.ALL, 5 )
 
 
-		gbSizer2.Add( bSizer12, wx.GBPosition( 7, 4 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+		gbSizer2.Add( bSizer12, wx.GBPosition( 8, 4 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
 
 		self.m_staticText12 = wx.StaticText( self, wx.ID_ANY, u"Infotext:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText12.Wrap( -1 )
 
-		gbSizer2.Add( self.m_staticText12, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer2.Add( self.m_staticText12, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText62 = wx.StaticText( self, wx.ID_ANY, u"Partner und Kinder", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText62.Wrap( -1 )
+
+		gbSizer2.Add( self.m_staticText62, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_partners_childrenTCTRL = wx.TreeCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE|wx.TR_HIDE_ROOT )
+		gbSizer2.Add( self.m_partners_childrenTCTRL, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 4 ), wx.ALL|wx.EXPAND, 5 )
 
 		m_bioSexCBChoices = []
 		self.m_bioSexCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_bioSexCBChoices, wx.CB_READONLY )
@@ -1043,6 +1051,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		gbSizer2.AddGrowableCol( 3 )
 		gbSizer2.AddGrowableCol( 4 )
 		gbSizer2.AddGrowableRow( 6 )
+		gbSizer2.AddGrowableRow( 7 )
 
 		self.SetSizer( gbSizer2 )
 		self.Layout()

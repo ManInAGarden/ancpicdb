@@ -183,6 +183,8 @@ class Person(sqp.PBase):
                answ += ", +{}".format(self.deathyear)
           
           return answ
+     
+    
 
 class FullPerson(Person):
      _collectionname = "Person" #do not use a separate table for this class. It's only 
@@ -191,10 +193,9 @@ class FullPerson(Person):
      Father = sqp.JoinedEmbeddedObject(targettype=Person, localid = Person.FatherId)
      Mother = sqp.JoinedEmbeddedObject(targettype=Person, localid = Person.MotherId)
      ChildrenAsFather = sqp.JoinedEmbeddedList(targettype=Person, foreignid=Person.FatherId)
-     ChildrenAsMother = sqp.JoinedEmbeddedList(targettype=Person, foreignid=Person.MotherId)
+     ChildrenAsMother = sqp.JoinedEmbeddedList(targettype=Person, foreignid=Person.MotherId)     
+
      
-
-
 def ewn(val):
      if val is None:
           return ""

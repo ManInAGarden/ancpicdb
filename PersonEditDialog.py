@@ -3,7 +3,7 @@ from dateutil.relativedelta import relativedelta
 import wx
 import wx.adv
 import GeneratedGUI as gg
-from PersistClasses import Person, SexCat, FluffyMonthCat, PersonPictureInter
+from PersistClasses import Person, SexCat, FluffyMonthCat, PersonPictureInter, FullPerson
 import sqlitepersist as sqp
 from GuiHelper import GuiHelper
 from AddPictureDialog import AddPictureDialog
@@ -35,6 +35,44 @@ class PersonEditDialog(gg.gPersonEditDialog):
         #biosexes
         q = sqp.SQQuery(self._fact, SexCat).where(SexCat.LangCode=="DEU").order_by(SexCat.Value)
         self._biosexes = list(q)
+
+    def _get_other_parent(self, ch, par):
+        """gets a string repr of the other parent of a child. Returns "Unbekannter Partner" if there's no other parent"""
+        if ch.motherid != par._id:
+            otherid = ch.motherid
+        elif ch.fatherid != par._id:
+            otherid = ch.fatherid
+        else:
+            otherid = None
+
+        if otherid is None:
+            return "Unbekannter Partner"
+        
+        otherpar = sqp.SQQuery(self._fact, Person).where(Person.Id == otherid).first_or_default(None)
+
+        return otherpar.as_string()
+
+    def _get_children_nodes(self, p : Person):
+        """returns a dictionary with partners as top nodes and children as subnodes"""
+        fullp = sqp.SQQuery(self._fact, FullPerson).where(FullPerson.Id==p._id).first_or_default(None)
+        self._fact.fill_joins(fullp,
+                              FullPerson.ChildrenAsFather,
+                              FullPerson.ChildrenAsMother)
+        if fullp is None:
+            raise Exception("Unbehandelte Ausnahme. FullPerson nicht gefunden in _get_children")
+        
+        allchildren = fullp.childrenasfather + fullp.childrenasmother
+        answ = {}
+
+        for child in allchildren:
+            par = self._get_other_parent(child, p)
+            if par not in answ:
+                answ[par] = {}
+
+            answ[par][child.as_string()] = None
+
+        return answ
+
 
     def showmodal(self):
         if self._person != None:
@@ -142,15 +180,20 @@ class PersonEditDialog(gg.gPersonEditDialog):
         GuiHelper.set_val(self.m_fluffyDeathMonthCB, p.deathmonth, self._flufmonths)
         GuiHelper.set_val(self.m_fluffyDeathYearSPC, p.deathyear, self._flufmonths)
         
+        pns = self._get_children_nodes(self._person)
+        GuiHelper.add_nodes(self.m_partners_childrenTCTRL, pns)
+
         self._fillpicturelist(p)
         
         self._tune_fluffies()
 
         #now fill mother and father
         #manipulate combo-boxes so that only older persons can be selected and not the person himself can be selected
-        cdd = self.Parent.configuration.get_value("gui", "childdeltayears")
-        if cdd is None: cdd = 16
-        
+        cmina = self.Parent.configuration.get_value("gui", "minageforparent")
+        cmaxa = self.Parent.configuration.get_value("gui", "maxageforparent")
+        if cmina is None: cmina = 16 #defaults
+        if cmaxa is None: cmaxa = 70
+
         if p.birthdate is not None:
             bd = p.birthdate
         elif p.birthyear is not None and p.birthyear > 0:
@@ -160,30 +203,65 @@ class PersonEditDialog(gg.gPersonEditDialog):
             else: 
                 bd = datetime.datetime(p.birthyear, 12, 31)
         else:
-            bd = datetime.datetime.today()
+            bd = None
 
-        refdate = bd - relativedelta(years=cdd)
-        refyear = refdate.year
+        if bd is not None: #we have at least a birthyear
+            refdate = bd - relativedelta(years=cmina)
+            minrefdate = bd - relativedelta(years=cmaxa)
+            refyear = refdate.year
+            minrefyear = minrefdate.year
         
-        #fill mother and father combos
-        q = sqp.SQQuery(self._fact, Person).where(((Person.Birthdate < refdate) 
-                                                    | (Person.BirthYear < refyear)
-                                                    | (sqp.IsNone(Person.Birthdate)))
-                                                  & (Person.BioSex == "MALE")).order_by(Person.FirstName)
-        self._pfathers = list(q) #rember possible fathers for selection change
+            #fill mother and father combos by only selecting persons that may be parents of the current person
+            q = sqp.SQQuery(self._fact, Person).where(
+                                                        (
+                                                            (
+                                                                sqp.IsNone(Person.Birthdate) & ((sqp.IsNone(Person.BirthYear)) | (Person.BirthYear == 0))
+                                                            )
+                                                        |
+                                                        (
+                                                            (
+                                                                (Person.Birthdate < refdate) | ((Person.BirthYear < refyear) & (Person.BirthYear>0))
+                                                            )
+                                                            &
+                                                            (
+                                                                (Person.Birthdate > minrefdate) | (Person.BirthYear > minrefyear)
+                                                            )
+                                                        )
+                                                     )
+                                                     & (Person.BioSex == "MALE")).order_by(Person.FirstName)
+            self._pfathers = list(q) #remember possible fathers for selection change
+        
+            q = sqp.SQQuery(self._fact, Person).where((
+                                                            (
+                                                                sqp.IsNone(Person.Birthdate) & ((sqp.IsNone(Person.BirthYear)) | (Person.BirthYear == 0))
+                                                            )
+                                                        |
+                                                        (
+                                                            (
+                                                                (Person.Birthdate < refdate) | ((Person.BirthYear < refyear) & (Person.BirthYear>0))
+                                                            )
+                                                            &
+                                                            (
+                                                                (Person.Birthdate > minrefdate) | (Person.BirthYear > minrefyear)
+                                                            )
+                                                        )
+                                                     )
+                                                     & (Person.BioSex == "FEMALE")).order_by(Person.FirstName)
+            self._pmothers = list(q) #rember possible mothers for selection change
+        else: #we have no hint when the person was born so we need to offer any other person as mother or father
+            self._pfathers = sqp.SQQuery(self._fact, Person).where(Person.BioSex=="MALE").as_list()
+            self._pmothers = sqp.SQQuery(self._fact, Person).where(Person.BioSex=="FEMALE").as_list()
+
+        #make sure any already connected father or mother is in the list.
         self._pfathers = self._assurecontains(self._pfathers, p.fatherid)
+        self._pmothers = self._assurecontains(self._pmothers, p.motherid)
+
         pfs = self._get_strlist(self._pfathers)
         self.m_fatherCB.Set(pfs)
         fatherp = self._getfirst_personidx(self._pfathers, p.fatherid)
         if fatherp is not wx.NOT_FOUND:
             self.m_fatherCB.Select(fatherp)
 
-        q = sqp.SQQuery(self._fact, Person).where(((Person.Birthdate < refdate) 
-                                                    | (Person.BirthYear < refyear)
-                                                    | (sqp.IsNone(Person.Birthdate))) 
-                                                    & (Person.BioSex == "FEMALE")).order_by(Person.FirstName)
-        self._pmothers = list(q) #rember possible mothers for selection change
-        self._pmothers = self._assurecontains(self._pmothers, self._person.motherid)
         pms = self._get_strlist(self._pmothers)
         self.m_motherCB.Set(pms)
         motherp = self._getfirst_personidx(self._pmothers, p.motherid)
