@@ -23,6 +23,7 @@ class EditPictureDialog(gg.geditPictureDialog):
     
     def __init__(self, parent, fact : sqp.SQFactory, picture : Picture):
         super().__init__(parent)
+        self._currentpic_extr = None
         self._fact = fact
         self._configuration = parent._configuration
         self._docarchive = parent.docarchive
@@ -160,6 +161,7 @@ class EditPictureDialog(gg.geditPictureDialog):
             self.m_bitmapPAN.RemoveChild(self.m_staticBM) #remove any exiting image
 
         self.m_staticBM = wx.StaticBitmap(self.m_bitmapPAN, bitmap=bm)
+        self._currentpic_extr = extr
         
     def uploadPicture(self, event):
         if self._picture.filepath is not None:
@@ -182,6 +184,14 @@ class EditPictureDialog(gg.geditPictureDialog):
                 wx.LogError("Cannot open file '%s'." % pathname)
 
         self._display_document()
+
+    def viewPicture(self, event):
+        if self._currentpic_extr is None:
+            return
+        try:
+            GuiHelper.openbysys(self._currentpic_extr)
+        except Exception as exc:
+            GuiHelper.show_error("Unbehandelter Fehler beim Versuch das Bild zu öffnen.\nText der Originalmeldung: {}".format(exc))
 
     def downloadPicture(self, event):
         if self._picture.filepath is None:

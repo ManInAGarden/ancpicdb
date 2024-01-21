@@ -1,3 +1,4 @@
+import os, subprocess, platform
 import wx
 import logging
 import sqlitepersist as sqp
@@ -226,3 +227,17 @@ class GuiHelper:
         for key, val in strdict.items():
             partnode = ctrl.AppendItem(root, key)
             cls._add_node(ctrl, partnode, val)
+
+    @classmethod
+    def openbysys(cls, filepath):
+        if not os.path.isfile(filepath):
+            cls.show_error("Der Dateipfad %s kann nicht geöffnet werden.", filepath)
+            return
+        
+        """let the operating system open a file"""
+        if platform.system() == 'Darwin':       # macOS
+            subprocess.call(('open', filepath))
+        elif platform.system() == 'Windows':    # Windows
+            os.startfile(filepath)
+        else:                                   # linux variants
+            subprocess.call(('xdg-open', filepath))

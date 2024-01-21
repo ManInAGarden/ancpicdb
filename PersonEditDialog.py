@@ -180,8 +180,10 @@ class PersonEditDialog(gg.gPersonEditDialog):
         GuiHelper.set_val(self.m_fluffyDeathMonthCB, p.deathmonth, self._flufmonths)
         GuiHelper.set_val(self.m_fluffyDeathYearSPC, p.deathyear, self._flufmonths)
         
-        pns = self._get_children_nodes(self._person)
-        GuiHelper.add_nodes(self.m_partners_childrenTCTRL, pns)
+        if p._id is not None:
+            #searching for children only works when p has already been saved to the db
+            pns = self._get_children_nodes(self._person)
+            GuiHelper.add_nodes(self.m_partners_childrenTCTRL, pns)
 
         self._fillpicturelist(p)
         

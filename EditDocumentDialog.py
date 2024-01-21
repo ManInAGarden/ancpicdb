@@ -1,5 +1,4 @@
 import tempfile as tmpf
-import os, subprocess, platform
 import datetime
 import wx
 import wx.adv
@@ -170,14 +169,6 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         except IOError:
             wx.LogError("Cannot open file '%s'." % pathname)
 
-    def _openbysys(self, filepath):
-        """let the operating system open a file"""
-        if platform.system() == 'Darwin':       # macOS
-            subprocess.call(('open', filepath))
-        elif platform.system() == 'Windows':    # Windows
-            os.startfile(filepath)
-        else:                                   # linux variants
-            subprocess.call(('xdg-open', filepath))
 
     def viewDocument(self, event):
         """download the document temporarily and view it with whatever the op-system wants to open it with"""
@@ -186,7 +177,7 @@ class EditDocumentDialog(gg.geditDocumentDialog):
             return
 
         extrpname = self._downloadtotemp(self._document.filepath)
-        self._openbysys(extrpname)
+        GuiHelper.openbysys(extrpname)
 
     def addInfoBit(self, event):
         newib = DocumentInfoBit(targetid = self._document._id,

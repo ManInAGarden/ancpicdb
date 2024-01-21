@@ -703,6 +703,11 @@ class geditPictureDialog ( wx.Dialog ):
 
 		bSizer6.Add( self.m_uploadBU, 0, wx.ALL, 5 )
 
+		self.m_viewBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_viewBU.SetBitmap( wx.Bitmap( u"ressources/Visible-32.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer6.Add( self.m_viewBU, 0, wx.ALL, 5 )
+
 		self.m_downloadBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_downloadBU.SetBitmap( wx.Bitmap( u"ressources/Download.png", wx.BITMAP_TYPE_ANY ) )
@@ -738,6 +743,7 @@ class geditPictureDialog ( wx.Dialog ):
 		self.m_editPictBitInfoBU.Bind( wx.EVT_BUTTON, self.editInfoBit )
 		self.m_deletePictBitInfoBU.Bind( wx.EVT_BUTTON, self.removeInfoBit )
 		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadPicture )
+		self.m_viewBU.Bind( wx.EVT_BUTTON, self.viewPicture )
 		self.m_downloadBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
 		self.m_button23.Bind( wx.EVT_BUTTON, self.removePicture )
 
@@ -757,6 +763,9 @@ class geditPictureDialog ( wx.Dialog ):
 		event.Skip()
 
 	def uploadPicture( self, event ):
+		event.Skip()
+
+	def viewPicture( self, event ):
 		event.Skip()
 
 	def downloadPicture( self, event ):

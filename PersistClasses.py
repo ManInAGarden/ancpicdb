@@ -125,7 +125,11 @@ class PersonPictureInter(sqp.PBase):
           if self.position is None or self.position==0:
                return "x. [{}] {}".format(self.picture.readableid, self.picture.title)
           else:
-               return "{}. [{}] {}".format(self.position, self.picture.readableid, self.subtitle)
+               if self.subtitle is None or len(self.subtitle)==0:
+                    return "{}. [{}] {}".format(self.position, self.picture.readableid, self.picture.title)
+               else:
+                    return "{}. [{}] {}".format(self.position, self.picture.readableid, self.subtitle)
+          
 class Person(sqp.PBase):
      Name = sqp.String()
      FirstName = sqp.String()
