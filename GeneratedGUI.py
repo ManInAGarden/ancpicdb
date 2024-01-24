@@ -55,6 +55,9 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_menuItem9 = wx.MenuItem( self.m_menu4, wx.ID_ANY, u"Steckbriefe produzieren", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_menu4.Append( self.m_menuItem9 )
 
+		self.m_menuItem10 = wx.MenuItem( self.m_menu4, wx.ID_ANY, u"Daten prüfen", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu4.Append( self.m_menuItem10 )
+
 		self.m_mainMenuBar.Append( self.m_menu4, u"Extras" )
 
 		self.m_helpMenu = wx.Menu()
@@ -214,6 +217,7 @@ class AncPicDBMain ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.openViewDocumentsDialog, id = self.m_documentsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.printWantedPosters, id = self.m_menuItem9.GetId() )
+		self.Bind( wx.EVT_MENU, self.doDataCheck, id = self.m_menuItem10.GetId() )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX, self.personSelected )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editExistingPerson )
 		self.m_newPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editNewPerson )
@@ -250,6 +254,9 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def printWantedPosters( self, event ):
+		event.Skip()
+
+	def doDataCheck( self, event ):
 		event.Skip()
 
 	def personSelected( self, event ):
@@ -1751,6 +1758,83 @@ class gWantedPosterPrintDialog ( wx.Dialog ):
 		event.Skip()
 
 	def doClose( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gDataCheckerDialog
+###########################################################################
+
+class gDataCheckerDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Datenprüfung", pos = wx.DefaultPosition, size = wx.Size( 521,381 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		bSizer16 = wx.BoxSizer( wx.VERTICAL )
+
+		gbSizer18 = wx.GridBagSizer( 0, 0 )
+		gbSizer18.SetFlexibleDirection( wx.BOTH )
+		gbSizer18.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		bSizer17 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_picturesCB = wx.CheckBox( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		self.m_picturesCB.SetValue(True)
+		bSizer17.Add( self.m_picturesCB, 0, wx.ALL, 5 )
+
+		self.m_documentsCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		self.m_documentsCB.SetValue(True)
+		bSizer17.Add( self.m_documentsCB, 0, wx.ALL, 5 )
+
+		self.m_personsCB = wx.CheckBox( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		self.m_personsCB.SetValue(True)
+		bSizer17.Add( self.m_personsCB, 0, wx.ALL, 5 )
+
+
+		gbSizer18.Add( bSizer17, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+
+		self.m_staticText63 = wx.StaticText( self, wx.ID_ANY, u"Durchzuführende Prüfungen:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText63.Wrap( -1 )
+
+		gbSizer18.Add( self.m_staticText63, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_button44 = wx.Button( self, wx.ID_ANY, u"Start Prüfungen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer18.Add( self.m_button44, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer18.Add( self.m_staticline2, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText65 = wx.StaticText( self, wx.ID_ANY, u"Ergebnisse:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText65.Wrap( -1 )
+
+		gbSizer18.Add( self.m_staticText65, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_chkResultsTCTR = wx.TreeCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TR_DEFAULT_STYLE|wx.TR_HIDE_ROOT )
+		gbSizer18.Add( self.m_chkResultsTCTR, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer18.AddGrowableCol( 1 )
+		gbSizer18.AddGrowableRow( 5 )
+
+		bSizer16.Add( gbSizer18, 1, wx.EXPAND, 5 )
+
+
+		self.SetSizer( bSizer16 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_button44.Bind( wx.EVT_BUTTON, self.doStartChecks )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def doStartChecks( self, event ):
 		event.Skip()
 
 

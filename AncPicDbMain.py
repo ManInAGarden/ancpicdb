@@ -19,6 +19,7 @@ from AddPictureDialog import AddPictureDialog
 from AddDocumentDialog import AddDocumentDialog
 from EditDocumentDialog import EditDocumentDialog
 from GroupsViewDialog import GroupsViewDialog
+from DataCheckerDialog import DataCheckerDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
 from WantedPosterPrintDialog import WantedPosterPrintDialog
@@ -487,7 +488,10 @@ class AncPicDbMain(gg.AncPicDBMain):
         if res == wx.ID_OK:
             self._wantedconfig = wpdial.wpconf
 
-        pass
+    def doDataCheck(self, event):
+        chkdial = DataCheckerDialog(self, self._fact)
+        chkdial.showmodal()
+
 
 if __name__ == '__main__':
     app = wx.App()
