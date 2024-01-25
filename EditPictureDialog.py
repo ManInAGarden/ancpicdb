@@ -1,5 +1,6 @@
 import os
 import shutil
+import copy
 import tempfile as tmpf
 import datetime
 import wx
@@ -34,7 +35,7 @@ class EditPictureDialog(gg.geditPictureDialog):
         self.machlabel = self._configuration.get_value("gui", "machlabel")
         if self.machlabel is None:
             self.machlabel = "XXXX"
-        self._picture = picture
+        self._picture = copy.copy(picture)
         self.m_staticBM = None
         self._create_infobit_cols()
 

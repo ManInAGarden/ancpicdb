@@ -490,7 +490,8 @@ class AncPicDbMain(gg.AncPicDBMain):
 
     def doDataCheck(self, event):
         chkdial = DataCheckerDialog(self, self._fact)
-        chkdial.showmodal()
+        res = chkdial.showmodal()
+        self.refresh_dash()
 
 
 if __name__ == '__main__':

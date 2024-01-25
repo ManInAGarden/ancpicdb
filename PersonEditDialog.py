@@ -1,4 +1,5 @@
 import datetime
+import copy
 from dateutil.relativedelta import relativedelta
 import wx
 import wx.adv
@@ -10,10 +11,11 @@ from AddPictureDialog import AddPictureDialog
 from EditSignifcPictureDialog import EditSignifcPictureDialog
 
 class PersonEditDialog(gg.gPersonEditDialog):
+
     def __init__(self, parent, fact, dta : Person):
         super().__init__(parent)
         self._fact = fact
-        self._person = dta
+        self._person = copy.copy(dta)
         self._configuration = parent.configuration
         self._init_gui()
         
@@ -296,11 +298,15 @@ class PersonEditDialog(gg.gPersonEditDialog):
             motherp = self.m_motherCB.GetSelection()
             if motherp is not wx.NOT_FOUND:
                 self._person.motherid = self._pmothers[motherp]._id
+            else:
+                self._person.motherid = None
 
         if len(self._pfathers)>0:
             fatherp = self.m_fatherCB.GetSelection()
             if fatherp is not wx.NOT_FOUND:
                 self._person.fatherid = self._pfathers[fatherp]._id
+            else:
+                self._person.fatherid = None
 
         self._fact.flush(self._person)
         return self._person
@@ -350,3 +356,16 @@ class PersonEditDialog(gg.gPersonEditDialog):
         p.pictures = None #that means a new select wirll be done by the following fill_joins
         self._fact.fill_joins(p, Person.Pictures)
         self._fillpicturelist(p)
+
+    def removeFatherLink(self, event):
+        if self._person.fatherid is None:
+            return
+        
+        self.m_fatherCB.SetSelection(wx.NOT_FOUND)
+    
+
+    def removeMotherLink(self, event):
+        if self._person.motherid is None:
+            return
+        
+        self.m_motherCB.SetSelection(wx.NOT_FOUND)

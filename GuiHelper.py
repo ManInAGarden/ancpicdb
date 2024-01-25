@@ -219,7 +219,8 @@ class GuiHelper:
                 node = ctrl.AppendItem(topnode, key)
                 cls._add_node(ctrl, node, val)
         else:
-            raise Exception("Unhandled datatype in node hierarchy")
+            ctrl.SetItemData(topnode, under)
+            #raise Exception("Unhandled datatype in node hierarchy")
 
     @classmethod
     def add_nodes(cls, ctrl, strdict : dict):

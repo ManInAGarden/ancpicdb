@@ -998,14 +998,38 @@ class gPersonEditDialog ( wx.Dialog ):
 
 		gbSizer2.Add( self.m_staticText7, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
+		gbSizer19 = wx.GridBagSizer( 0, 0 )
+		gbSizer19.SetFlexibleDirection( wx.BOTH )
+		gbSizer19.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
 		m_motherCBChoices = []
-		self.m_motherCB = wx.ComboBox( self, wx.ID_ANY, u"X", wx.DefaultPosition, wx.DefaultSize, m_motherCBChoices, wx.CB_DROPDOWN|wx.CB_READONLY )
+		self.m_motherCB = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, m_motherCBChoices, wx.CB_READONLY )
 		self.m_motherCB.SetSelection( 0 )
-		gbSizer2.Add( self.m_motherCB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer19.Add( self.m_motherCB, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_removeMotherBUT = wx.Button( self, wx.ID_ANY, u"X", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		gbSizer19.Add( self.m_removeMotherBUT, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+
+		gbSizer19.AddGrowableCol( 0 )
+
+		gbSizer2.Add( gbSizer19, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 2 ), wx.EXPAND, 5 )
+
+		gbSizer20 = wx.GridBagSizer( 0, 0 )
+		gbSizer20.SetFlexibleDirection( wx.BOTH )
+		gbSizer20.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
 		m_fatherCBChoices = []
-		self.m_fatherCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_fatherCBChoices, wx.CB_DROPDOWN|wx.CB_READONLY )
-		gbSizer2.Add( self.m_fatherCB, wx.GBPosition( 5, 3 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_fatherCB = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, m_fatherCBChoices, wx.CB_READONLY )
+		gbSizer20.Add( self.m_fatherCB, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_removeFatherBUT = wx.Button( self, wx.ID_ANY, u"X", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		gbSizer20.Add( self.m_removeFatherBUT, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+
+		gbSizer20.AddGrowableCol( 0 )
+
+		gbSizer2.Add( gbSizer20, wx.GBPosition( 5, 3 ), wx.GBSpan( 1, 2 ), wx.EXPAND, 5 )
 
 		m_personSDBSI = wx.StdDialogButtonSizer()
 		self.m_personSDBSIOK = wx.Button( self, wx.ID_OK )
@@ -1077,6 +1101,8 @@ class gPersonEditDialog ( wx.Dialog ):
 		# Connect Events
 		self.m_geburtsdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.birthDateChanged )
 		self.m_todesdatumDP.Bind( wx.adv.EVT_DATE_CHANGED, self.deathDateChanged )
+		self.m_removeMotherBUT.Bind( wx.EVT_BUTTON, self.removeMotherLink )
+		self.m_removeFatherBUT.Bind( wx.EVT_BUTTON, self.removeFatherLink )
 		self.m_significantPictursLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.editPictureInfo )
 		self.m_addSignPicBU.Bind( wx.EVT_BUTTON, self.addPicture )
 		self.m_editSignPicBU.Bind( wx.EVT_BUTTON, self.editPictureInfo )
@@ -1091,6 +1117,12 @@ class gPersonEditDialog ( wx.Dialog ):
 		event.Skip()
 
 	def deathDateChanged( self, event ):
+		event.Skip()
+
+	def removeMotherLink( self, event ):
+		event.Skip()
+
+	def removeFatherLink( self, event ):
 		event.Skip()
 
 	def editPictureInfo( self, event ):
@@ -1828,6 +1860,7 @@ class gDataCheckerDialog ( wx.Dialog ):
 
 		# Connect Events
 		self.m_button44.Bind( wx.EVT_BUTTON, self.doStartChecks )
+		self.m_chkResultsTCTR.Bind( wx.EVT_TREE_ITEM_ACTIVATED, self.errorTreeItemActivated )
 
 	def __del__( self ):
 		pass
@@ -1835,6 +1868,9 @@ class gDataCheckerDialog ( wx.Dialog ):
 
 	# Virtual event handlers, override them in your derived class
 	def doStartChecks( self, event ):
+		event.Skip()
+
+	def errorTreeItemActivated( self, event ):
 		event.Skip()
 
 
