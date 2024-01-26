@@ -188,6 +188,29 @@ class Person(sqp.PBase):
           
           return answ
      
+     @property
+     def cons_death_year(self):
+          """consolidated year of death"""
+          if self.deathdate is not None:
+               return self.deathdate.year
+          else:
+               if self.deathyear is not None and self.deathyear != 0:
+                    return self.deathyear
+               
+          return None
+     
+     @property
+     def cons_birth_year(self):
+          """consolidated year of birth"""
+          if self.birthdate is not None:
+               return self.birthdate.year
+          else:
+               if self.birthyear is not None and self.birthyear != 0:
+                    return self.birthyear
+               
+          return None
+               
+     
     
 
 class FullPerson(Person):

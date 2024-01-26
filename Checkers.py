@@ -42,6 +42,55 @@ class PictureChecker(_CheckerBase):
 
 class PersonChecker(_CheckerBase):
 
+    def _chk_parent(self, child : Person, parent : Person) -> bool:
+        """check wehter a given parent can be the childs parent accoirding to birthdate and deathdates of both
+            returns True when suspicous or impossible
+        """
+        #Schmutzabweiser
+        if parent is None:
+            return False
+        
+        years = 365.25
+        months = 30
+        MIN_PARENT_AGE = 14*years
+        MAX_FATHER_DEAD = 9*months
+
+        if child.birthdate is not None:
+            if parent.birthdate is not None:
+                if (child.birthdate - parent.birthdate).days < MIN_PARENT_AGE:
+                    return True
+        
+        if child.deathdate is not None:
+            if parent.deathdate is not None:
+                if child.birthdate is not None:
+                    #women can't give birth when they're dead
+                    if parent.biosex.code == "FEMALE" and (parent.deathdate < child.birthdate):
+                        return True
+                    elif parent.biosex.code == "MALE" and (parent.deathdate - child.birthdate).days < MAX_FATHER_DEAD:
+                        return True
+                    
+        if child.birthdate is not None and parent.birthdate is not None and child.deathdate is not None and parent.deathdate is not None:
+            return False
+        
+    
+        #we have no sufficient exact birth/deathdates. We try death and birthyears now
+        cdy = child.cons_death_year
+        cby = child.cons_birth_year
+        pdy = parent.cons_death_year
+        pby = parent.cons_birth_year
+
+        if cby is not None:
+            if pby is not None:
+                if (cby - pby)*years < MIN_PARENT_AGE:
+                    return True
+                
+            if pdy is not None:
+                if (pdy - cby)*years <= (-1*years):
+                    return True
+                
+        return False
+
+
     def _chk_data_consistency(self) -> dict:
         allpers = sqp.SQQuery(self._fact, FullPerson).where().as_list()
         answ = {"Geschlecht fehlt":{},
@@ -49,7 +98,10 @@ class PersonChecker(_CheckerBase):
                 "Lebensdaten unvollständig":{},
                 "Lebensdaten widersprüchlich" : {},
                 "Namensbestandteile":{},
-                "Eltern widersprüchlich":{}
+                "Eltern widersprüchlich":{},
+                "Eltern fehlen":{},
+                "Alter der Mutter verdächtig":{},
+                "Alter des Vaters verdächtig":{}
                 }
         
         for pers in allpers:
@@ -98,9 +150,17 @@ class PersonChecker(_CheckerBase):
             elif self.is_empty_str(pers.name):
                 answ["Namensbestandteile"][pers.as_string()] = pers
 
-            if pers.fatherid is not None and pers.motherid is not None and pers.fatherid == pers.motherid:
+            
+            if pers.fatherid is None and pers.motherid is None:
+                answ["Eltern fehlen"][pers.as_string()] = pers
+            elif pers.fatherid is not None and pers.motherid is not None and pers.fatherid == pers.motherid:
                 answ["Eltern widersprüchlich"][pers.as_string()] = pers
 
+            if self._chk_parent(pers, pers.father):
+                answ["Alter des Vaters verdächtig"][pers.as_string()] = pers
+            if self._chk_parent(pers, pers.mother):
+                answ["Alter der Mutter verdächtig"][pers.as_string()] = pers
+            
         return answ
     
     def do_checks(self) -> dict:
