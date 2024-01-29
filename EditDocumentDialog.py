@@ -1,5 +1,6 @@
 import tempfile as tmpf
 import datetime
+import copy
 import wx
 import wx.adv
 import sqlitepersist as sqp
@@ -22,7 +23,7 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         self._fact = fact
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration
-        self._document = document
+        self._document = copy.copy(document)
         self._temp = tmpf.gettempdir()
         self._create_infobit_cols()
 

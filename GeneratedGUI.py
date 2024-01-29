@@ -442,6 +442,7 @@ class geditDocumentDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.m_zusatzinfoLCT.Bind( wx.EVT_LEFT_DCLICK, self.editInfoBit )
 		self.m_addPictBitInfoBU.Bind( wx.EVT_BUTTON, self.addInfoBit )
 		self.m_editPictBitInfoBU.Bind( wx.EVT_BUTTON, self.editInfoBit )
 		self.m_deletePictBitInfoBU.Bind( wx.EVT_BUTTON, self.removeInfoBit )
@@ -455,11 +456,12 @@ class geditDocumentDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def editInfoBit( self, event ):
+		event.Skip()
+
 	def addInfoBit( self, event ):
 		event.Skip()
 
-	def editInfoBit( self, event ):
-		event.Skip()
 
 	def removeInfoBit( self, event ):
 		event.Skip()

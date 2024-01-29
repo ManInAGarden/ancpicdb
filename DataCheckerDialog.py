@@ -6,6 +6,7 @@ import sqlitepersist as sqp
 from Checkers import DocumentChecker, PictureChecker, PersonChecker
 from EditPictureDialog import EditPictureDialog
 from PersonEditDialog import PersonEditDialog
+from EditDocumentDialog import EditDocumentDialog
 
 class DataCheckerDialog(gg.gDataCheckerDialog):
 
@@ -41,7 +42,19 @@ class DataCheckerDialog(gg.gDataCheckerDialog):
             self._fact.flush(answ)
 
         return answ
+    
+    def _open_document_dialog(self, doc : Document):
+        """open a document dialog, returns new data when it has been updated, None otherwise"""
+        docdial = EditDocumentDialog(self, self._fact, doc)
+        res = docdial.showmodal()
+        answ = None
+        if res == wx.ID_OK:
+            answ = docdial.document
+            #flush has already been done by EditDocumentDialog in showmodal
+            #self._fact.flush(answ)
 
+        return answ
+    
 
     def _open_person_dialog(self, pers : Person):
         """Open a picture dialog, returns new data item when it  has been updated, None otherwise"""
@@ -63,7 +76,9 @@ class DataCheckerDialog(gg.gDataCheckerDialog):
         allmessages["Personen"] = pc.do_checks()
 
     def _check_documents(self, allmessages):
-        pass
+        dc = DocumentChecker(self._fact)
+        allmessages["Dokumente"] = dc.do_checks()
+
 
     def doStartChecks(self, event):
         self.m_chkResultsTCTR.DeleteAllItems()
@@ -97,6 +112,10 @@ class DataCheckerDialog(gg.gDataCheckerDialog):
             updpers = self._open_person_dialog(dta)
             if updpers is not None:
                 self.m_chkResultsTCTR.SetItemData(selid, updpers)
+        elif dtype == Document:
+            upddoc = self._open_document_dialog(dta)
+            if upddoc is not None:
+                self.m_chkResultsTCTR.SetItemData(selid, upddoc)
         else:
             GuiHelper.show_error("Unbekannter Datentyp <{}> im TreeView",
                                  dtype.__name__)

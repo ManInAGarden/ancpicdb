@@ -2223,6 +2223,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
+                        <event name="OnLeftDClick">editInfoBit</event>
                     </object>
                 </object>
                 <object class="gbsizeritem" expanded="0">
@@ -13971,7 +13972,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="1">
+        <object class="Dialog" expanded="0">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -13998,16 +13999,16 @@
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
-            <object class="wxBoxSizer" expanded="1">
+            <object class="wxBoxSizer" expanded="0">
                 <property name="minimum_size"></property>
                 <property name="name">bSizer16</property>
                 <property name="orient">wxVERTICAL</property>
                 <property name="permission">none</property>
-                <object class="sizeritem" expanded="1">
+                <object class="sizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="flag">wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxGridBagSizer" expanded="1">
+                    <object class="wxGridBagSizer" expanded="0">
                         <property name="empty_cell_size"></property>
                         <property name="flexible_direction">wxBOTH</property>
                         <property name="growablecols">1</property>
@@ -14018,23 +14019,23 @@
                         <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_SPECIFIED</property>
                         <property name="permission">none</property>
                         <property name="vgap">0</property>
-                        <object class="gbsizeritem" expanded="1">
+                        <object class="gbsizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="colspan">1</property>
                             <property name="column">0</property>
                             <property name="flag">wxEXPAND</property>
                             <property name="row">1</property>
                             <property name="rowspan">1</property>
-                            <object class="wxBoxSizer" expanded="1">
+                            <object class="wxBoxSizer" expanded="0">
                                 <property name="minimum_size"></property>
                                 <property name="name">bSizer17</property>
                                 <property name="orient">wxHORIZONTAL</property>
                                 <property name="permission">none</property>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag">wxALL</property>
                                     <property name="proportion">0</property>
-                                    <object class="wxCheckBox" expanded="1">
+                                    <object class="wxCheckBox" expanded="0">
                                         <property name="BottomDockable">1</property>
                                         <property name="LeftDockable">1</property>
                                         <property name="RightDockable">1</property>
@@ -14094,11 +14095,11 @@
                                         <property name="window_style"></property>
                                     </object>
                                 </object>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag">wxALL</property>
                                     <property name="proportion">0</property>
-                                    <object class="wxCheckBox" expanded="1">
+                                    <object class="wxCheckBox" expanded="0">
                                         <property name="BottomDockable">1</property>
                                         <property name="LeftDockable">1</property>
                                         <property name="RightDockable">1</property>
@@ -14158,11 +14159,11 @@
                                         <property name="window_style"></property>
                                     </object>
                                 </object>
-                                <object class="sizeritem" expanded="1">
+                                <object class="sizeritem" expanded="0">
                                     <property name="border">5</property>
                                     <property name="flag">wxALL</property>
                                     <property name="proportion">0</property>
-                                    <object class="wxCheckBox" expanded="1">
+                                    <object class="wxCheckBox" expanded="0">
                                         <property name="BottomDockable">1</property>
                                         <property name="LeftDockable">1</property>
                                         <property name="RightDockable">1</property>
@@ -14224,14 +14225,14 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="gbsizeritem" expanded="1">
+                        <object class="gbsizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="colspan">1</property>
                             <property name="column">0</property>
                             <property name="flag">wxALL</property>
                             <property name="row">0</property>
                             <property name="rowspan">1</property>
-                            <object class="wxStaticText" expanded="1">
+                            <object class="wxStaticText" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -14288,14 +14289,14 @@
                                 <property name="wrap">-1</property>
                             </object>
                         </object>
-                        <object class="gbsizeritem" expanded="1">
+                        <object class="gbsizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="colspan">1</property>
                             <property name="column">0</property>
                             <property name="flag">wxALL</property>
                             <property name="row">2</property>
                             <property name="rowspan">1</property>
-                            <object class="wxButton" expanded="1">
+                            <object class="wxButton" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -14365,14 +14366,14 @@
                                 <event name="OnButtonClick">doStartChecks</event>
                             </object>
                         </object>
-                        <object class="gbsizeritem" expanded="1">
+                        <object class="gbsizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="colspan">2</property>
                             <property name="column">0</property>
                             <property name="flag">wxEXPAND | wxALL</property>
                             <property name="row">3</property>
                             <property name="rowspan">1</property>
-                            <object class="wxStaticLine" expanded="1">
+                            <object class="wxStaticLine" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -14426,14 +14427,14 @@
                                 <property name="window_style"></property>
                             </object>
                         </object>
-                        <object class="gbsizeritem" expanded="1">
+                        <object class="gbsizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="colspan">1</property>
                             <property name="column">0</property>
                             <property name="flag">wxALL</property>
                             <property name="row">4</property>
                             <property name="rowspan">1</property>
-                            <object class="wxStaticText" expanded="1">
+                            <object class="wxStaticText" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -14490,14 +14491,14 @@
                                 <property name="wrap">-1</property>
                             </object>
                         </object>
-                        <object class="gbsizeritem" expanded="1">
+                        <object class="gbsizeritem" expanded="0">
                             <property name="border">5</property>
                             <property name="colspan">2</property>
                             <property name="column">0</property>
                             <property name="flag">wxALL|wxEXPAND</property>
                             <property name="row">5</property>
                             <property name="rowspan">1</property>
-                            <object class="wxTreeCtrl" expanded="1">
+                            <object class="wxTreeCtrl" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>

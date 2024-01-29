@@ -9,6 +9,7 @@
             {"type": "BIO_SEX", "code":"UNKNOWN", "value":"unbekannt", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"GEBURTURKUNDE", "value":"Geburtsurkunde", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"STERBEURKUNDE", "value":"Sterbeurkunde", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"TAUFSCHEIN", "value":"Taufschein", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"HEIRATSURKUNDE", "value":"Heiratsurkunde", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"AUSWEIS", "value":"Ausweis", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"ZEUGNIS", "value":"Zeugnis", "langcode":"DEU"},

@@ -39,6 +39,32 @@ class PictureChecker(_CheckerBase):
         subansw = self._chk_data_consistency()
 
         return subansw
+    
+class DocumentChecker(_CheckerBase):
+     
+     def _chk_data_consistency(self):
+        answ = {"Kennung fehlt":{},
+                "Titel fehlt" : {},
+                "Kein Archiveintrag":{}
+                }
+         
+        alldocs = sqp.SQQuery(self._fact, Document).where().as_list()
+        for doc in alldocs:
+            if self.is_empty_str(doc.readableid):
+                answ["Kennung fehlt"][doc.__str__()] = doc
+                     
+            if self.is_empty_str(doc.title):
+                answ["Titel fehlt"][doc.__str__()] = doc
+
+            if self.is_empty_str(doc.filepath):
+                answ["Kein Archiveintrag"][doc.__str__()] = doc
+
+        return answ
+
+     def do_checks(self) -> dict:
+        subansw = self._chk_data_consistency()
+
+        return subansw
 
 class PersonChecker(_CheckerBase):
 
@@ -168,5 +194,4 @@ class PersonChecker(_CheckerBase):
 
         return subansw
 
-class DocumentChecker(_CheckerBase):
-    pass
+

@@ -54,6 +54,7 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         self._fact.flush(doc)
         self._documents.append(doc)
         self.m_documentsLB.Append(doc.__str__())
+        self.m_documentsLB.Select(len(self._documents) - 1)
 
     def removeRow(self, event):
         seldoc, seldocpos = GuiHelper.get_selected_fromlb(self.m_documentsLB, self._documents)
