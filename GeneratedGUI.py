@@ -71,7 +71,7 @@ class AncPicDBMain ( wx.Frame ):
 
 		self.SetMenuBar( self.m_mainMenuBar )
 
-		self.m_mainWindowSB = self.CreateStatusBar( 1, wx.STB_SIZEGRIP, wx.ID_ANY )
+		self.m_mainWindowSB = self.CreateStatusBar( 4, wx.STB_DEFAULT_STYLE, wx.ID_ANY )
 		bSizer15 = wx.BoxSizer( wx.VERTICAL )
 
 		m_mainGBSIZER = wx.GridBagSizer( 0, 0 )

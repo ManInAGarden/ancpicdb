@@ -199,7 +199,7 @@ class AncPicDbMain(gg.AncPicDBMain):
     def init_gui(self):
         """fill the gui for the first time. This includes to fetch all initially needed data from the DB"""
 
-        #hevily used data with only a small number of records
+        #heavily used data with only a small number of records
         self._persons = self.get_all_persons()
 
         self.m_mainWindowSB.SetStatusText("DB: {0}".format(self._fact._dbfilename), 0)
@@ -210,6 +210,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         """do a complete refresh of the main GUI with the list of persons and the dependent list of documnents and oictures"""
 
         self._persons = self.get_all_persons()
+
         self.m_personsLB.Clear()
             
         if len(self._persons) > 0:
@@ -226,6 +227,15 @@ class AncPicDbMain(gg.AncPicDBMain):
             self.m_personsLB.SetSelection(sl)
             if sl != wx.NOT_FOUND:
                 self.refresh_dash_forp(sl)
+
+        self.m_mainWindowSB.SetStatusText("Personen: {0}".format(len(self._persons)), 1)
+        
+        allpics = sqp.SQQuery(self._fact, Picture).as_list()
+        self.m_mainWindowSB.SetStatusText("Bilder: {0}".format(len(allpics)), 2)
+
+        alldocs = sqp.SQQuery(self._fact, Document).as_list()
+        self.m_mainWindowSB.SetStatusText("Dokumente: {0}".format(len(alldocs)), 3)
+
         
 
     def get_all_persons(self):
