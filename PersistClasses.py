@@ -114,6 +114,7 @@ class PersonDocumentInter(sqp.PBase):
                                       ewn(doc.productiondate),
                                       ewn(doc.title))
 
+
 class PersonPictureInter(sqp.PBase):
      PictureId = sqp.UUid(uniquegrp="perspicunique")
      PersonId = sqp.UUid(uniquegrp="perspicunique")
@@ -146,8 +147,8 @@ class Person(sqp.PBase):
      MotherId = sqp.UUid()
      Infotext = sqp.String()
      InfoBits = sqp.JoinedEmbeddedList(targettype=PersonInfoBit, foreignid=PersonInfoBit.TargetId, cascadedelete=True)
-     Documents = sqp.IntersectedList(targettype=PersonDocumentInter, interupid="personId", interdownid="documentid")
-     Pictures = sqp.IntersectedList(targettype=PersonPictureInter, interupid="personid", interdownid="pictureid")
+     Documents = sqp.IntersectedList(targettype=PersonDocumentInter, interupid="personId", interdownid="documentid", cascadedelete=True)
+     Pictures = sqp.IntersectedList(targettype=PersonPictureInter, interupid="personid", interdownid="pictureid", cascadedelete=True)
 
      def __str__(self):
           answ = "{0} {1}".format(self.firstname, self.name)
@@ -211,7 +212,16 @@ class Person(sqp.PBase):
           return None
                
      
-    
+class PersonPictureInter_Hollow(sqp.PBase):
+     """class for person/picture intersctions to be filled as needed in a prog"""
+     _collectionname = "PersonPictureInter".lower()
+     PictureId = sqp.UUid(uniquegrp="perspicunique")
+     PersonId = sqp.UUid(uniquegrp="perspicunique")
+     Picture = sqp.JoinedEmbeddedObject(targettype=Picture, localid="pictureid", autofill=False)
+     Person = sqp.JoinedEmbeddedObject(targettype=Person, localid="personid", autofill=False)
+     Subtitle = sqp.String()
+     Position = sqp.Int(default=0)
+
 
 class FullPerson(Person):
      _collectionname = "Person" #do not use a separate table for this class. It's only 

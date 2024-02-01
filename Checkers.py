@@ -1,6 +1,6 @@
 import datetime
 import sqlitepersist as sqp
-from PersistClasses import Picture, Person, FullPerson, Document
+from PersistClasses import Picture, Person, FullPerson, Document, PersonPictureInter_Hollow
 
 class _CheckerBase():
     def __init__(self, factory):
@@ -14,16 +14,43 @@ class _CheckerBase():
 
 
 class PictureChecker(_CheckerBase):
+
+    def _chk_picwithout_pers(self, pics2chk) -> dict:
+        answ = {"Bild ohne Person":{},
+                "Bild mit fehlender Zielperson":{}}
+
+        if len(pics2chk)==0:
+            return answ
+        
+        for pic in pics2chk:
+            ppinters = sqp.SQQuery(self._fact, PersonPictureInter_Hollow).where(PersonPictureInter_Hollow.PictureId==pic._id).as_list()
+            if len(ppinters)==0:
+                answ["Bild ohne Person"][pic.__str__()]=pic
+            else:
+                for ppinter in ppinters:
+                    try:
+                        self._fact.fill_joins(ppinter, PersonPictureInter_Hollow.Person)
+                    except Exception as exc:
+                        pass
+
+                    if ppinter.person is None:
+                        answ["Bild mit fehlender Zielperson"][pic.__str__()] = pic
+                        break
+
+
+        return answ
     
-    def _chk_data_consistency(self) -> dict:
-        allpics = sqp.SQQuery(self._fact, Picture).where().as_list()
+    def _chk_data_consistency(self, pics2chk) -> dict:
         answ = {"Kennung fehlt":{},
                 "Bild ohne Gruppe":{},
                 "Titel fehlt" : {},
                 "Kein Archiveintrag":{}
                 }
         
-        for pic in allpics:
+        if len(pics2chk)==0:
+            return answ
+        
+        for pic in pics2chk:
             if self.is_empty_str(pic.readableid):
                 answ["Kennung fehlt"][pic.__str__()] = pic
             if pic.picturegroup is None:
@@ -36,9 +63,11 @@ class PictureChecker(_CheckerBase):
         return answ
     
     def do_checks(self) -> dict:
-        subansw = self._chk_data_consistency()
-
-        return subansw
+        allpics = sqp.SQQuery(self._fact, Picture).where().as_list()
+        
+        subansw = self._chk_data_consistency(allpics)
+        answ = subansw | self._chk_picwithout_pers(allpics)
+        return answ
     
 class DocumentChecker(_CheckerBase):
      
