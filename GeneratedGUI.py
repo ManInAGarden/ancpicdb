@@ -1704,6 +1704,18 @@ class gWantedPosterPrintDialog ( wx.Dialog ):
 		self.m_personsCHLB = wx.CheckListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_personsCHLBChoices, wx.LB_MULTIPLE )
 		self.m_personsCHLB.SetToolTip( u"Markierte Personen werden bei der Steckbriefproduktion behandelt" )
 
+		self.m_menu5 = wx.Menu()
+		self.m_menuItem11 = wx.MenuItem( self.m_menu5, wx.ID_ANY, u"Alle markieren", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu5.Append( self.m_menuItem11 )
+
+		self.m_menuItem12 = wx.MenuItem( self.m_menu5, wx.ID_ANY, u"Alle Markierungen entfernen", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu5.Append( self.m_menuItem12 )
+
+		self.m_menuItem13 = wx.MenuItem( self.m_menu5, wx.ID_ANY, u"Alle mit diesem Familiennamen markieren", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu5.Append( self.m_menuItem13 )
+
+		self.m_personsCHLB.Bind( wx.EVT_RIGHT_DOWN, self.m_personsCHLBOnContextMenu )
+
 		gbSizer17.Add( self.m_personsCHLB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_newPagePerPersoneCB = wx.CheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -1780,6 +1792,9 @@ class gWantedPosterPrintDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.Bind( wx.EVT_MENU, self.checkAll, id = self.m_menuItem11.GetId() )
+		self.Bind( wx.EVT_MENU, self.removeAllChecks, id = self.m_menuItem12.GetId() )
+		self.Bind( wx.EVT_MENU, self.checkAllOfFamily, id = self.m_menuItem13.GetId() )
 		self.m_createPostersBU.Bind( wx.EVT_BUTTON, self.doPrinting )
 		self.m_closeBU.Bind( wx.EVT_BUTTON, self.doClose )
 
@@ -1788,11 +1803,23 @@ class gWantedPosterPrintDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def checkAll( self, event ):
+		event.Skip()
+
+	def removeAllChecks( self, event ):
+		event.Skip()
+
+	def checkAllOfFamily( self, event ):
+		event.Skip()
+
 	def doPrinting( self, event ):
 		event.Skip()
 
 	def doClose( self, event ):
 		event.Skip()
+
+	def m_personsCHLBOnContextMenu( self, event ):
+		self.m_personsCHLB.PopupMenu( self.m_menu5, event.GetPosition() )
 
 
 ###########################################################################

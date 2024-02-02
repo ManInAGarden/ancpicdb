@@ -141,6 +141,28 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
         self._wpconf.posterconf.maxpic = GuiHelper.get_val(self.m_numPicsPerPersSPCT)
         self._wpconf.posterconf.picsize = self._get_picsize()
 
+    def removeAllChecks(self, event):
+        self.m_personsCHLB.SetCheckedItems([])
+
+    def checkAll(self, event):
+        self.m_personsCHLB.SetCheckedItems(range(len(self._allpersons)))
+
+    def checkAllOfFamily(self, event):
+        selits = self.m_personsCHLB.GetSelections()
+        if len(selits) == 0:
+            return
+
+        sels = []
+        for selit in selits:
+            selp = self._allpersons[selit]
+            ct = -1
+            for pers in self._allpersons:
+                ct += 1
+                if pers.name == selp.name:
+                    sels.append(ct)
+
+        self.m_personsCHLB.SetCheckedItems(sels)
+
     def doClose(self, event):
         self.EndModal(wx.ID_OK)
 
