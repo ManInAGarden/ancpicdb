@@ -98,7 +98,7 @@ class DocumentChecker(_CheckerBase):
 class PersonChecker(_CheckerBase):
 
     def _chk_parent(self, child : Person, parent : Person) -> bool:
-        """check wehter a given parent can be the childs parent accoirding to birthdate and deathdates of both
+        """check wehter a given parent can be the child's parent according to birthdates and deathdates of both
             returns True when suspicous or impossible
         """
         #Schmutzabweiser
@@ -121,7 +121,7 @@ class PersonChecker(_CheckerBase):
                     #women can't give birth when they're dead
                     if parent.biosex.code == "FEMALE" and (parent.deathdate < child.birthdate):
                         return True
-                    elif parent.biosex.code == "MALE" and (parent.deathdate - child.birthdate).days < MAX_FATHER_DEAD:
+                    elif parent.biosex.code == "MALE" and (child.birthdate - parent.deathdate).days > MAX_FATHER_DEAD:
                         return True
                     
         if child.birthdate is not None and parent.birthdate is not None and child.deathdate is not None and parent.deathdate is not None:
