@@ -2,6 +2,12 @@ import datetime
 import sqlitepersist as sqp
 from PersistClasses import Picture, Person, FullPerson, Document, PersonPictureInter_Hollow
 
+years = 365.25
+months = 30
+MIN_PARENT_AGE = 14*years
+MAX_FATHER_DEAD = 9*months
+MAX_PERSON_AGE = 120*years
+
 class _CheckerBase():
     def __init__(self, factory):
         self._fact = factory
@@ -11,7 +17,29 @@ class _CheckerBase():
     
     def is_empty_str(self, val : str) -> bool:
         return val is None or len(val) == 0
+    
+    def _get_month(self, m) -> int:
+        """get the month number from a month code"""
 
+        if m is None: return 0
+
+        monthes = ["NOMONTH",
+                   "MONTH01",
+                   "MONTH02",
+                   "MONTH03",
+                   "MONTH04",
+                   "MONTH05",
+                   "MONTH06",
+                   "MONTH07",
+                   "MONTH08",
+                   "MONTH09",
+                   "MONTH10",
+                   "MONTH11",
+                   "MONTH12",
+                   ]
+        
+        return monthes.index(m.code)
+        
 
 class PictureChecker(_CheckerBase):
 
@@ -96,6 +124,7 @@ class DocumentChecker(_CheckerBase):
         return subansw
 
 class PersonChecker(_CheckerBase):
+        
 
     def _chk_parent(self, child : Person, parent : Person) -> bool:
         """check wehter a given parent can be the child's parent according to birthdates and deathdates of both
@@ -105,10 +134,7 @@ class PersonChecker(_CheckerBase):
         if parent is None:
             return False
         
-        years = 365.25
-        months = 30
-        MIN_PARENT_AGE = 14*years
-        MAX_FATHER_DEAD = 9*months
+        
 
         if child.birthdate is not None:
             if parent.birthdate is not None:
@@ -136,7 +162,7 @@ class PersonChecker(_CheckerBase):
 
         if cby is not None:
             if pby is not None:
-                if (cby - pby)*years < MIN_PARENT_AGE:
+                if (cby - pby) * years < MIN_PARENT_AGE:
                     return True
                 
             if pdy is not None:
@@ -196,7 +222,7 @@ class PersonChecker(_CheckerBase):
                         answ["Lebensdaten unvollständig"][pers.as_string()] = pers
                 else:
                     age = dy - by
-                    if age > 100:
+                    if (age*years) > MAX_PERSON_AGE:
                         answ["Lebensdaten widersprüchlich"][pers.as_string()] = pers
                         
 
