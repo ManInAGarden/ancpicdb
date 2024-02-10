@@ -1,5 +1,4 @@
-
-import copy
+import datetime
 from enum import Enum
 from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
@@ -23,6 +22,8 @@ class WantedPoster(object):
             self.newpgperperson = False
             self.targetfile = None
             self.includepics = False
+            self.includedocinfo = True #add archive info for documents related to person
+            self.includepicinfo = True #add archive info for pictures related to person
             self.maxpic = 3
             self.picsize = PicSizeEnum(0)
 
@@ -126,7 +127,7 @@ class WantedPoster(object):
         dt = self._get_besttakendate(pic.picture)
         return "{} {}".format(pic.subtitle, dt)
 
-    def _get_optimal_imagesize(self, fname : str, desisize) -> tuple():
+    def _get_optimal_imagesize(self, fname : str, desisize) -> tuple:
         if desisize == PicSizeEnum.PS6X9:
             desiheight = desiwidth = 9*cm
         elif desisize == PicSizeEnum.PS9X13:
@@ -150,6 +151,132 @@ class WantedPoster(object):
             fact = hfact
 
         return (width*fact, height*fact)
+    
+    def _get_docinfo(self, doc) -> str:
+        if doc.document is None:
+            return "?"
+        
+        d = doc.document
+        answ = d.readableid + " "
+
+        if d.documentgroup is not None: answ += ", Gruppe: <i>" + d.documentgroup.name + "</i>"
+        if d.type is not None: answ += ", Dokumentart: <i>" + d.type.value + "</i>"
+
+        answ += ", Titel: <i>" + d.title + "</i>"
+
+        if d.productiondate is not None: 
+            answ += ", erstellt am: <i>" + "{}.{}.{}".format(d.productiondate.day, d.productiondate.month, d.productiondate.year) + "</i>"
+        if d.scandate is not None: 
+            answ += ", gescannt am: <i>" + "{}.{}.{}".format(d.scandate.day, d.scandate.month, d.scandate.year) + "</i>"
+
+        return answ
+    
+    def _get_picinfo(self, pic) -> str:
+        if pic.picture is None:
+            return "?"
+
+        p = pic.picture
+        answ = p.readableid + " "
+
+        if p.picturegroup is not None:
+            answ += ", Gruppe: <i>" + p.picturegroup.name + "</i>"
+
+        answ += ", Titel: <i>" + p.title + "</i>"
+        takendate = p.best_takendate
+        if takendate[2] is not None: #we have at least a year
+            taks = takendate[2].__str__()
+            if takendate[1] is not None:
+                taks = takendate[1].__str__() + "." + taks
+                if takendate[0] is not None:
+                    taks = takendate[0].__str__() + "." + taks
+
+            answ += ", aufgenommen: <i>" + taks + "</i>"
+
+        if p.scandate is not None:
+            answ += ", gescannt am: <i>" + "{}.{}.{}".format(p.scandate.day, p.scandate.month, p.scandate.year) + "</i>"
+
+        return answ
+
+    def _get_monthnumber(self, flufmo):
+        if flufmo.code == "NOMONTH": return 1
+
+        months = [
+            "NOMONTH",
+            "MONTH01",
+            "MONTH02",
+            "MONTH03",
+            "MONTH04",
+            "MONTH05",
+            "MONTH06",
+            "MONTH07",
+            "MONTH08",
+            "MONTH09",
+            "MONTH10",
+            "MONTH11",
+            "MONTH12"
+        ]
+
+        return months.index(flufmo.code)
+    
+    def _sort_docbestdate(self, val):
+        if val.document is None:
+            return datetime.datetime.now()
+        doc = val.document
+        if doc.productiondate is not None:
+            return doc.productiondate
+        elif doc.scandate is not None:
+            return doc.scandate
+        else:
+            return datetime.datetime.now()
+        
+    def _sort_picbestdate(self, val):
+        if val.picture is None:
+            return datetime.datetime.now()
+        pic = val.picture
+        if pic.takendate is not None:
+            return pic.takendate
+        elif pic.fluftakenyear is not None and pic.fluftakenyear != 0:
+            if pic.fluftakenmonth is not None:
+                m = self._get_monthnumber(pic.fluftakenmonth)
+                return datetime.datetime(pic.fluftakenyear, m, 1)
+            else:
+                return datetime.datetime(pic.fluftakenyear, 1, 1)
+        elif pic.scandate is not None:
+            return pic.scandate
+        else:
+            return datetime.datetime.now()
+        
+    def _add_docinfos(self, story, documents : list = None):
+        if documents is None:
+            return
+        
+        docs = sorted(documents, key=self._sort_docbestdate)
+        bstyle = self.styles["BodyText"]
+        head2s = self.styles["Heading2"]
+        itstyle = self.styles["Italic"]
+        
+        self._addparagraph(story, head2s, "Archivierte Dokumente")
+        
+
+        for doc in docs:
+            doctxt = self._get_docinfo(doc)
+            self._addparagraph(story, bstyle, doctxt)
+
+    def _add_picinfos(self, story, pictures : list=None):
+        if pictures is None:
+            return
+        
+        pics = sorted(pictures, key=self._sort_picbestdate)
+        bstyle = self.styles["BodyText"]
+        head2s = self.styles["Heading2"]
+        itstyle = self.styles["Italic"]
+        
+        self._addparagraph(story, head2s, "Verknüpfte Bilder")
+        
+        for pic in pics:
+            pictxt = self._get_picinfo(pic)
+            self._addparagraph(story, bstyle, pictxt)
+
 
     def _add_pictures(self, story : list, pics : list = None):
         if pics is None or len(pics) == 0:
@@ -166,7 +293,7 @@ class WantedPoster(object):
         itstyle = self.styles["Italic"]
         picsub = ParagraphStyle(self.styles["Normal"], alignment=TA_CENTER)
         
-        story.append(Paragraph("Bilder", head3s))
+        story.append(Paragraph("Bilder", head3s, keepwithnex=True))
         picct = 0
         for pic in qualipics:
             #append picture
@@ -241,7 +368,6 @@ class WantedPoster(object):
 
             children = self._get_children(p)
             if len(children) > 0:
-
                 self._addparagraph(story, head3s, "Kinder")
                 for child in children:
                     self._addparagraph(story, bstyle, self._getshortinfo(child))
@@ -249,6 +375,13 @@ class WantedPoster(object):
             #handle significant pictures
             if self._posterconfig.includepics:
                 self._add_pictures(story, p.pictures)
+
+            #include information about archived documents related to the person
+            if self._posterconfig.includedocinfo and p.documents is not None and len(p.documents)>0:
+                self._add_docinfos(story, p.documents)
+
+            if self._posterconfig.includepicinfo and p.pictures is not None and len(p.pictures)>0:
+               self._add_picinfos(story, p.pictures)
 
             #At the end we attach a pagebreak or some space to separate the persons' data
             if not self._posterconfig.newpgperperson:
@@ -259,7 +392,7 @@ class WantedPoster(object):
 
         self._doc.build(story)
 
-    def _addparagraph(self, story, style, txt : str = None ):
+    def _addparagraph(self, story, style, txt : str = None):
         if txt is None:
             return
         
@@ -267,4 +400,5 @@ class WantedPoster(object):
         txt = txt.replace('\t','&nbsp;&nbsp;&nbsp;&nbsp;')
 
         pg = Paragraph(txt, style)
+
         story.append(pg)

@@ -79,6 +79,23 @@ class Picture(sqp.PBase):
      Quality = sqp.Catalog(catalogtype=PicQualityCat)
      PictInfoBits = sqp.JoinedEmbeddedList(targettype=PictureInfoBit, foreignid=PictureInfoBit.TargetId, cascadedelete=True)
  
+     def _getmonum(self, flufmo):
+          if flufmo is None or flufmo.code == "NOMONTH": return None
+          return ["MONTH01","MONTH02","MONTH03","MONTH04","MONTH05","MONTH06","MONTH07","MONTH08","MONTH09","MONTH10","MONTH11", "MONTH12"].index(flufmo.code)
+     
+     @property
+     def best_takendate(self):
+          d = m = y = None
+          if self.takendate is not None:
+               y = self.takendate.year
+               m = self.takendate.month
+               d = self.takendate.day
+          elif self.fluftakenyear is not None and self.fluftakenyear != 0:
+               y = self.fluftakenyear
+               m = self._getmonum(self.fluftakenmonth)
+
+          return (d, m, y)
+          
      def __str__(self):
           return "[{}] /{}/ {} {}".format(self.readableid, 
                                       ewn(self.picturegroup),
@@ -87,6 +104,7 @@ class Picture(sqp.PBase):
 class Document(sqp.PBase):
      ReadableId = sqp.String()
      GroupId = sqp.UUid()
+     DocumentGroup = sqp.JoinedEmbeddedObject(targettype=DataGroup, localid=GroupId, autofill=True)
      Title = sqp.String(default="<Titel>")
      FilePath = sqp.String()
      Ext = sqp.String()
@@ -96,7 +114,8 @@ class Document(sqp.PBase):
      DocInfoBits = sqp.JoinedEmbeddedList(targettype=DocumentInfoBit, foreignid=DocumentInfoBit.TargetId, cascadedelete=True)
 
      def __str__(self):
-          return "[{}] {} {} {}".format(self.readableid, 
+          return "[{}] /{}/ {} {} {}".format(self.readableid, 
+                                      ewn(self.documentgroup),
                                       ewn(self.type), 
                                       ewn(self.productiondate),
                                       ewn(self.title))

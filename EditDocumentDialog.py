@@ -5,7 +5,7 @@ import wx
 import wx.adv
 import sqlitepersist as sqp
 
-from PersistClasses import Document, DocumentInfoBit, DocTypeCat
+from PersistClasses import Document, DocumentInfoBit, DocTypeCat, DataGroup
 import GeneratedGUI as gg
 from GuiHelper import GuiHelper
 from EditInfoBitDialog import EditInfoBitDialog
@@ -24,10 +24,13 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration
         self._document = copy.copy(document)
+        self._docgroups = self._get_docgroups()
         self._temp = tmpf.gettempdir()
         self._create_infobit_cols()
 
-
+    def _get_docgroups(self):
+        return sqp.SQQuery(self._fact, DataGroup).where(DataGroup.GroupType=="DOC").order_by(DataGroup.OrderNum).as_list()
+        
     def _create_infobit_cols(self):
         self.m_zusatzinfoLCT.InsertColumn(0, 'Datum')
         self.m_zusatzinfoLCT.InsertColumn(1, 'Quelle')
@@ -72,11 +75,15 @@ class EditDocumentDialog(gg.geditDocumentDialog):
             
         return False
     
+    def dgshow(self, arg):
+        return arg.name
+    
     def _filldialog(self):
         d = self._document
         self._fact.fill_joins(d, Document.DocInfoBits)
         self._doctypelist = self._get_all_types()
         GuiHelper.set_val(self.m_kennummerTB, d.readableid)
+        GuiHelper.set_sqp_objval(self.m_groupCB, d.documentgroup, self.dgshow, self._docgroups)
         GuiHelper.set_val(self.m_doctypCB, d.type, fullcat=self._doctypelist)
         GuiHelper.set_val(self.m_titelTB, d.title)
         GuiHelper.set_val(self.m_scanDatumDP, d.scandate)
@@ -110,16 +117,21 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         if res == wx.ID_CANCEL:
             return res
         
-        p = self._document
-        p.readableid = GuiHelper.get_val(self.m_kennummerTB)
-        p.type = GuiHelper.get_val(self.m_doctypCB, self._doctypelist)
-        p.title = GuiHelper.get_val(self.m_titelTB)
-        p.scandate = GuiHelper.get_val(self.m_scanDatumDP)
-        p.productiondate = GuiHelper.get_val(self.m_produktionsDatumDP)
+        d = self._document
+        d.readableid = GuiHelper.get_val(self.m_kennummerTB)
+        d.documentgroup = GuiHelper.get_sqp_objval(self.m_groupCB, self._docgroups)
+        if d.documentgroup is not None:
+            d.groupid = d.documentgroup._id
+        else:
+            d.groupid = None
+        d.type = GuiHelper.get_val(self.m_doctypCB, self._doctypelist)
+        d.title = GuiHelper.get_val(self.m_titelTB)
+        d.scandate = GuiHelper.get_val(self.m_scanDatumDP)
+        d.productiondate = GuiHelper.get_val(self.m_produktionsDatumDP)
         #the follwing fields are readonly in the GUI - no update needed
         #p.filepath = GuiHelper.get_val(self.m_wxarchivepathTB)
         #p.ext = GuiHelper.get_val(self.m_docextTB)
-        self._fact.flush(p)
+        self._fact.flush(d)
         return res
     
     def uploadDocument(self, event):

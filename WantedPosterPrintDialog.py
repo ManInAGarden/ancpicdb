@@ -103,6 +103,8 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
         self._fillplist()
         GuiHelper.set_val(self.m_newPagePerPersoneCB, self._wpconf.posterconf.newpgperperson)
         GuiHelper.set_val(self.m_addSignificantPicturesCB, self._wpconf.posterconf.includepics)
+        GuiHelper.set_val(self.m_addDocinfoCB, self._wpconf.posterconf.includedocinfo)
+        GuiHelper.set_val(self.m_addPictureInfosCB, self._wpconf.posterconf.includepicinfo)
         GuiHelper.set_val(self.m_targetFileFPI, self._wpconf.posterconf.targetfile)
         GuiHelper.set_val(self.m_numPicsPerPersSPCT, self._wpconf.posterconf.maxpic)
         self._set_picsize(self._wpconf.posterconf.picsize)
@@ -137,6 +139,8 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
     def _refresh_wpconfig(self):
         self._wpconf.posterconf.newpgperperson = GuiHelper.get_val(self.m_newPagePerPersoneCB)
         self._wpconf.posterconf.includepics = GuiHelper.get_val(self.m_addSignificantPicturesCB)
+        self._wpconf.posterconf.includedocinfo = GuiHelper.get_val(self.m_addDocinfoCB)
+        self._wpconf.posterconf.includepicinfo = GuiHelper.get_val(self.m_addPictureInfosCB)
         self._wpconf.posterconf.targetfile = GuiHelper.get_val(self.m_targetFileFPI)
         self._wpconf.posterconf.maxpic = GuiHelper.get_val(self.m_numPicsPerPersSPCT)
         self._wpconf.posterconf.picsize = self._get_picsize()
@@ -177,7 +181,8 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
                                   FullPerson.Mother,
                                   FullPerson.ChildrenAsFather,
                                   FullPerson.ChildrenAsMother,
-                                  FullPerson.Pictures)
+                                  FullPerson.Pictures,
+                                  FullPerson.Documents)
             if fullp is None:
                 raise Exception("Unbehandelte Ausnahme. FullPerson nicht gefunden in doPrinting")
             fullps.append(fullp)

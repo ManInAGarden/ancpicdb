@@ -101,6 +101,7 @@ class DocumentChecker(_CheckerBase):
      
      def _chk_data_consistency(self):
         answ = {"Kennung fehlt":{},
+                "Dokument ohne Gruppe":{},
                 "Titel fehlt" : {},
                 "Kein Archiveintrag":{}
                 }
@@ -110,6 +111,9 @@ class DocumentChecker(_CheckerBase):
             if self.is_empty_str(doc.readableid):
                 answ["Kennung fehlt"][doc.__str__()] = doc
                      
+            if doc.documentgroup is None:
+                answ["Dokument ohne Gruppe"][doc.__str__()] = doc
+
             if self.is_empty_str(doc.title):
                 answ["Titel fehlt"][doc.__str__()] = doc
 
