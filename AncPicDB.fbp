@@ -47,7 +47,7 @@
             <property name="minimum_size"></property>
             <property name="name">AncPicDBMain</property>
             <property name="pos"></property>
-            <property name="size">1061,602</property>
+            <property name="size">1323,680</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">AncPicDB</property>
@@ -353,7 +353,7 @@
                                         <property name="pos"></property>
                                         <property name="resize">Resizable</property>
                                         <property name="show">1</property>
-                                        <property name="size"></property>
+                                        <property name="size">300,-1</property>
                                         <property name="style">wxLB_HSCROLL|wxLB_NEEDED_SB</property>
                                         <property name="subclass">; ; forward_declare</property>
                                         <property name="toolbar_pane">0</property>
@@ -791,7 +791,7 @@
                                         <property name="id">wxID_ANY</property>
                                         <property name="max_size"></property>
                                         <property name="maximize_button">0</property>
-                                        <property name="maximum_size"></property>
+                                        <property name="maximum_size">-1,-1</property>
                                         <property name="min_size"></property>
                                         <property name="minimize_button">0</property>
                                         <property name="minimum_size"></property>
@@ -805,7 +805,7 @@
                                         <property name="pos"></property>
                                         <property name="resize">Resizable</property>
                                         <property name="show">1</property>
-                                        <property name="size"></property>
+                                        <property name="size">300,-1</property>
                                         <property name="style">wxLB_HSCROLL</property>
                                         <property name="subclass">; ; forward_declare</property>
                                         <property name="toolbar_pane">0</property>
@@ -1129,7 +1129,7 @@
                                         <property name="pos"></property>
                                         <property name="resize">Resizable</property>
                                         <property name="show">1</property>
-                                        <property name="size"></property>
+                                        <property name="size">300,-1</property>
                                         <property name="style">wxLB_HSCROLL</property>
                                         <property name="subclass">; ; forward_declare</property>
                                         <property name="toolbar_pane">0</property>
@@ -3169,7 +3169,7 @@
                 </object>
             </object>
         </object>
-        <object class="Dialog" expanded="0">
+        <object class="Dialog" expanded="1">
             <property name="aui_managed">0</property>
             <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
             <property name="bg"></property>
@@ -3187,7 +3187,7 @@
             <property name="minimum_size"></property>
             <property name="name">gDocumentsViewDialog</property>
             <property name="pos"></property>
-            <property name="size">930,566</property>
+            <property name="size">966,567</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Dokumente sichten</property>
@@ -3259,7 +3259,7 @@
                         <property name="pos"></property>
                         <property name="resize">Resizable</property>
                         <property name="show">1</property>
-                        <property name="size"></property>
+                        <property name="size">500,-1</property>
                         <property name="style">wxLB_HSCROLL|wxLB_SINGLE</property>
                         <property name="subclass">; ; forward_declare</property>
                         <property name="toolbar_pane">0</property>
@@ -5756,7 +5756,7 @@
                                 <property name="pos"></property>
                                 <property name="resize">Resizable</property>
                                 <property name="show">1</property>
-                                <property name="size"></property>
+                                <property name="size">500,-1</property>
                                 <property name="style">wxLB_HSCROLL|wxLB_SINGLE</property>
                                 <property name="subclass">; ; forward_declare</property>
                                 <property name="toolbar_pane">0</property>

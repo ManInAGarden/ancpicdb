@@ -26,6 +26,8 @@ from WantedPosterPrintDialog import WantedPosterPrintDialog
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
 
+MAXPICTITLELEN = 100
+MAXDOCTITLELEN = 100
 
 class AncPicDbMain(gg.AncPicDBMain):
     def __init__(self, parent ):
@@ -263,6 +265,14 @@ class AncPicDbMain(gg.AncPicDBMain):
         return pos, self._persons[pos]
     
         
+    def _get_limited_str(self, txt : str, maxl : int) -> str:
+        if len(txt) > maxl:
+            answ = txt[:maxl-3] + "..."
+        else:
+            answ = txt
+
+        return answ
+
     def refresh_dash_forp(self, pos):
         """refresh the persons details in case a person was selected or the persons data where updated by another
         callback (picture editing/document editing)"""
@@ -275,14 +285,16 @@ class AncPicDbMain(gg.AncPicDBMain):
         if len(pers.pictures) > 0:
             picsstrs = []
             for pic in pers.pictures:
-                picsstrs.append(pic.__str__())
+                picstr = self._get_limited_str(pic.__str__(), MAXPICTITLELEN)
+                picsstrs.append(picstr)
             self.m_picturesLB.AppendItems(picsstrs)
 
         self.m_documentsLB.Clear()
         if len(pers.documents) > 0:
             docstrs = []
             for doc in pers.documents:
-                docstrs.append(doc.__str__())
+                docstr = self._get_limited_str(doc.__str__(), MAXPICTITLELEN)
+                docstrs.append(docstr)
             self.m_documentsLB.AppendItems(docstrs)
 
 

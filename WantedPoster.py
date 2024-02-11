@@ -125,6 +125,7 @@ class WantedPoster(object):
 
     def _calc_subtitle(self, pic):
         dt = self._get_besttakendate(pic.picture)
+            
         return "{} {}".format(pic.subtitle, dt)
 
     def _get_optimal_imagesize(self, fname : str, desisize) -> tuple:
@@ -279,6 +280,7 @@ class WantedPoster(object):
 
 
     def _add_pictures(self, story : list, pics : list = None):
+        """Add qualified pictures (a selection of the pictures) to the text"""
         if pics is None or len(pics) == 0:
             return #nothing to do
         
