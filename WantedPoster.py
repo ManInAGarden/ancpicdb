@@ -1,7 +1,7 @@
 import datetime
 from enum import Enum
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak, KeepTogether
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm, inch
@@ -29,6 +29,9 @@ class WantedPoster(object):
 
     def __init__(self, plist : list, archiver : DocArchiver, tmppath : str, config : PosterConfig = None):
         self.styles = getSampleStyleSheet()
+        self.styles.add(ParagraphStyle("Heading1tog", self.styles["Heading1"], keepWithNext=True))
+        self.styles.add(ParagraphStyle("Heading2tog", self.styles["Heading2"], keepWithNext=True))
+        self.styles.add(ParagraphStyle("Heading3tog", self.styles["Heading3"], keepWithNext=True))
 
         if config is None:
             self._posterconfig = WantedPoster.PosterConfig()
@@ -101,7 +104,7 @@ class WantedPoster(object):
         """
         answ = []
         for pic in allpics:
-            #a picture which is qualified hast an ordernum > 0 and a subtitle
+            #a picture which is qualified has an ordernum > 0 and a non empty subtitle
             if pic.subtitle is not None \
                 and len(pic.subtitle)>0 \
                     and pic.position>0:
@@ -253,7 +256,7 @@ class WantedPoster(object):
         
         docs = sorted(documents, key=self._sort_docbestdate)
         bstyle = self.styles["BodyText"]
-        head2s = self.styles["Heading2"]
+        head2s = self.styles["Heading2tog"]
         itstyle = self.styles["Italic"]
         
         self._addparagraph(story, head2s, "Archivierte Dokumente")
@@ -269,7 +272,7 @@ class WantedPoster(object):
         
         pics = sorted(pictures, key=self._sort_picbestdate)
         bstyle = self.styles["BodyText"]
-        head2s = self.styles["Heading2"]
+        head2s = self.styles["Heading2tog"]
         itstyle = self.styles["Italic"]
         
         self._addparagraph(story, head2s, "Verknüpfte Bilder")
@@ -290,12 +293,12 @@ class WantedPoster(object):
             return
         
         bstyle = self.styles["BodyText"]
-        head1s = self.styles["Heading1"]
-        head3s = self.styles["Heading2"]
+        head1s = self.styles["Heading1tog"]
+        head2s = self.styles["Heading2tog"]
         itstyle = self.styles["Italic"]
         picsub = ParagraphStyle(self.styles["Normal"], alignment=TA_CENTER)
         
-        story.append(Paragraph("Bilder", head3s, keepwithnex=True))
+        story.append(Paragraph("Bilder", head2s))
         picct = 0
         for pic in qualipics:
             #append picture
@@ -305,10 +308,13 @@ class WantedPoster(object):
             
             path_to_file = self._archiver.extract_file(pic.picture.filepath, self._archtemp)
             w,h = self._get_optimal_imagesize(path_to_file, self._posterconfig.picsize)
-            story.append(Image(path_to_file, w, h))
+            img = Image(path_to_file, w, h)
+            #story.append(img)
             st = self._calc_subtitle(pic)
-            story.append(Paragraph(st, style=picsub))
+            subt = Paragraph(st, style=picsub)
+            #story.append(subt)
             #append subitle
+            story.append(KeepTogether([img, subt]))
         
     def _get_children_sortkey(self, child):
         #init to the max
@@ -343,8 +349,8 @@ class WantedPoster(object):
     def do_create(self):
         story = [Spacer(1, 2.0*cm)]
         bstyle = self.styles["BodyText"]
-        head1s = self.styles["Heading1"]
-        head3s = self.styles["Heading2"]
+        head1s = self.styles["Heading1tog"]
+        head3s = self.styles["Heading2tog"]
         itstyle = self.styles["Italic"]
         
         pl = self._plist
@@ -355,7 +361,8 @@ class WantedPoster(object):
                 self._addparagraph(story, itstyle, "genannt " + p.rufname)
             
             lifedta = self._get_birthndeathshort(p)
-            self._addparagraph(story, bstyle, lifedta)
+            if len(lifedta) > 0:
+                self._addparagraph(story, bstyle, lifedta)
 
             if p.mother is not None:
                 pmo = "Mutter: " + self._getshortinfo(p.mother)
@@ -365,17 +372,23 @@ class WantedPoster(object):
                 pfa = "Vater: " + self._getshortinfo(p.father)
                 self._addparagraph(story, bstyle, pfa)
 
-            story.append(Spacer(1, 0.4*cm))
-            self._addparagraph(story, bstyle, p.infotext)
+            if p.infotext is not None and len(p.infotext) > 0:
+                story.append(Spacer(1, 0.4*cm))
+                self._addparagraph(story, bstyle, p.infotext)
 
             children = self._get_children(p)
             if len(children) > 0:
                 self._addparagraph(story, head3s, "Kinder")
+                childrentxt = ""
                 for child in children:
-                    self._addparagraph(story, bstyle, self._getshortinfo(child))
+                    if len(childrentxt) > 0:
+                        childrentxt += "<br/>"
+                    childrentxt += self._getshortinfo(child)
+
+                self._addparagraph(story, bstyle, childrentxt)
 
             #handle significant pictures
-            if self._posterconfig.includepics:
+            if self._posterconfig.includepics and p.pictures is not None and len(p.pictures)>0:
                 self._add_pictures(story, p.pictures)
 
             #include information about archived documents related to the person

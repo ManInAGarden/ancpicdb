@@ -21,7 +21,7 @@ class FluffyMonthCat(sqp.PCatalog):
      _cattype = "FLUF_MONTH"
      _langsensitive = True
 
-     def _as_number(self):
+     def as_number(self):
           months = ["NOMONTH", 
                   "MONTH01",
                   "MONTH02"

@@ -54,6 +54,13 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
         return otherpar.as_string()
 
+    def _bdaykey(self, p):
+        by = p.cons_birth_year
+        if by is None:
+            by = datetime.date.today().year
+
+        return by
+
     def _get_children_nodes(self, p : Person):
         """returns a dictionary with partners as top nodes and children as subnodes"""
         fullp = sqp.SQQuery(self._fact, FullPerson).where(FullPerson.Id==p._id).first_or_default(None)
@@ -64,6 +71,7 @@ class PersonEditDialog(gg.gPersonEditDialog):
             raise Exception("Unbehandelte Ausnahme. FullPerson nicht gefunden in _get_children")
         
         allchildren = fullp.childrenasfather + fullp.childrenasmother
+        allchildren.sort(key=self._bdaykey)
         answ = {}
 
         for child in allchildren:
@@ -149,11 +157,6 @@ class PersonEditDialog(gg.gPersonEditDialog):
             self.m_fluffyDeathMonthCB.Disable()
             self.m_fluffyDeathYearSPC.Disable()
 
-    def _getmonthnumber(self, mocode):
-        mocodes = ["MONTH01", "MONTH02", "MONTH03", "MONTH04", "MONTH05", "MONTH06", 
-                   "MONTH07", "MONTH08", "MONTH09", "MONTH10", "MONTH11", "MONTH12"]
-        return mocodes.index(mocode) + 1
-    
     def _fillpicturelist(self, p : Person):
         ctrl = self.m_significantPictursLCTRL
         ctrl.DeleteAllItems()
@@ -202,7 +205,7 @@ class PersonEditDialog(gg.gPersonEditDialog):
             bd = p.birthdate
         elif p.birthyear is not None and p.birthyear > 0:
             if p.birthmonth is not None and p.birthmonth.code != "NOMONTH":
-                bm = self._getmonthnumber(p.birthmonth.code)
+                bm = p.birthmonth.as_number()
                 bd = datetime.datetime(p.birthyear, bm, 12)
             else: 
                 bd = datetime.datetime(p.birthyear, 12, 31)
