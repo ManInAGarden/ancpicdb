@@ -1283,9 +1283,9 @@ class gAddDocumentDialog ( wx.Dialog ):
 
 		gbSizer8.Add( self.m_staticText20, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		m_operatorCBChoices = [ u"=", u">", u"<" ]
-		self.m_operatorCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_operatorCBChoices, 0 )
-		gbSizer8.Add( self.m_operatorCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		m_productionDateOperatorCBChoices = [ u"=", u">", u"<" ]
+		self.m_productionDateOperatorCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_productionDateOperatorCBChoices, 0 )
+		gbSizer8.Add( self.m_productionDateOperatorCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_productionDateDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer8.Add( self.m_productionDateDP, wx.GBPosition( 1, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
@@ -1295,9 +1295,9 @@ class gAddDocumentDialog ( wx.Dialog ):
 
 		gbSizer8.Add( self.m_staticText21, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		m_comboBox5Choices = [ u"=", u">", u"<" ]
-		self.m_comboBox5 = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_comboBox5Choices, 0 )
-		gbSizer8.Add( self.m_comboBox5, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		m_scandateOperatorCBChoices = [ u"=", u">", u"<" ]
+		self.m_scandateOperatorCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_scandateOperatorCBChoices, 0 )
+		gbSizer8.Add( self.m_scandateOperatorCB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_scanDateDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer8.Add( self.m_scanDateDP, wx.GBPosition( 2, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
@@ -1319,8 +1319,16 @@ class gAddDocumentDialog ( wx.Dialog ):
 
 		self.Centre( wx.BOTH )
 
+		# Connect Events
+		self.m_button21.Bind( wx.EVT_BUTTON, self.applyFilter )
+
 	def __del__( self ):
 		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def applyFilter( self, event ):
+		event.Skip()
 
 
 ###########################################################################

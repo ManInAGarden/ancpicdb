@@ -100,6 +100,9 @@ class AddPictureDialog(gg.gAddPictureDialog):
     
     def _fill_dialog(self):
         #find all those pictures that have not been connected to the current person
+        self._fact.fill_joins(self._person, Person.Pictures)
+        alreadyconpics = list(map(lambda picinter: picinter.pictureid, self._person.pictures))
+
         f = self._get_current_filter()
         exp = self._get_current_expr(f)
         q = sqp.SQQuery(self._fact, Picture).where(exp).order_by(sqp.OrderInfo(Picture.Created, sqp.OrderDirection.DESCENDING))
@@ -111,14 +114,15 @@ class AddPictureDialog(gg.gAddPictureDialog):
             if ct >= 100:
                 break
             
-            self._picdata.append(ppi)
+            if not ppi._id in alreadyconpics:
+                self._picdata.append(ppi)
 
-            idx = self.m_picturesLCTRL.InsertItem(self.m_picturesLCTRL.GetColumnCount(), ppi.readableid)
-            self.m_picturesLCTRL.SetItemData(idx, ct)
-            self.m_picturesLCTRL.SetItem(idx, 1, ppi.title)
-            self.m_picturesLCTRL.SetItem(idx, 2, self._asds(ppi.takendate))
-            self.m_picturesLCTRL.SetItem(idx, 3, self._asds(ppi.scandate))
-            ct += 1
+                idx = self.m_picturesLCTRL.InsertItem(self.m_picturesLCTRL.GetColumnCount(), ppi.readableid)
+                self.m_picturesLCTRL.SetItemData(idx, ct)
+                self.m_picturesLCTRL.SetItem(idx, 1, ppi.title)
+                self.m_picturesLCTRL.SetItem(idx, 2, self._asds(ppi.takendate))
+                self.m_picturesLCTRL.SetItem(idx, 3, self._asds(ppi.scandate))
+                ct += 1
 
     def showmodal(self):
         self._init_gui()
