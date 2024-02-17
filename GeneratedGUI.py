@@ -26,11 +26,11 @@ class AncPicDBMain ( wx.Frame ):
 
 		self.m_mainMenuBar = wx.MenuBar( 0 )
 		self.m_fileMenu = wx.Menu()
-		self.m_connectDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Verbinde Datenbank", wx.EmptyString, wx.ITEM_NORMAL )
-		self.m_fileMenu.Append( self.m_connectDbMI )
-
 		self.m_backupDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Sicherungskopiie erstellen", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_backupDbMI )
+
+		self.m_menuItem16 = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Archive extrahieren", u"Extrahiert Doukmente und Bilder so, dass sie separat gespeichert werden können", wx.ITEM_NORMAL )
+		self.m_fileMenu.Append( self.m_menuItem16 )
 
 		self.m_fileMenu.AppendSeparator()
 
@@ -57,6 +57,15 @@ class AncPicDBMain ( wx.Frame ):
 
 		self.m_menuItem10 = wx.MenuItem( self.m_menu4, wx.ID_ANY, u"Daten prüfen", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_menu4.Append( self.m_menuItem10 )
+
+		self.m_menu1 = wx.Menu()
+		self.m_menuItem14 = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Dokumente", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu1.Append( self.m_menuItem14 )
+
+		self.m_menuItem15 = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Bilder", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu1.Append( self.m_menuItem15 )
+
+		self.m_menu4.AppendSubMenu( self.m_menu1, u"Registerblätter" )
 
 		self.m_mainMenuBar.Append( self.m_menu4, u"Extras" )
 
