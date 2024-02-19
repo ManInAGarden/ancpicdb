@@ -17,6 +17,12 @@ class GuiHelper:
 
         return val.__str__()
     
+    @classmethod
+    def enable_ctrls(cls, targstate : bool, *ctrls):
+        for ctrl in ctrls:
+            ctrl.Enable(targstate)
+            
+
     @classmethod 
     def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list) -> (object, int):
         """get the currently selected item of a ListBox. Returns None when nothing was selected"""

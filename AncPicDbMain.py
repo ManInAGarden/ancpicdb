@@ -20,6 +20,7 @@ from AddDocumentDialog import AddDocumentDialog
 from EditDocumentDialog import EditDocumentDialog
 from GroupsViewDialog import GroupsViewDialog
 from DataCheckerDialog import DataCheckerDialog
+from ArchiveExtractDialog import ArchiveExtractDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
 from WantedPosterPrintDialog import WantedPosterPrintDialog
@@ -515,6 +516,9 @@ class AncPicDbMain(gg.AncPicDBMain):
         res = chkdial.showmodal()
         self.refresh_dash()
 
+    def extractArchive(self, event):
+        exadial = ArchiveExtractDialog(self, self._fact)
+        res = exadial.showmodal()
 
 if __name__ == '__main__':
     app = wx.App()

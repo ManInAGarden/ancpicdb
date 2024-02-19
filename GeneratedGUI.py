@@ -221,6 +221,7 @@ class AncPicDBMain ( wx.Frame ):
 
 		# Connect Events
 		self.Bind( wx.EVT_MENU, self.backupDb, id = self.m_backupDbMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.extractArchive, id = self.m_menuItem16.GetId() )
 		self.Bind( wx.EVT_MENU, self.quit, id = self.m_exitMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewGroupsDialog, id = self.m_groupsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewDocumentsDialog, id = self.m_documentsMI.GetId() )
@@ -248,6 +249,9 @@ class AncPicDBMain ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def backupDb( self, event ):
+		event.Skip()
+
+	def extractArchive( self, event ):
 		event.Skip()
 
 	def quit( self, event ):
@@ -1942,6 +1946,135 @@ class gDataCheckerDialog ( wx.Dialog ):
 		event.Skip()
 
 	def errorTreeItemActivated( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gArchiveExtractDialog
+###########################################################################
+
+class gArchiveExtractDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Archiv Extrahieren", pos = wx.DefaultPosition, size = wx.DefaultSize, style = wx.DEFAULT_DIALOG_STYLE )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer21 = wx.GridBagSizer( 0, 0 )
+		gbSizer21.SetFlexibleDirection( wx.BOTH )
+		gbSizer21.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		self.m_doPicturesCB = wx.CheckBox( self, wx.ID_ANY, u"Bilder: ", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		gbSizer21.Add( self.m_doPicturesCB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_documentGroupCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente:", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		gbSizer21.Add( self.m_documentGroupCB, wx.GBPosition( 0, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText69 = wx.StaticText( self, wx.ID_ANY, u"Gruppe:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText69.Wrap( -1 )
+
+		gbSizer21.Add( self.m_staticText69, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_pictureGroupCBChoices = []
+		self.m_pictureGroupCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_pictureGroupCBChoices, wx.CB_READONLY )
+		self.m_pictureGroupCB.Enable( False )
+
+		gbSizer21.Add( self.m_pictureGroupCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		m_documentGroupCBChoices = []
+		self.m_documentGroupCB = wx.ComboBox( self, wx.ID_ANY, u"Combo!", wx.DefaultPosition, wx.DefaultSize, m_documentGroupCBChoices, wx.CB_READONLY )
+		self.m_documentGroupCB.Enable( False )
+
+		gbSizer21.Add( self.m_documentGroupCB, wx.GBPosition( 1, 2 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText70 = wx.StaticText( self, wx.ID_ANY, u"Scandatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText70.Wrap( -1 )
+
+		gbSizer21.Add( self.m_staticText70, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		bSizer18 = wx.BoxSizer( wx.HORIZONTAL )
+
+		m_pictureScandateOPChoices = [ u"=", u">", u"<" ]
+		self.m_pictureScandateOP = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_pictureScandateOPChoices, wx.CB_READONLY )
+		self.m_pictureScandateOP.Enable( False )
+
+		bSizer18.Add( self.m_pictureScandateOP, 0, wx.ALL, 5 )
+
+		self.m_pictureScandateDayTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_pictureScandateDayTB.Enable( False )
+
+		bSizer18.Add( self.m_pictureScandateDayTB, 0, wx.ALL, 5 )
+
+		self.m_pictureScandateMonthTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_pictureScandateMonthTB.Enable( False )
+
+		bSizer18.Add( self.m_pictureScandateMonthTB, 0, wx.ALL, 5 )
+
+		self.m_pictureScandateYearTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_pictureScandateYearTB.Enable( False )
+
+		bSizer18.Add( self.m_pictureScandateYearTB, 0, wx.ALL, 5 )
+
+
+		gbSizer21.Add( bSizer18, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+
+		bSizer181 = wx.BoxSizer( wx.HORIZONTAL )
+
+		m_documentScandateOpCBChoices = [ u"=", u">", u"<" ]
+		self.m_documentScandateOpCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_documentScandateOpCBChoices, wx.CB_READONLY )
+		bSizer181.Add( self.m_documentScandateOpCB, 0, wx.ALL, 5 )
+
+		self.m_documentScandateDayTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_documentScandateDayTB.Enable( False )
+
+		bSizer181.Add( self.m_documentScandateDayTB, 0, wx.ALL, 5 )
+
+		self.m_documentScandateMonthTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_documentScandateMonthTB.Enable( False )
+
+		bSizer181.Add( self.m_documentScandateMonthTB, 0, wx.ALL, 5 )
+
+		self.m_documentScandateYearTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_documentScandateYearTB.Enable( False )
+
+		bSizer181.Add( self.m_documentScandateYearTB, 0, wx.ALL, 5 )
+
+
+		gbSizer21.Add( bSizer181, wx.GBPosition( 2, 2 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+
+		self.m_staticline3 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer21.Add( self.m_staticline3, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 3 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_startExtractionBU = wx.Button( self, wx.ID_ANY, u"Start Extraktion", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer21.Add( self.m_startExtractionBU, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_button49 = wx.Button( self, wx.ID_ANY, u"Abbrechen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer21.Add( self.m_button49, wx.GBPosition( 4, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_extractionGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_extractionGAUGE.SetValue( 0 )
+		gbSizer21.Add( self.m_extractionGAUGE, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		self.SetSizer( gbSizer21 )
+		self.Layout()
+		gbSizer21.Fit( self )
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_doPicturesCB.Bind( wx.EVT_CHECKBOX, self.picturesChecked )
+		self.m_documentGroupCB.Bind( wx.EVT_CHECKBOX, self.m_doDocumentsCB )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def picturesChecked( self, event ):
+		event.Skip()
+
+	def m_doDocumentsCB( self, event ):
 		event.Skip()
 
 
