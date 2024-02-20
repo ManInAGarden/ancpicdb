@@ -198,6 +198,8 @@ class GuiHelper:
             return val
         elif ctt is wx.FilePickerCtrl:
             return ctrl.GetPath()
+        elif ctt is wx.DirPickerCtrl:
+            return ctrl.GetPath()
         else:
             raise Exception("Unknown type {} in _get_val()".format(ctt))
         

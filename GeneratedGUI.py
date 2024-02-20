@@ -1967,8 +1967,8 @@ class gArchiveExtractDialog ( wx.Dialog ):
 		self.m_doPicturesCB = wx.CheckBox( self, wx.ID_ANY, u"Bilder: ", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
 		gbSizer21.Add( self.m_doPicturesCB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_documentGroupCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente:", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
-		gbSizer21.Add( self.m_documentGroupCB, wx.GBPosition( 0, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		self.m_doDocumentsCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente:", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		gbSizer21.Add( self.m_doDocumentsCB, wx.GBPosition( 0, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_staticText69 = wx.StaticText( self, wx.ID_ANY, u"Gruppe:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText69.Wrap( -1 )
@@ -2043,17 +2043,25 @@ class gArchiveExtractDialog ( wx.Dialog ):
 		gbSizer21.Add( bSizer181, wx.GBPosition( 2, 2 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
 
 		self.m_staticline3 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-		gbSizer21.Add( self.m_staticline3, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 3 ), wx.EXPAND |wx.ALL, 5 )
+		gbSizer21.Add( self.m_staticline3, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 3 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText701 = wx.StaticText( self, wx.ID_ANY, u"Zielverzeichnis:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText701.Wrap( -1 )
+
+		gbSizer21.Add( self.m_staticText701, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_targetDirDIRP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Selektiere ein Verzeichnis", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST )
+		gbSizer21.Add( self.m_targetDirDIRP, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_startExtractionBU = wx.Button( self, wx.ID_ANY, u"Start Extraktion", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer21.Add( self.m_startExtractionBU, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer21.Add( self.m_startExtractionBU, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_button49 = wx.Button( self, wx.ID_ANY, u"Abbrechen", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer21.Add( self.m_button49, wx.GBPosition( 4, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		self.m_abortExtractionBU = wx.Button( self, wx.ID_ANY, u"Abbrechen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer21.Add( self.m_abortExtractionBU, wx.GBPosition( 5, 2 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_extractionGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
 		self.m_extractionGAUGE.SetValue( 0 )
-		gbSizer21.Add( self.m_extractionGAUGE, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer21.Add( self.m_extractionGAUGE, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 
 		self.SetSizer( gbSizer21 )
@@ -2064,7 +2072,8 @@ class gArchiveExtractDialog ( wx.Dialog ):
 
 		# Connect Events
 		self.m_doPicturesCB.Bind( wx.EVT_CHECKBOX, self.picturesChecked )
-		self.m_documentGroupCB.Bind( wx.EVT_CHECKBOX, self.m_doDocumentsCB )
+		self.m_startExtractionBU.Bind( wx.EVT_BUTTON, self.startExtraction )
+		self.m_abortExtractionBU.Bind( wx.EVT_BUTTON, self.abortExtraction )
 
 	def __del__( self ):
 		pass
@@ -2074,7 +2083,10 @@ class gArchiveExtractDialog ( wx.Dialog ):
 	def picturesChecked( self, event ):
 		event.Skip()
 
-	def m_doDocumentsCB( self, event ):
+	def startExtraction( self, event ):
+		event.Skip()
+
+	def abortExtraction( self, event ):
 		event.Skip()
 
 

@@ -2,7 +2,8 @@ import GeneratedGUI as gg
 import wx
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
-from PersistClasses import DataGroup, GroupTypeCat
+from PersistClasses import DataGroup, Picture, Document
+import BackgroundWorkers as bgw
 
 class ArchiveExtractDialog(gg.gArchiveExtractDialog):
     @property
@@ -18,6 +19,17 @@ class ArchiveExtractDialog(gg.gArchiveExtractDialog):
         self._fact = fact
         self._configuration = parent.configuration
         self._docarchive = parent.docarchive
+        bgw.EVT_RESULT(self, self.workerfinished)
+        bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
+
+
+    def workerfinished(self, event):
+        GuiHelper.enable_ctrls(True, self.m_startExtractionBU)
+        GuiHelper.enable_ctrls(False, self.m_abortExtractionBU)
+
+    def notifyperc(self, event):
+        perc = event.data
+        self.m_extractionGAUGE.SetValue(perc)
 
     def showmodal(self):
         self._filldialog()
@@ -51,3 +63,27 @@ class ArchiveExtractDialog(gg.gArchiveExtractDialog):
                            self.m_documentScandateDayTB,
                            self.m_documentScandateMonthTB,
                            self.m_documentScandateYearTB)
+        
+    def startExtraction(self, event):
+        targpath = GuiHelper.get_val(self.m_targetDirDIRP)
+        if targpath is None or len(targpath)==0:
+            return
+        
+        dopics = GuiHelper.get_val(self.m_doPicturesCB)
+        dodocs = GuiHelper.get_val(self.m_doDocumentsCB)
+
+        GuiHelper.enable_ctrls(False, self.m_startExtractionBU)
+        GuiHelper.enable_ctrls(True, self.m_abortExtractionBU)
+        if dopics:
+            pics = sqp.SQQuery(self._fact, Picture).as_list()
+            picparas = bgw.ArchExtractorParas(pics,
+                                              self._docarchive)
+            picparas.targetpath = targpath
+            picworker = bgw.BgArchivePicExtractor(self, picparas)
+            pt = picworker.start()
+            pass
+        
+
+
+    def abortExtraction(self, event):
+        return super().abortExtraction(event)
