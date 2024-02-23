@@ -255,15 +255,15 @@ class AncPicDbMain(gg.AncPicDBMain):
         
         return self.m_personsLB.GetSelection()
     
-    def get_selected_personandpos(self):
-        """get the selected persons position in the self._persons list
-        and the person itself as a tuple.
-        returns wx.NOT_FOUND, None when nothing was selected or the list is empty"""
-        if len(self._persons) == 0:
-            return wx.NOT_FOUND, None
+    # def get_selected_personandpos(self):
+    #     """get the selected persons position in the self._persons list
+    #     and the person itself as a tuple.
+    #     returns wx.NOT_FOUND, None when nothing was selected or the list is empty"""
+    #     if len(self._persons) == 0:
+    #         return wx.NOT_FOUND, None
         
-        pos = self.m_personsLB.GetSelection()
-        return pos, self._persons[pos]
+    #     pos = self.m_personsLB.GetSelection()
+    #     return pos, self._persons[pos]
     
         
     def _get_limited_str(self, txt : str, maxl : int) -> str:
@@ -273,6 +273,14 @@ class AncPicDbMain(gg.AncPicDBMain):
             answ = txt
 
         return answ
+
+    def key_by_date(self, picordoc) -> str:
+        """returns a string of the form YYYY.MM.DD to be used fpr alphabetical sorting of the date of an object
+            missing dateparts are replaced by ZZZZ or ZZ.
+        """
+
+        return picordoc.histkey
+    
 
     def refresh_dash_forp(self, pos):
         """refresh the persons details in case a person was selected or the persons data where updated by another
@@ -285,6 +293,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         self.m_picturesLB.Clear()
         if len(pers.pictures) > 0:
             picsstrs = []
+            pers.pictures.sort(key=self.key_by_date)
             for pic in pers.pictures:
                 picstr = self._get_limited_str(pic.__str__(), MAXPICTITLELEN)
                 picsstrs.append(picstr)
@@ -293,6 +302,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         self.m_documentsLB.Clear()
         if len(pers.documents) > 0:
             docstrs = []
+            pers.documents.sort(key=self.key_by_date)
             for doc in pers.documents:
                 docstr = self._get_limited_str(doc.__str__(), MAXPICTITLELEN)
                 docstrs.append(docstr)

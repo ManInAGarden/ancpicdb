@@ -3,7 +3,6 @@ import time
 from pathlib import Path
 import wx
 import sqlitepersist as sqp
-from PersistClasses import Picture, Document
 
 # Define notification event for thread completion
 EVT_RESULT_ID = wx.NewId()
@@ -54,22 +53,22 @@ class ArchExtractorParas():
         self.scandatemonth = None
         self.scandateyear = None
 
-class BgArchivePicExtractor(BgWorker):
+class BgArchiveExtractor(BgWorker):
     def __init__(self, notifywin, paras : ArchExtractorParas):
         super().__init__(notifywin)
         self.paras = paras
 
     def run(self):
-        pics = self.paras.objects
+        objs = self.paras.objects
         da = self.paras.docarchive
-        max = len(pics)
+        max = len(objs)
         ct = 0
         oldperc = 0
-        for pic in pics:
+        for obj in objs:
             ct += 1
-            extname = da.extract_file(pic.filepath, self.paras.targetpath)
+            extname = da.extract_file(obj.filepath, self.paras.targetpath)
             extpath = Path(extname)
-            targname = Path(extpath.parent, pic.readableid + extpath.suffix)
+            targname = Path(extpath.parent, obj.readableid + extpath.suffix)
             extpath.rename(targname)
             perc = int(ct/max * 100)
             if perc != oldperc:
@@ -81,5 +80,7 @@ class BgArchivePicExtractor(BgWorker):
                 return
 
         wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
-        wx.PostEvent(self.notifywin, ResultEvent(1))
+        wx.PostEvent(self.notifywin, ResultEvent(ct))
+
+
         

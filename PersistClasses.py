@@ -83,6 +83,28 @@ class Picture(sqp.PBase):
           if flufmo is None or flufmo.code == "NOMONTH": return None
           return ["MONTH01","MONTH02","MONTH03","MONTH04","MONTH05","MONTH06","MONTH07","MONTH08","MONTH09","MONTH10","MONTH11", "MONTH12"].index(flufmo.code)
      
+     @property 
+     def histkey(self):
+          if self.takendate is not None:
+               return "{:%Y%M%D}".format(self.takendate)
+          elif self.fluftakenyear is not None and self.fluftakenyear != 0:
+               y = self.fluftakenyear
+               m = self._getmonum(self.fluftakenmonth)
+               if y is not None and y != 0:
+                    answ = "{}".format(y)
+               else:
+                    answ = "ZZZZ"
+
+               if m is not None and m != 0:
+                    answ += "{}".format(m)
+               else:
+                    answ += "ZZ"
+
+               return answ + "ZZ"
+          else:
+               return "ZZZZZZZZ"
+     
+
      @property
      def best_takendate(self):
           d = m = y = None
@@ -120,6 +142,13 @@ class Document(sqp.PBase):
                                       ewn(self.productiondate),
                                       ewn(self.title))
      
+     @property 
+     def histkey(self):
+          if self.productiondate is not None:
+               return "{:%Y%M%D}".format(self.productiondate)
+          else:
+               return "ZZZZZZZZ"
+     
 class PersonDocumentInter(sqp.PBase):
      """intersection of Person and Documents"""
      DocumentId = sqp.UUid(uniquegrp="persdocunique")
@@ -132,7 +161,13 @@ class PersonDocumentInter(sqp.PBase):
                                       ewn(doc.type), 
                                       ewn(doc.productiondate),
                                       ewn(doc.title))
-
+     
+     @property 
+     def histkey(self):
+          if self.document is not None:
+               return self.document.histkey
+          else:
+               return "ZZZZZZZZ"
 
 class PersonPictureInter(sqp.PBase):
      PictureId = sqp.UUid(uniquegrp="perspicunique")
@@ -149,6 +184,13 @@ class PersonPictureInter(sqp.PBase):
                     return "{}. [{}] {}".format(self.position, self.picture.readableid, self.picture.title)
                else:
                     return "{}. [{}] {}".format(self.position, self.picture.readableid, self.subtitle)
+               
+     @property 
+     def histkey(self):
+          if self.picture is not None:
+               return self.picture.histkey
+          else:
+               return "ZZZZZZZZ"
           
 class Person(sqp.PBase):
      Name = sqp.String()

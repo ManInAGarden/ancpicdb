@@ -1956,7 +1956,7 @@ class gDataCheckerDialog ( wx.Dialog ):
 class gArchiveExtractDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Archiv Extrahieren", pos = wx.DefaultPosition, size = wx.DefaultSize, style = wx.DEFAULT_DIALOG_STYLE )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Archiv Extrahieren", pos = wx.DefaultPosition, size = wx.Size( 611,221 ), style = wx.DEFAULT_DIALOG_STYLE )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -1995,25 +1995,25 @@ class gArchiveExtractDialog ( wx.Dialog ):
 		bSizer18 = wx.BoxSizer( wx.HORIZONTAL )
 
 		m_pictureScandateOPChoices = [ u"=", u">", u"<" ]
-		self.m_pictureScandateOP = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_pictureScandateOPChoices, wx.CB_READONLY )
+		self.m_pictureScandateOP = wx.ComboBox( self, wx.ID_ANY, u"<", wx.DefaultPosition, wx.DefaultSize, m_pictureScandateOPChoices, wx.CB_READONLY )
 		self.m_pictureScandateOP.Enable( False )
 
 		bSizer18.Add( self.m_pictureScandateOP, 0, wx.ALL, 5 )
 
-		self.m_pictureScandateDayTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_pictureScandateDayTB.Enable( False )
+		self.m_pictureScandateDaySC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 1, 31, 1 )
+		self.m_pictureScandateDaySC.Enable( False )
 
-		bSizer18.Add( self.m_pictureScandateDayTB, 0, wx.ALL, 5 )
+		bSizer18.Add( self.m_pictureScandateDaySC, 0, wx.ALL, 5 )
 
-		self.m_pictureScandateMonthTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_pictureScandateMonthTB.Enable( False )
+		self.m_pictureScandateMonthSC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 1, 12, 1 )
+		self.m_pictureScandateMonthSC.Enable( False )
 
-		bSizer18.Add( self.m_pictureScandateMonthTB, 0, wx.ALL, 5 )
+		bSizer18.Add( self.m_pictureScandateMonthSC, 0, wx.ALL, 5 )
 
-		self.m_pictureScandateYearTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_pictureScandateYearTB.Enable( False )
+		self.m_pictureScandateYearSC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 2020, 2100, 2024 )
+		self.m_pictureScandateYearSC.Enable( False )
 
-		bSizer18.Add( self.m_pictureScandateYearTB, 0, wx.ALL, 5 )
+		bSizer18.Add( self.m_pictureScandateYearSC, 0, wx.ALL, 5 )
 
 
 		gbSizer21.Add( bSizer18, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
@@ -2021,23 +2021,23 @@ class gArchiveExtractDialog ( wx.Dialog ):
 		bSizer181 = wx.BoxSizer( wx.HORIZONTAL )
 
 		m_documentScandateOpCBChoices = [ u"=", u">", u"<" ]
-		self.m_documentScandateOpCB = wx.ComboBox( self, wx.ID_ANY, u"=", wx.DefaultPosition, wx.DefaultSize, m_documentScandateOpCBChoices, wx.CB_READONLY )
+		self.m_documentScandateOpCB = wx.ComboBox( self, wx.ID_ANY, u"<", wx.DefaultPosition, wx.DefaultSize, m_documentScandateOpCBChoices, wx.CB_READONLY )
 		bSizer181.Add( self.m_documentScandateOpCB, 0, wx.ALL, 5 )
 
-		self.m_documentScandateDayTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_documentScandateDayTB.Enable( False )
+		self.m_documentScandateDaySC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 1, 31, 1 )
+		self.m_documentScandateDaySC.Enable( False )
 
-		bSizer181.Add( self.m_documentScandateDayTB, 0, wx.ALL, 5 )
+		bSizer181.Add( self.m_documentScandateDaySC, 0, wx.ALL, 5 )
 
-		self.m_documentScandateMonthTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_documentScandateMonthTB.Enable( False )
+		self.m_documentScandateMonthSC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 1, 12, 1 )
+		self.m_documentScandateMonthSC.Enable( False )
 
-		bSizer181.Add( self.m_documentScandateMonthTB, 0, wx.ALL, 5 )
+		bSizer181.Add( self.m_documentScandateMonthSC, 0, wx.ALL, 5 )
 
-		self.m_documentScandateYearTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_documentScandateYearTB.Enable( False )
+		self.m_documentScandateYearSC = wx.SpinCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.SP_ARROW_KEYS, 2020, 2100, 2024 )
+		self.m_documentScandateYearSC.Enable( False )
 
-		bSizer181.Add( self.m_documentScandateYearTB, 0, wx.ALL, 5 )
+		bSizer181.Add( self.m_documentScandateYearSC, 0, wx.ALL, 5 )
 
 
 		gbSizer21.Add( bSizer181, wx.GBPosition( 2, 2 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
@@ -2066,12 +2066,12 @@ class gArchiveExtractDialog ( wx.Dialog ):
 
 		self.SetSizer( gbSizer21 )
 		self.Layout()
-		gbSizer21.Fit( self )
 
 		self.Centre( wx.BOTH )
 
 		# Connect Events
 		self.m_doPicturesCB.Bind( wx.EVT_CHECKBOX, self.picturesChecked )
+		self.m_doDocumentsCB.Bind( wx.EVT_CHECKBOX, self.documentsChecked )
 		self.m_startExtractionBU.Bind( wx.EVT_BUTTON, self.startExtraction )
 		self.m_abortExtractionBU.Bind( wx.EVT_BUTTON, self.abortExtraction )
 
@@ -2081,6 +2081,9 @@ class gArchiveExtractDialog ( wx.Dialog ):
 
 	# Virtual event handlers, override them in your derived class
 	def picturesChecked( self, event ):
+		event.Skip()
+
+	def documentsChecked( self, event ):
 		event.Skip()
 
 	def startExtraction( self, event ):
