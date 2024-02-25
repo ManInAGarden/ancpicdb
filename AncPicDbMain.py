@@ -209,6 +209,16 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         self.refresh_dash()
 
+    def refresh_pic_stat(self):
+        """cont the currently available pictures and show result in status bar"""
+        allpics = sqp.SQQuery(self._fact, Picture).as_list()
+        self.m_mainWindowSB.SetStatusText("Bilder: {0}".format(len(allpics)), 2)
+
+    def refresh_doc_stat(self):
+        """count all documents and show result in status bar"""
+        alldocs = sqp.SQQuery(self._fact, Document).as_list()
+        self.m_mainWindowSB.SetStatusText("Dokumente: {0}".format(len(alldocs)), 3)
+
     def refresh_dash(self, prevsel : Person = None):
         """do a complete refresh of the main GUI with the list of persons and the dependent list of documnents and oictures"""
 
@@ -232,13 +242,8 @@ class AncPicDbMain(gg.AncPicDBMain):
                 self.refresh_dash_forp(sl)
 
         self.m_mainWindowSB.SetStatusText("Personen: {0}".format(len(self._persons)), 1)
-        
-        allpics = sqp.SQQuery(self._fact, Picture).as_list()
-        self.m_mainWindowSB.SetStatusText("Bilder: {0}".format(len(allpics)), 2)
-
-        alldocs = sqp.SQQuery(self._fact, Document).as_list()
-        self.m_mainWindowSB.SetStatusText("Dokumente: {0}".format(len(alldocs)), 3)
-
+        self.refresh_pic_stat()
+        self.refresh_doc_stat()
         
 
     def get_all_persons(self):
@@ -254,17 +259,6 @@ class AncPicDbMain(gg.AncPicDBMain):
             return wx.NOT_FOUND
         
         return self.m_personsLB.GetSelection()
-    
-    # def get_selected_personandpos(self):
-    #     """get the selected persons position in the self._persons list
-    #     and the person itself as a tuple.
-    #     returns wx.NOT_FOUND, None when nothing was selected or the list is empty"""
-    #     if len(self._persons) == 0:
-    #         return wx.NOT_FOUND, None
-        
-    #     pos = self.m_personsLB.GetSelection()
-    #     return pos, self._persons[pos]
-    
         
     def _get_limited_str(self, txt : str, maxl : int) -> str:
         if len(txt) > maxl:
@@ -392,6 +386,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         #no refresh ist needed in case no person was selected because only pictures for the person may have changed        
         pos = self.get_selected_ppos()
+        self.refresh_pic_stat()
         if pos is not wx.NOT_FOUND:
             self.refresh_dash_forp(pos)
 
@@ -401,6 +396,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         res = dwdial.showmodal()
         #no refresh ist needed in case no person was selected because only pictures for the person may have changed        
         pos = self.get_selected_ppos()
+        self.refresh_doc_stat()
         if pos is not wx.NOT_FOUND:
             self.refresh_dash_forp(pos)
 
@@ -424,6 +420,23 @@ class AncPicDbMain(gg.AncPicDBMain):
                 self._fact.flush(persinterpic)
         selpers.pictures = None
         self._fact.fill_joins(selpers, Person.Pictures)
+
+        self.refresh_pic_stat()
+        self.refresh_dash_forp(perspos)
+
+    def removeDoumentFromPerson(self, event):
+        selpers, perspos = GuiHelper.get_selected_fromlb(self.m_personsLB, self._persons)
+        if selpers is None:
+            return
+        
+        seldoc, docpos = GuiHelper.get_selected_fromlb(self.m_documentsLB, selpers.documents)
+        if seldoc is None:
+            return
+        
+        self._fact.delete(seldoc)
+        selpers.documents = None
+        self._fact.fill_joins(selpers, 
+                              Person.Documents)
         self.refresh_dash_forp(perspos)
 
     def removePictureFromPerson(self, event):
@@ -471,6 +484,9 @@ class AncPicDbMain(gg.AncPicDBMain):
                 persinterdoc = PersonDocumentInter(personid=selpers._id,
                                                    documentid=doc._id)
                 self._fact.flush(persinterdoc)
+
+        self.refresh_doc_stat()
+             
         selpers.documents = None
         self._fact.fill_joins(selpers, Person.Documents)
         self.refresh_dash_forp(perspos)

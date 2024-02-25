@@ -117,12 +117,36 @@ class Picture(sqp.PBase):
                m = self._getmonum(self.fluftakenmonth)
 
           return (d, m, y)
+     
+     @property
+     def bestdatestr(self):
+          d,m,y = self.best_takendate
+          ds = ""
+          if d is not None:
+               ds = "{}.".format(d)
+
+          if m is not None:
+               ds += "{}.".format(m)
+
+          if y is not None:
+               ds += "{}".format(y)
+
+          if len(ds) == 0:
+               return None
+          
+          return ds
           
      def __str__(self):
-          return "[{}] /{}/ {} {}".format(self.readableid, 
-                                      ewn(self.picturegroup),
-                                      ewn(self.title), 
-                                      ewn(self.takendate))
+          ds = self.bestdatestr
+          if ds is None:
+               ds = "./."
+
+          return "[{}] /{}/{}/ {}".format(self.readableid, 
+                                        ewn(ds),
+                                        ewn(self.picturegroup),
+                                        ewn(self.title))
+     
+
 class Document(sqp.PBase):
      ReadableId = sqp.String()
      GroupId = sqp.UUid()
@@ -177,13 +201,17 @@ class PersonPictureInter(sqp.PBase):
      Position = sqp.Int(default=0)
 
      def __str__(self):
+          ds = self.picture.bestdatestr
+          if ds is None:
+               ds = "./."
+
           if self.position is None or self.position==0:
-               return "x. [{}] {}".format(self.picture.readableid, self.picture.title)
+               return "x. [{}] {} {}".format(self.picture.readableid, ds, self.picture.title)
           else:
                if self.subtitle is None or len(self.subtitle)==0:
-                    return "{}. [{}] {}".format(self.position, self.picture.readableid, self.picture.title)
+                    return "{}. [{}] {} {}".format(self.position, self.picture.readableid, ds, self.picture.title)
                else:
-                    return "{}. [{}] {}".format(self.position, self.picture.readableid, self.subtitle)
+                    return "{}. [{}] {} {}".format(self.position, self.picture.readableid, ds, self.subtitle)
                
      @property 
      def histkey(self):

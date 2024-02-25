@@ -241,7 +241,7 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_documentsLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editPersonsDocument )
 		self.m_connectDocumentBU.Bind( wx.EVT_BUTTON, self.addDocument )
 		self.m_editDocumentBU.Bind( wx.EVT_BUTTON, self.editPersonsDocument )
-		self.m_disconnectDocumentBU.Bind( wx.EVT_BUTTON, self.disconnectDocument )
+		self.m_disconnectDocumentBU.Bind( wx.EVT_BUTTON, self.removeDoumentFromPerson )
 
 	def __del__( self ):
 		pass
@@ -305,7 +305,7 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 
-	def disconnectDocument( self, event ):
+	def removeDoumentFromPerson( self, event ):
 		event.Skip()
 
 
