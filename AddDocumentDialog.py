@@ -122,13 +122,17 @@ class AddDocumentDialog(gg.gAddDocumentDialog):
             if not pdoc._id in alreadycondocs:
                 self._docdata.append(pdoc)
 
-                idx = self.m_documentsLCTRL.InsertItem(self.m_documentsLCTRL.GetColumnCount(), pdoc.readableid)
-                self.m_documentsLCTRL.SetItemData(idx, ct)
-                self.m_documentsLCTRL.SetItem(idx, 0, pdoc.readableid)
-                self.m_documentsLCTRL.SetItem(idx, 1, pdoc.title)
-                self.m_documentsLCTRL.SetItem(idx, 2, self._asds(pdoc.productiondate))
-                self.m_documentsLCTRL.SetItem(idx, 3, self._catval(pdoc.type))
-                self.m_documentsLCTRL.SetItem(idx, 4, self._asds(pdoc.scandate))
+                try:
+                    idx = self.m_documentsLCTRL.InsertItem(self.m_documentsLCTRL.GetColumnCount(), pdoc.readableid)
+                    self.m_documentsLCTRL.SetItemData(idx, ct)
+                    self.m_documentsLCTRL.SetItem(idx, 0, pdoc.readableid)
+                    self.m_documentsLCTRL.SetItem(idx, 1, pdoc.title)
+                    self.m_documentsLCTRL.SetItem(idx, 2, self._asds(pdoc.productiondate))
+                    self.m_documentsLCTRL.SetItem(idx, 3, self._catval(pdoc.type))
+                    self.m_documentsLCTRL.SetItem(idx, 4, self._asds(pdoc.scandate))
+                except Exception as exc:
+                    pass
+                
                 ct += 1
 
     def showmodal(self):

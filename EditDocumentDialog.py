@@ -109,6 +109,9 @@ class EditDocumentDialog(gg.geditDocumentDialog):
 
         return img.Scale(width=neww, height=newh)
 
+    def _get_unspec_type(self):
+        return self._fact.getcat(DocTypeCat, "NSP")
+    
     def showmodal(self):
         self._filldialog()
 
@@ -124,6 +127,7 @@ class EditDocumentDialog(gg.geditDocumentDialog):
             d.groupid = d.documentgroup._id
         else:
             d.groupid = None
+
         d.type = GuiHelper.get_val(self.m_doctypCB, self._doctypelist)
         d.title = GuiHelper.get_val(self.m_titelTB)
         d.scandate = GuiHelper.get_val(self.m_scanDatumDP)
@@ -131,6 +135,10 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         #the follwing fields are readonly in the GUI - no update needed
         #p.filepath = GuiHelper.get_val(self.m_wxarchivepathTB)
         #p.ext = GuiHelper.get_val(self.m_docextTB)
+
+        if d.type is None: #make sure we do not store empty types
+            d.type = self._get_unspec_type()
+
         self._fact.flush(d)
         return res
     
