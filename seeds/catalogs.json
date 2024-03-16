@@ -26,6 +26,7 @@
             {"type": "DOC_TYPE", "code":"QUITTUNG", "value":"Quittung", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"DIARY", "value":"Tagebuch", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"BRIEF", "value":"Brief", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"FAMBUCH", "value":"Familienbuch", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"CONTRACT", "value":"Vertrag", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"NSP", "value":"nicht spez.", "langcode":"DEU"},
             {"type": "PICT_QUAL", "code":"BEST", "value":"hervorragend", "langcode":"DEU"},
