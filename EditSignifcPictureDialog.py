@@ -12,6 +12,8 @@ class EditSignifcPictureDialog(gg.gEditSignifcPictureDialog):
     
     def __init__(self, parent, fact : sqp.SQFactory, picinter : PersonPictureInter):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._picinter = picinter
         

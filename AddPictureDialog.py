@@ -26,6 +26,8 @@ class AddPictureDialog(gg.gAddPictureDialog):
     
     def __init__(self, parent, fact : sqp.SQFactory, person : Person):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         if person is None:
             raise Exception("Es muss eine Person benutzt werden! Person ist None!")
         self._fact = fact

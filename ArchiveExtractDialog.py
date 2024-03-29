@@ -17,6 +17,8 @@ class ArchiveExtractDialog(gg.gArchiveExtractDialog):
     
     def __init__(self, parent, fact):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._configuration = parent.configuration
         self._docarchive = parent.docarchive

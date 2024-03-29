@@ -8,6 +8,8 @@ import sqlitepersist as sqp
 class EditInfoBitDialog(gg.gEditInfoBitDialog):
     def __init__(self, parent, fact : sqp.SQFactory, ib : _InfoBit):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._configuration = parent.configuration
         self._infobit = ib

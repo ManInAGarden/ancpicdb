@@ -132,6 +132,8 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
     def __init__(self, parent, fact):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration

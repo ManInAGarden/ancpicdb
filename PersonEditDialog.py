@@ -14,6 +14,8 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
     def __init__(self, parent, fact, dta : Person):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._person = copy.copy(dta)
         self._configuration = parent.configuration

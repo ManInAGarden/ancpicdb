@@ -20,6 +20,8 @@ class EditDocumentDialog(gg.geditDocumentDialog):
 
     def __init__(self, parent, fact : sqp.SQFactory, document : Document):
         super().__init__(parent)
+        
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration

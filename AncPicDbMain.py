@@ -34,7 +34,7 @@ class AncPicDbMain(gg.AncPicDBMain):
     def __init__(self, parent ):
         super().__init__(parent)
         self._version = "0.9.0"
-
+        GuiHelper.set_icon(self)
         self.init_environ()
         self.init_prog()
         self.init_logging()
@@ -201,7 +201,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 
     def init_gui(self):
         """fill the gui for the first time. This includes to fetch all initially needed data from the DB"""
-
+        
         #heavily used data with only a small number of records
         self._persons = self.get_all_persons()
 

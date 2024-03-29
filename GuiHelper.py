@@ -1,4 +1,4 @@
-import os, subprocess, platform
+import os, subprocess, platform, sys
 import wx
 import logging
 import sqlitepersist as sqp
@@ -250,3 +250,19 @@ class GuiHelper:
             os.startfile(filepath)
         else:                                   # linux variants
             subprocess.call(('xdg-open', filepath))
+
+    @classmethod
+    def _get_app_path(cls):
+        if getattr(sys, 'frozen', False):
+            return os.path.dirname(sys.executable)
+        elif __file__:
+            return os.path.dirname(__file__)
+        else:
+            raise Exception("Unsupported constellation when trying to get application path")
+        
+    @classmethod
+    def set_icon(cls, dialog, subdirname="ressources", iconfilename = "application.ico"):
+        appath = cls._get_app_path()
+        ifname = os.path.join(appath, subdirname, iconfilename)
+        ico = wx.Icon(ifname)
+        dialog.SetIcon(ico)

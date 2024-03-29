@@ -16,6 +16,8 @@ class PictureFilterDialog(gg.gPictureFilterDialog):
     
     def __init__(self, parent, fact, dta):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._filter = copy.copy(dta) #calling dialog keeps an independent version of this, so we need a copy
         self._get_all_pgroups()

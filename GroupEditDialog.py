@@ -28,6 +28,8 @@ class GroupEditDialog(gg.gGroupEditDialog):
     
     def __init__(self, parent, fact, conf, grp):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         self._configuration = conf
         self._group = grp

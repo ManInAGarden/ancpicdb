@@ -33,6 +33,8 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
     
     def __init__(self, parent, fact : sqp.SQFactory, archiver : DocArchiver, conf : WantedConfig):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._fact = fact
         tdir = tmpf.gettempdir()
         self._configuration = parent.configuration

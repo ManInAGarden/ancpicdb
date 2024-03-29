@@ -24,6 +24,8 @@ class EditPictureDialog(gg.geditPictureDialog):
     
     def __init__(self, parent, fact : sqp.SQFactory, picture : Picture):
         super().__init__(parent)
+
+        GuiHelper.set_icon(self)
         self._currentpic_extr = None
         self._fact = fact
         self._configuration = parent._configuration
