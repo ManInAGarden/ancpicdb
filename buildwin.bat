@@ -5,10 +5,9 @@ echo writing external libs to cache for use in about ancpicdb ...
 python create_dependcydb.py
 echo ... done
 pyinstaller -w --noconfirm --name AncPicDb ^
-    --hidden-import "sklearn.utils._typedefs" ^
-    --add-data ./AncPicDbWINDIST.conf;. ^
-    --add-data ./seeds;./seeds ^
-    --add-data ./ressources;./ressources ^
+    --add-data ./AncPicDbWINDIST.conf:. ^
+    --add-data ./seeds:./seeds ^
+    --add-data ./ressources:./ressources ^
     --icon ./ressources/application.ico ^
     AncPicDbMain.py
 call conda deactivate

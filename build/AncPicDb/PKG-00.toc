@@ -35,7 +35,7 @@
    'Scripts\\ancpicdb\\build\\AncPicDb\\localpycs\\pyimod04_pywin32.pyc',
    'PYMODULE'),
   ('pyiboot01_bootstrap',
-   'C:\\Users\\hspei\\anaconda3\\envs\\ancpicdb\\lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'c:\\Users\\hspei\\anaconda3\\envs\\ancpicdb\\lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
    'PYSOURCE'),
   ('pyi_rth_inspect',
    'C:\\Users\\hspei\\anaconda3\\envs\\ancpicdb\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
