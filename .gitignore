@@ -3,6 +3,8 @@ AncPicDb.conf
 *.pyc
 ./dist
 ./build
+build
+dist
 *.toc
 *.exe
 .vscode

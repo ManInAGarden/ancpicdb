@@ -5,6 +5,7 @@ import logging
 import logging.config
 import tempfile as tmpf
 import datetime
+import platform
 
 import wx
 import wx.adv
@@ -118,18 +119,15 @@ class AncPicDbMain(gg.AncPicDBMain):
 		#try windows
         distcnfpath = os.path.join(self._apppath, "AncPicDb######.conf")
         done = False
-        osnames = ["WINDIST", "UBUNTUDIST", "OSXDIST"]
-        for osname in osnames:
-            done = self.trycopycnf(distcnfpath.replace("######", osname), tgtcnfpath)
-            if done:
-                break
+        osname = platform.system()
+        done = self.trycopycnf(distcnfpath.replace("######", osname), tgtcnfpath)
 
         if not done:
             raise Exception("No configuration was found and also could not be created from the os-specific configs")
         
     def trycopycnf(self, src, tgt):
         if os.path.exists(src) and os.path.isfile(src):
-            shutil.move(src, tgt)
+            shutil.copy(src, tgt)
             return True
         else:
             return False
