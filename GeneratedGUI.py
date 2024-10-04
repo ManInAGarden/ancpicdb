@@ -1084,6 +1084,11 @@ class gPersonEditDialog ( wx.Dialog ):
 		self.m_editSignPicBU.SetBitmap( wx.Bitmap( u"ressources/Edit.png", wx.BITMAP_TYPE_ANY ) )
 		bSizer12.Add( self.m_editSignPicBU, 0, wx.ALL, 5 )
 
+		self.m_viewSignPicBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_viewSignPicBU.SetBitmap( wx.Bitmap( u"ressources/Visible-32.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer12.Add( self.m_viewSignPicBU, 0, wx.ALL, 5 )
+
 		self.m_removeSignPicBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_removeSignPicBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
@@ -1130,6 +1135,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		self.m_significantPictursLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.editPictureInfo )
 		self.m_addSignPicBU.Bind( wx.EVT_BUTTON, self.addPicture )
 		self.m_editSignPicBU.Bind( wx.EVT_BUTTON, self.editPictureInfo )
+		self.m_viewSignPicBU.Bind( wx.EVT_BUTTON, self.viewPicture )
 		self.m_removeSignPicBU.Bind( wx.EVT_BUTTON, self.removePicture )
 
 	def __del__( self ):
@@ -1155,6 +1161,9 @@ class gPersonEditDialog ( wx.Dialog ):
 	def addPicture( self, event ):
 		event.Skip()
 
+
+	def viewPicture( self, event ):
+		event.Skip()
 
 	def removePicture( self, event ):
 		event.Skip()

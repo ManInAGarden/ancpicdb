@@ -1,3 +1,5 @@
+import os
+import tempfile as tmpf
 import datetime
 import copy
 from dateutil.relativedelta import relativedelta
@@ -17,6 +19,10 @@ class PersonEditDialog(gg.gPersonEditDialog):
 
         GuiHelper.set_icon(self)
         self._fact = fact
+        self._docarchive = parent.docarchive
+        self._configuration = parent._configuration
+        tdir = tmpf.gettempdir()
+        self.extdir = tdir + os.path.sep + self._configuration.get_value("archivestore", "localtemp")
         self._person = copy.copy(dta)
         self._configuration = parent.configuration
         self._init_gui()
@@ -357,10 +363,29 @@ class PersonEditDialog(gg.gPersonEditDialog):
         
         picintdial = EditSignifcPictureDialog(self, self._fact, selpicinter)
         res = picintdial.showmodal()
-        #flushing of intersection is done by the dialog itself, but wen need to to some refreshs here
-        p.pictures = None #that means a new select wirll be done by the following fill_joins
+        #flushing of intersection is done by the dialog itself, but we need to do some refreshs here
+        p.pictures = None #that means a new select will be done by the following fill_joins
         self._fact.fill_joins(p, Person.Pictures)
         self._fillpicturelist(p)
+
+    def viewPicture(self, parent):
+        """Open a picture with the operating system's picture viewer
+        """
+        p = self._person
+        selpicinter = GuiHelper.get_selected_fromlctrl(self.m_significantPictursLCTRL, p.pictures)
+        if selpicinter is None:
+            GuiHelper.show_message("Bitte zuvor eines der Bilder selektieren")
+            return
+        
+        extr = self._docarchive.extract_file(selpicinter.picture.filepath, self.extdir)
+
+        if extr is None:
+            return
+        try:
+            GuiHelper.openbysys(extr)
+        except Exception as exc:
+            GuiHelper.show_error("Unbehandelter Fehler beim Versuch das Bild zu öffnen.\nText der Originalmeldung: {}".format(exc))
+
 
     def removeFatherLink(self, event):
         if self._person.fatherid is None:

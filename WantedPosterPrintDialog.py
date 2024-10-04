@@ -62,7 +62,7 @@ class WantedPosterPrintDialog(gg.gWantedPosterPrintDialog):
             else:
                 by = 0
             if p.birthmonth is not None:
-                bm = p.birthmonth._as_number()
+                bm = p.birthmonth.as_number()
             else:
                 bm = 0
 
