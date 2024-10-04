@@ -1,6 +1,7 @@
 
 AncPicDb.conf
 *.pyc
+./dist
 AncPicDbTest.sqlite
 testwantedposterGustaf.pdf
 testwantedposterMick.pdf

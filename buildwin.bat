@@ -1,7 +1,7 @@
 rem batch to build the distributable version for ms-windows
 echo off
 call conda activate ancpicdb
-echo writing external libst to cache fur use in about pexdb ...
+echo writing external libs to cache for use in about ancpicdb ...
 python create_dependcydb.py
 echo ... done
 pyinstaller -w --noconfirm --name AncPicDb ^
