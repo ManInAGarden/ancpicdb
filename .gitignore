@@ -5,6 +5,7 @@ AncPicDb.conf
 ./build
 *.toc
 *.exe
+.vscode
 AncPicDb.spec
 AncPicDbTest.sqlite
 testwantedposterGustaf.pdf
