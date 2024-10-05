@@ -2,10 +2,11 @@ AncPicDb.conf
 *.pyc
 ./dist
 ./build
+build
+dist
 *.toc
 *.exe
 *.log
-.vscode
 AncPicDb.spec
 AncPicDbTest.sqlite
 testwantedposterGustaf.pdf
