@@ -7,7 +7,7 @@ build
 dist
 *.toc
 *.exe
-.vscode
+*.log
 AncPicDb.spec
 AncPicDbTest.sqlite
 testwantedposterGustaf.pdf
