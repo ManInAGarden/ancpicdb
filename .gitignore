@@ -1,10 +1,10 @@
-
 AncPicDb.conf
 *.pyc
 ./dist
 ./build
 *.toc
 *.exe
+*.log
 .vscode
 AncPicDb.spec
 AncPicDbTest.sqlite
