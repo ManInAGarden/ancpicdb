@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+## Python code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -18,7 +18,7 @@ import wx.adv
 class AncPicDBMain ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AncPicDB", pos = wx.DefaultPosition, size = wx.Size( 1323,680 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"AncPicDB", pos = wx.DefaultPosition, size = wx.Size( 1200,650 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -26,7 +26,7 @@ class AncPicDBMain ( wx.Frame ):
 
 		self.m_mainMenuBar = wx.MenuBar( 0 )
 		self.m_fileMenu = wx.Menu()
-		self.m_backupDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Sicherungskopiie erstellen", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_backupDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Sicherungskopie erstellen", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_backupDbMI )
 
 		self.m_menuItem16 = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Archive extrahieren", u"Extrahiert Doukmente und Bilder so, dass sie separat gespeichert werden können", wx.ITEM_NORMAL )
@@ -316,7 +316,7 @@ class AncPicDBMain ( wx.Frame ):
 class geditDocumentDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokument bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 806,819 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokument bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 800,750 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -330,7 +330,7 @@ class geditDocumentDialog ( wx.Dialog ):
 		m_sdbSizer3.AddButton( self.m_sdbSizer3OK )
 		self.m_sdbSizer3Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer3.AddButton( self.m_sdbSizer3Cancel )
-		m_sdbSizer3.Realize();
+		m_sdbSizer3.Realize()
 
 		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 3 ), wx.GBSpan( 1, 3 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
 
@@ -559,7 +559,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		m_sdbSizer2 = wx.StdDialogButtonSizer()
 		self.m_sdbSizer2OK = wx.Button( self, wx.ID_OK )
 		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
-		m_sdbSizer2.Realize();
+		m_sdbSizer2.Realize()
 
 		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
 
@@ -605,7 +605,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 class geditPictureDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 737,798 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 750,755 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -619,7 +619,7 @@ class geditPictureDialog ( wx.Dialog ):
 		m_sdbSizer3.AddButton( self.m_sdbSizer3OK )
 		self.m_sdbSizer3Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer3.AddButton( self.m_sdbSizer3Cancel )
-		m_sdbSizer3.Realize();
+		m_sdbSizer3.Realize()
 
 		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 4 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
 
@@ -866,7 +866,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 		m_sdbSizer2 = wx.StdDialogButtonSizer()
 		self.m_sdbSizer2OK = wx.Button( self, wx.ID_OK )
 		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
-		m_sdbSizer2.Realize();
+		m_sdbSizer2.Realize()
 
 		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
 
@@ -927,7 +927,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 class gPersonEditDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Person bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 984,826 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Person bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 1000,750 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -1060,7 +1060,7 @@ class gPersonEditDialog ( wx.Dialog ):
 		m_personSDBSI.AddButton( self.m_personSDBSIOK )
 		self.m_personSDBSICancel = wx.Button( self, wx.ID_CANCEL )
 		m_personSDBSI.AddButton( self.m_personSDBSICancel )
-		m_personSDBSI.Realize();
+		m_personSDBSI.Realize()
 
 		gbSizer2.Add( m_personSDBSI, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 5 ), wx.ALL|wx.EXPAND, 5 )
 
@@ -1190,7 +1190,7 @@ class gAddPictureDialog ( wx.Dialog ):
 		m_sdbSizer4.AddButton( self.m_sdbSizer4OK )
 		self.m_sdbSizer4Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer4.AddButton( self.m_sdbSizer4Cancel )
-		m_sdbSizer4.Realize();
+		m_sdbSizer4.Realize()
 
 		gbSizer8.Add( m_sdbSizer4, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
@@ -1282,7 +1282,7 @@ class gAddDocumentDialog ( wx.Dialog ):
 		m_sdbSizer4.AddButton( self.m_sdbSizer4OK )
 		self.m_sdbSizer4Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer4.AddButton( self.m_sdbSizer4Cancel )
-		m_sdbSizer4.Realize();
+		m_sdbSizer4.Realize()
 
 		gbSizer8.Add( m_sdbSizer4, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
@@ -1374,7 +1374,7 @@ class gEditInfoBitDialog ( wx.Dialog ):
 		m_sdbSizer8.AddButton( self.m_sdbSizer8OK )
 		self.m_sdbSizer8Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer8.AddButton( self.m_sdbSizer8Cancel )
-		m_sdbSizer8.Realize();
+		m_sdbSizer8.Realize()
 
 		gbSizer12.Add( m_sdbSizer8, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.BOTTOM|wx.EXPAND, 5 )
 
@@ -1462,7 +1462,7 @@ class gGroupsDialog ( wx.Dialog ):
 		m_sdbSizer10 = wx.StdDialogButtonSizer()
 		self.m_sdbSizer10OK = wx.Button( self, wx.ID_OK )
 		m_sdbSizer10.AddButton( self.m_sdbSizer10OK )
-		m_sdbSizer10.Realize();
+		m_sdbSizer10.Realize()
 
 		gbSizer13.Add( m_sdbSizer10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
@@ -1543,7 +1543,7 @@ class gGroupEditDialog ( wx.Dialog ):
 		m_sdbSizer11.AddButton( self.m_sdbSizer11OK )
 		self.m_sdbSizer11Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer11.AddButton( self.m_sdbSizer11Cancel )
-		m_sdbSizer11.Realize();
+		m_sdbSizer11.Realize()
 
 		gbSizer14.Add( m_sdbSizer11, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
 
@@ -1589,7 +1589,7 @@ class gPictureFilterDialog ( wx.Dialog ):
 		m_sdbSizer11.AddButton( self.m_sdbSizer11OK )
 		self.m_sdbSizer11Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer11.AddButton( self.m_sdbSizer11Cancel )
-		m_sdbSizer11.Realize();
+		m_sdbSizer11.Realize()
 
 		gbSizer15.Add( m_sdbSizer11, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 4 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
 
@@ -1702,7 +1702,7 @@ class gEditSignifcPictureDialog ( wx.Dialog ):
 		m_sdbSizer12.AddButton( self.m_sdbSizer12OK )
 		self.m_sdbSizer12Cancel = wx.Button( self, wx.ID_CANCEL )
 		m_sdbSizer12.AddButton( self.m_sdbSizer12Cancel )
-		m_sdbSizer12.Realize();
+		m_sdbSizer12.Realize()
 
 		gbSizer16.Add( m_sdbSizer12, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
 
