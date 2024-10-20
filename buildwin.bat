@@ -5,7 +5,7 @@ echo writing external libs to cache for use in about ancpicdb ...
 python create_dependcydb.py
 echo ... done
 pyinstaller -w --noconfirm --name AncPicDb ^
-    --add-data ./AncPicDbWINDIST.conf:. ^
+    --add-data ./AncPicDbWindows.conf:. ^
     --add-data ./seeds:./seeds ^
     --add-data ./ressources:./ressources ^
     --icon ./ressources/application.ico ^

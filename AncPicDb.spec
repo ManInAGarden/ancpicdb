@@ -5,7 +5,7 @@ a = Analysis(
     ['AncPicDbMain.py'],
     pathex=[],
     binaries=[],
-    datas=[('./AncPicDbWINDIST.conf', 'AncPicDb.conf'), ('./seeds', './seeds'), ('./ressources', './ressources')],
+    datas=[('./AncPicDbWindows.conf', '.'), ('./seeds', './seeds'), ('./ressources', './ressources')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

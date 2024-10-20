@@ -124,7 +124,9 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         if not done:
             raise Exception("No configuration was found and also could not be created from the os-specific configs")
-        
+
+        return    
+    
     def trycopycnf(self, src, tgt):
         if os.path.exists(src) and os.path.isfile(src):
             shutil.copy(src, tgt)
