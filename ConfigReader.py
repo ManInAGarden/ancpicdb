@@ -10,11 +10,46 @@ class ConfigReader():
     def __init__(self, filepath):
         self._filepath = filepath
         self.readconfig()
+        self.replaces = None
 
     def readconfig(self):
         with open(self._filepath, 'r', encoding="utf8") as f:
             self._data = json.load(f)
+
+        try:
+            self.replaces = self._data["replaces"]
+        except:
+            self.replaces = {}
+
+        self._data = self._do_single_replace(self._data)
         
+    def _do_list_replace(self, lval):
+        answ = []
+
+        for val in lval:
+            answ.append(self._do_single_replace(val))
+
+    def _do_single_replace(self, val):
+        if type(val) is str:
+            nval = val
+            for key, value in self.replaces.items():
+                nval = nval.replace("<" + key + ">", value)
+            return nval
+        elif type(val) is dict:
+            return self._do_dict_replace(val)
+        elif type(val) is list:
+            return self._do_list_replace(val)
+        else:
+            return val
+        
+    def _do_dict_replace(self, dta):
+        answ = {}
+        for key, val in dta.items():
+            newval = self._do_single_replace(val)
+            answ[key] = newval
+        
+        return answ
+
     def get_section(self, section : str):
         """gets a complete section of configs as whatever it is in json (mostly a dict)
         """

@@ -73,7 +73,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 
 
     def expand_dvalue(self, d : dict, name : str):
-        """expand any value in the dict with the given key recurseively"""
+        """expand any value in the dict with the given key recursively"""
         for key, val in d.items():
             valt = type(val)
             if valt is str:
