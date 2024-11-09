@@ -3,6 +3,8 @@ import time
 from pathlib import Path
 import wx
 import sqlitepersist as sqp
+import shutil as su
+import os
 
 # Define notification event for thread completion
 EVT_RESULT_ID = wx.NewId()
@@ -81,6 +83,40 @@ class BgArchiveExtractor(BgWorker):
 
         wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
         wx.PostEvent(self.notifywin, ResultEvent(ct))
+
+
+class DbCreatorParas():
+    def __init__(self, storagepath, new_db_name, copy_old=False, old_db_name=None):
+        self.new_db_name = new_db_name
+        self.copy_old = copy_old
+        self.storage_path = storagepath
+        self.old_db_name = old_db_name
+
+class BgDBCreator(BgWorker):
+    def __init__(self, notifywin, paras : DbCreatorParas):
+        super().__init__(notifywin)
+        self.paras = paras
+
+    def run(self):
+        storage_path = self.paras.storage_path
+        new_db_name = self.paras.new_db_name
+        old_db_name = self.paras.old_db_name
+        do_copy = self.paras.copy_old
+
+        newdirname = os.path.join(storage_path, new_db_name)
+        
+        if do_copy:
+            olddirname = os.path.join(storage_path, old_db_name)
+            su.copytree(olddirname, newdirname)
+        else:
+            raise NotImplementedError("Creating a completely new Database here is not yet implemented")
+
+        wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
+        wx.PostEvent(self.notifywin, ResultEvent(1))
+
+
+        
+
 
 
         

@@ -22,6 +22,7 @@ from EditDocumentDialog import EditDocumentDialog
 from GroupsViewDialog import GroupsViewDialog
 from DataCheckerDialog import DataCheckerDialog
 from ArchiveExtractDialog import ArchiveExtractDialog
+from NewDbDialog import NewDbDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
 from WantedPosterPrintDialog import WantedPosterPrintDialog
@@ -108,6 +109,27 @@ class AncPicDbMain(gg.AncPicDBMain):
         self._ensure_config(cnfname)
         self._configuration = ConfigReader(os.path.join(self._apppath, cnfname))
         self._wantedconfig = WantedPosterPrintDialog.WantedConfig()
+
+        self.storagepath, self.dbname = self._get_storagebasics()
+
+    def _get_last_dir(self, p : str):
+        """getting the last dir element of a path"""
+        parts = os.path.split(p)
+        l = len(parts)
+        return parts[l-1]
+    
+    def _get_all_but_last_dir(self, p : str):
+        """getting all but the last dir"""
+        parts = os.path.split(p)
+        return parts[0]
+
+
+    def _get_storagebasics(self):
+        dbfilename = self._configuration.get_value_interp("database", "filename")
+        currdbdir = os.path.dirname(dbfilename)
+        storagepath = self._get_all_but_last_dir(currdbdir)
+        dbname = self._get_last_dir(currdbdir)
+        return storagepath, dbname
 
     def _ensure_config(self, cnfname):
         """make sure the config exists. if not try to create it from a distributed version
@@ -204,8 +226,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         
         #heavily used data with only a small number of records
         self._persons = self.get_all_persons()
-
-        self.m_mainWindowSB.SetStatusText("DB: {0}".format(self._fact._dbfilename), 0)
+        self.m_mainWindowSB.SetStatusText("DB: {0}".format(self.dbname), 0)
 
         self.refresh_dash()
 
@@ -545,6 +566,10 @@ class AncPicDbMain(gg.AncPicDBMain):
     def extractArchive(self, event):
         exadial = ArchiveExtractDialog(self, self._fact)
         res = exadial.showmodal()
+
+    def createNewDb(self, event):
+        newdbdial = NewDbDialog(self, self._fact, self.storagepath, self.dbname)
+        res = newdbdial.showmodal()
 
 if __name__ == '__main__':
     app = wx.App()

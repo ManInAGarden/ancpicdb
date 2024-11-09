@@ -32,6 +32,12 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_menuItem16 = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Archive extrahieren", u"Extrahiert Doukmente und Bilder so, dass sie separat gespeichert werden können", wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_menuItem16 )
 
+		self.m_changeDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Datenbank wechseln", u"Zu einer anderen bestehenden Datenbank wechseln", wx.ITEM_NORMAL )
+		self.m_fileMenu.Append( self.m_changeDbMI )
+
+		self.m_createNewDatabaseMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Neue Datenbank anlegen", u"Eine neue Datenbank anlegen und dabei gg. eine bestehende kopieren", wx.ITEM_NORMAL )
+		self.m_fileMenu.Append( self.m_createNewDatabaseMI )
+
 		self.m_fileMenu.AppendSeparator()
 
 		self.m_exitMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Beenden"+ u"\t" + u"CTRL+Q", wx.EmptyString, wx.ITEM_NORMAL )
@@ -222,6 +228,8 @@ class AncPicDBMain ( wx.Frame ):
 		# Connect Events
 		self.Bind( wx.EVT_MENU, self.backupDb, id = self.m_backupDbMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.extractArchive, id = self.m_menuItem16.GetId() )
+		self.Bind( wx.EVT_MENU, self.changeDb, id = self.m_changeDbMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.createNewDb, id = self.m_createNewDatabaseMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.quit, id = self.m_exitMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewGroupsDialog, id = self.m_groupsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewDocumentsDialog, id = self.m_documentsMI.GetId() )
@@ -252,6 +260,12 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def extractArchive( self, event ):
+		event.Skip()
+
+	def changeDb( self, event ):
+		event.Skip()
+
+	def createNewDb( self, event ):
 		event.Skip()
 
 	def quit( self, event ):
@@ -2099,6 +2113,74 @@ class gArchiveExtractDialog ( wx.Dialog ):
 		event.Skip()
 
 	def abortExtraction( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gNewDbDialg
+###########################################################################
+
+class gNewDbDialg ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Neue Datenbanl anlegen", pos = wx.DefaultPosition, size = wx.Size( 367,155 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		wbSizer90 = wx.GridBagSizer( 0, 0 )
+		wbSizer90.SetFlexibleDirection( wx.BOTH )
+		wbSizer90.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_ALL )
+
+		self.m_staticText71 = wx.StaticText( self, wx.ID_ANY, u"Name der neuen DB", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText71.Wrap( -1 )
+
+		wbSizer90.Add( self.m_staticText71, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText72 = wx.StaticText( self, wx.ID_ANY, u"Aktuelle DB kopieren", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText72.Wrap( -1 )
+
+		wbSizer90.Add( self.m_staticText72, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_createDbBU = wx.Button( self, wx.ID_ANY, u"Jetzt anlegen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		wbSizer90.Add( self.m_createDbBU, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_BOTTOM|wx.ALIGN_LEFT|wx.ALL, 5 )
+
+		self.m_cancelBU = wx.Button( self, wx.ID_ANY, u"Schließen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_cancelBU.SetHelpText( u"Den Vorgang abbrechen" )
+
+		wbSizer90.Add( self.m_cancelBU, wx.GBPosition( 3, 2 ), wx.GBSpan( 1, 1 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
+
+		self.m_copyOldCB = wx.CheckBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		wbSizer90.Add( self.m_copyOldCB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_execuringG = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_execuringG.SetValue( 0 )
+		wbSizer90.Add( self.m_execuringG, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_LEFT|wx.ALIGN_RIGHT|wx.ALL, 5 )
+
+		self.m_newNameTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		wbSizer90.Add( self.m_newNameTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		wbSizer90.AddGrowableCol( 1 )
+		wbSizer90.AddGrowableRow( 2 )
+
+		self.SetSizer( wbSizer90 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_createDbBU.Bind( wx.EVT_BUTTON, self.createNewDbNow )
+		self.m_cancelBU.Bind( wx.EVT_BUTTON, self.cancelNewDbCeation )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def createNewDbNow( self, event ):
+		event.Skip()
+
+	def cancelNewDbCeation( self, event ):
 		event.Skip()
 
 
