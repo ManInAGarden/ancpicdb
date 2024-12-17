@@ -25,6 +25,7 @@ from ArchiveExtractDialog import ArchiveExtractDialog
 from NewDbDialog import NewDbDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
+from DataBaseTools import DataBaseTools
 from WantedPosterPrintDialog import WantedPosterPrintDialog
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
@@ -60,17 +61,9 @@ class AncPicDbMain(gg.AncPicDBMain):
         else:
             raise Exception("Unsupported constellation when trying to get application path")
 
-    def makesuredirexists(self, filename):
-        """make sure the path for a given filename exists, so that the file maybe created in that place
-        """
-        dname = os.path.dirname(filename)
-        if os.path.exists(dname):
-            if os.path.isdir(dname):
-                return
-            else:
-                raise Exception("Path {} existst but is no directory".format(dname))
 
-        os.makedirs(dname, exist_ok=True)
+    def makesuredirexists(self, filename):
+        DataBaseTools.makesuredirexists(filename)
 
 
     def expand_dvalue(self, d : dict, name : str):
@@ -183,43 +176,12 @@ class AncPicDbMain(gg.AncPicDBMain):
 
     def init_db(self):
         dbfilename = self._configuration.get_value_interp("database", "filename")
-        self.logger.info("Initialising database in db-file %s", dbfilename)
-        self.makesuredirexists(dbfilename)
-        self._fact = sqp.SQFactory("AncPicDb", dbfilename)
-        self._fact.lang = "DEU"
-        doinits = self._configuration.get_value("database", "tryinits")
-        self._fact.set_db_dbglevel(self.logger,
-            self._configuration.get_value("database", "dbglevel"))
-		
-        if doinits:
-            self._initandseeddb()
-
-    def _initandseeddb(self):
-        """initalise the db by creating the tables and fill them with seed data"""
-        self.logger.info("Creating tables not yet existing and seeding values to tables")
-        pclasses = [sqp.PCatalog, sqp.CommonInter,
-			Person, 
-            PersonInfoBit,
-            DataGroup,
-			Picture,
-            PictureInfoBit,
-            Document,
-            DocumentInfoBit,
-            PersonPictureInter,
-            PersonDocumentInter
-			]
-
-        createds = []
-        for pclass in pclasses:
-            done = self._fact.try_createtable(pclass)
-            if done:
-                createds.append(pclass)
-
-        if sqp.PCatalog in createds:
-            self.logger.info("Seeding catalogs")
-            sdr = sqp.SQPSeeder(self._fact, os.path.join(self._apppath, "seeds/catalogs.json"))
-            sdr.create_seeddata()
-
+        db = DataBaseTools(self._configuration,
+                           self.logger, 
+                           "AncPicDb", 
+                           dbfilename)
+        self._fact = db.init_db()
+        
 
     def init_gui(self):
         """fill the gui for the first time. This includes to fetch all initially needed data from the DB"""

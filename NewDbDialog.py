@@ -52,7 +52,7 @@ class NewDbDialog(gg.gNewDbDialg) :
         copyold = GuiHelper.get_val(self.m_copyOldCB)
 
         paras = bgw.DbCreatorParas(self.storagepath, newdbname, copyold, self.currdbname)
-        worker = bgw.BgDBCreator(self, paras)
+        worker = bgw.BgDBCreator(self, self._configuration, self.logger, paras)
         worker.start()
     
     def cancelNewDbCeation(self, event):

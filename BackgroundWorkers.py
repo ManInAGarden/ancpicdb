@@ -5,6 +5,7 @@ import wx
 import sqlitepersist as sqp
 import shutil as su
 import os
+from DataBaseTools import DataBaseTools
 
 # Define notification event for thread completion
 EVT_RESULT_ID = wx.NewId()
@@ -93,9 +94,11 @@ class DbCreatorParas():
         self.old_db_name = old_db_name
 
 class BgDBCreator(BgWorker):
-    def __init__(self, notifywin, paras : DbCreatorParas):
+    def __init__(self, notifywin, conf, logger, paras : DbCreatorParas):
         super().__init__(notifywin)
         self.paras = paras
+        self._configuration = conf
+        self.logger = logger
 
     def run(self):
         storage_path = self.paras.storage_path
@@ -109,8 +112,13 @@ class BgDBCreator(BgWorker):
             olddirname = os.path.join(storage_path, old_db_name)
             su.copytree(olddirname, newdirname)
         else:
-            raise NotImplementedError("Creating a completely new Database here is not yet implemented")
-
+            dbfilename = self._configuration.get_value_interp("database", "filename")
+            dbfilename = os.path.basename(dbfilename)
+            newdirname = os.path.join(storage_path, new_db_name)
+            newdbfilename = os.path.join(newdirname, dbfilename)
+            dbt = DataBaseTools(self._configuration, self.logger, "AncPicDb", newdbfilename)
+            newdbfact = dbt.init_db()
+            
         wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
         wx.PostEvent(self.notifywin, ResultEvent(1))
 
