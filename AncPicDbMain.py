@@ -25,7 +25,7 @@ from ArchiveExtractDialog import ArchiveExtractDialog
 from NewDbDialog import NewDbDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
-from DataBaseTools import DataBaseTools
+from ABDBTools import APDBTools
 from WantedPosterPrintDialog import WantedPosterPrintDialog
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
@@ -41,6 +41,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         self.init_environ()
         self.init_prog()
         self.init_logging()
+        self._dbt = APDBTools(self._configuration, self.logger)
         self.init_archive()
         self.init_db()
         self.init_gui()
@@ -63,7 +64,7 @@ class AncPicDbMain(gg.AncPicDBMain):
 
 
     def makesuredirexists(self, filename):
-        DataBaseTools.makesuredirexists(filename)
+        APDBTools.makesuredirexists(filename)
 
 
     def expand_dvalue(self, d : dict, name : str):
@@ -150,37 +151,15 @@ class AncPicDbMain(gg.AncPicDBMain):
             return False
         
     def init_archive(self):
-        tdir = tmpf.gettempdir()
-        extdir = tdir + path.sep + self._configuration.get_value("archivestore", "localtemp")
-        if not path.exists(extdir):
-            mkdir(extdir)
-
-        self._extractionpath = extdir
-        self.logger.info("Initialising archive temporary path %s", extdir)
-
+        """Initialise the archive at the configured path"""
         apath = self._configuration.get_value_interp("archivestore","path")
-        self.logger.info("Initialising archive path %s", apath)
-        if os.path.exists(apath):
-            self._docarchive = DocArchiver(apath) #use existing archive
-            return
-
-        self.logger.info("Archive is empty - initialising archive store")
-        dnum = self._configuration.get_value("archivestore", "dirnum")
-        if dnum <= 0:
-            raise Exception("Configuration Error - dirnum must be a positive integer")
-		
-        #we are starting for the first time, so we initialize the document archive here
-        DocArchiver.prepare_archive(apath, dnum)
-        self._docarchive = DocArchiver(apath) #use new archive
+        self._docarchive = self._dbt.init_archive(apath)
         self._wantedconfig._archiver = self._docarchive
+
 
     def init_db(self):
         dbfilename = self._configuration.get_value_interp("database", "filename")
-        db = DataBaseTools(self._configuration,
-                           self.logger, 
-                           "AncPicDb", 
-                           dbfilename)
-        self._fact = db.init_db()
+        self._fact = self._dbt.init_db("AncPicDb", dbfilename)
         
 
     def init_gui(self):
@@ -287,15 +266,16 @@ class AncPicDbMain(gg.AncPicDBMain):
 
 
     def cleanup_temp(self):
+        expa = self._dbt.extractionpath
         """delete any temporary files from the temp-dir"""
-        if not os.path.exists(self._extractionpath):
+        if not os.path.exists(expa):
             return
 
-        if not os.path.isdir(self._extractionpath):
+        if not os.path.isdir(expa):
             return
 
         list_of_files = []
-        for root, dirs, files in os.walk(self._extractionpath):
+        for root, dirs, files in os.walk(expa):
             for filename in files:
                 list_of_files.append(os.path.join(root,filename))
         fct = 0
@@ -309,7 +289,7 @@ class AncPicDbMain(gg.AncPicDBMain):
                 dct += 1
 				
         #lastly remove the temp-dir used for temporary extraction
-        os.rmdir(self._extractionpath)
+        os.rmdir(expa)
         self.logger.info("Cleaned temporary %d files in %d directories", fct, dct+1)
 
 	    # Handlers for AncPicDBMainFrame events.

@@ -1,15 +1,20 @@
 import sys
 import os
+import tempfile as tmpf
 import sqlitepersist as sqp
+from DocArchiver import *
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonPictureInter, PersonDocumentInter
 
-class DataBaseTools():
+class APDBTools():
 
-    def __init__(self, conf, logger, name, filepath):
+    @property
+    def extractionpath(self):
+        return self._extractionpath
+    
+    
+    def __init__(self, conf, logger):
         self._configuration = conf
         self.logger = logger
-        self.name = name
-        self.filepath = filepath
 
     @classmethod
     def makesuredirexists(cls, filename):
@@ -33,12 +38,12 @@ class DataBaseTools():
             raise Exception("Unsupported constellation when trying to get application path")
     
     
-    def init_db(self):
+    def init_db(self, name, dbfilename):
+        self.filepath = dbfilename
         self._apppath = self._get_app_path()
-        dbfilename = self.filepath
         self.logger.info("Initialising database in db-file %s", dbfilename)
         self.makesuredirexists(dbfilename)
-        self._fact = sqp.SQFactory("AncPicDb", dbfilename)
+        self._fact = sqp.SQFactory(name, dbfilename)
         self._fact.lang = "DEU"
         doinits = self._configuration.get_value("database", "tryinits")
         self._fact.set_db_dbglevel(self.logger,
@@ -75,3 +80,28 @@ class DataBaseTools():
             self.logger.info("Seeding catalogs")
             sdr = sqp.SQPSeeder(self._fact, os.path.join(self._apppath, "seeds/catalogs.json"))
             sdr.create_seeddata()
+
+
+    def init_archive(self, apath):
+        tdir = tmpf.gettempdir()
+        extdir = tdir + os.path.sep + self._configuration.get_value("archivestore", "localtemp")
+        if not os.path.exists(extdir):
+            os.mkdir(extdir)
+
+        self._extractionpath = extdir
+        self.logger.info("Initialising archive temporary path %s", extdir)
+
+        self_archpath = apath
+        self.logger.info("Initialising archive path %s", apath)
+        if os.path.exists(apath):
+            return DocArchiver(apath) #use existing archive
+
+        self.logger.info("Archive is empty - initialising archive store")
+        dnum = self._configuration.get_value("archivestore", "dirnum")
+        if dnum <= 0:
+            raise Exception("Configuration Error - dirnum must be a positive integer")
+		
+        #we are starting for the first time, so we initialize the document archive here
+        DocArchiver.prepare_archive(apath, dnum)
+        docarchive = DocArchiver(apath) #use new archive
+        return docarchive

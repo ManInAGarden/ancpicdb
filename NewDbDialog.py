@@ -29,6 +29,11 @@ class NewDbDialog(gg.gNewDbDialg) :
         self.storagepath = spath
         self.currdbname = dbname
 
+        bgw.EVT_RESULT(self, self.workerfinished)
+        bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
+
+        
+
     def _filldialog(self):
         return
 

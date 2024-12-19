@@ -5,7 +5,7 @@ import wx
 import sqlitepersist as sqp
 import shutil as su
 import os
-from DataBaseTools import DataBaseTools
+from ABDBTools import APDBTools
 
 # Define notification event for thread completion
 EVT_RESULT_ID = wx.NewId()
@@ -109,15 +109,21 @@ class BgDBCreator(BgWorker):
         newdirname = os.path.join(storage_path, new_db_name)
         
         if do_copy:
+            self.logger.info("Kopiere DB %s nach %s", old_db_name, new_db_name)
             olddirname = os.path.join(storage_path, old_db_name)
             su.copytree(olddirname, newdirname)
+            self.logger.info("Die Datenbank wurde nach %s kopiert", newdirname)
         else:
             dbfilename = self._configuration.get_value_interp("database", "filename")
             dbfilename = os.path.basename(dbfilename)
             newdirname = os.path.join(storage_path, new_db_name)
             newdbfilename = os.path.join(newdirname, dbfilename)
-            dbt = DataBaseTools(self._configuration, self.logger, "AncPicDb", newdbfilename)
-            newdbfact = dbt.init_db()
+            self.logger.info("Erzeuge eine neue Datenbank im Verzeichnis %s", newdirname)
+            dbt = APDBTools(self._configuration, self.logger)
+            newdbfact = dbt.init_db("AncPicDb", newdbfilename)
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(50))
+            newarchdir = os.path.join(newdirname, "Archive")
+            newarchive = dbt.init_archive(newarchdir)
             
         wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
         wx.PostEvent(self.notifywin, ResultEvent(1))
