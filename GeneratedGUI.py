@@ -2184,3 +2184,56 @@ class gNewDbDialg ( wx.Dialog ):
 		event.Skip()
 
 
+###########################################################################
+## Class mChangeDbDialog
+###########################################################################
+
+class mChangeDbDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Zu Datenbank wechseln", pos = wx.DefaultPosition, size = wx.Size( 495,461 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer23 = wx.GridBagSizer( 0, 0 )
+		gbSizer23.SetFlexibleDirection( wx.BOTH )
+		gbSizer23.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer13 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer13OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer13.AddButton( self.m_sdbSizer13OK )
+		self.m_sdbSizer13Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer13.AddButton( self.m_sdbSizer13Cancel )
+		m_sdbSizer13.Realize()
+
+		gbSizer23.Add( m_sdbSizer13, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND, 5 )
+
+		self.m_staticText73 = wx.StaticText( self, wx.ID_ANY, u"Datenbanken", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText73.Wrap( -1 )
+
+		gbSizer23.Add( self.m_staticText73, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.mDatabasesLBCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL|wx.LC_SORT_ASCENDING )
+		gbSizer23.Add( self.mDatabasesLBCTRL, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer23.AddGrowableCol( 1 )
+		gbSizer23.AddGrowableRow( 0 )
+
+		self.SetSizer( gbSizer23 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.mDatabasesLBCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.OnDatabaseSelected )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def OnDatabaseSelected( self, event ):
+		event.Skip()
+
+

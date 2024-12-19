@@ -22,6 +22,7 @@ from EditDocumentDialog import EditDocumentDialog
 from GroupsViewDialog import GroupsViewDialog
 from DataCheckerDialog import DataCheckerDialog
 from ArchiveExtractDialog import ArchiveExtractDialog
+from ChangeDbDialog import ChangeDbDialog
 from NewDbDialog import NewDbDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
@@ -512,6 +513,17 @@ class AncPicDbMain(gg.AncPicDBMain):
     def createNewDb(self, event):
         newdbdial = NewDbDialog(self, self._fact, self.storagepath, self.dbname)
         res = newdbdial.showmodal()
+
+    def changeDb(self, event):
+        dbseldial = ChangeDbDialog(self, self.storagepath, self.dbname)
+        res = dbseldial.showmodal()
+
+        if res != wx.ID_OK:
+            return
+        
+        # user selected another database - so now we change the db
+
+        
 
 if __name__ == '__main__':
     app = wx.App()

@@ -266,3 +266,32 @@ class GuiHelper:
         ifname = os.path.join(appath, subdirname, iconfilename)
         ico = wx.Icon(ifname)
         dialog.SetIcon(ico)
+
+
+    @classmethod
+    def set_columns_forlstctrl(cls, ctrl : wx.ListCtrl, defins : list):
+        ct = 0
+        for defin in defins:
+            ctrl.InsertColumn(ct, defin["title"])
+            ct += 1
+
+
+    @classmethod
+    def set_data_for_lstctrl(cls, ctrl : wx.ListCtrl, defins: list, items : list):
+        colmax = ctrl.GetColumnCount()
+        ct = 0
+        itidx = -1
+        for item in items:
+            first = True
+            for colct in range(0, colmax):
+                defin = defins[colct]
+                propname = defin["propname"]
+                pval = getattr(item, propname, "")
+                pvals = cls.get_eos(pval)
+                if first:
+                    itidx = ctrl.InsertItem(0, pvals)
+                    ctrl.SetItemData(itidx, colct)
+                    first = False
+                else:
+                    done = ctrl.SetItem(itidx, colct, pvals)
+                
