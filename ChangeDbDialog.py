@@ -14,11 +14,28 @@ class ChangeDbDialog(gg.mChangeDbDialog):
     def docarchive(self):
         return self._docarchive
     
+    @property
+    def selected_dblocation(self) -> str:
+        if self._selected_dbrep is None:
+            return None
+        else:
+            return self._selected_dbrep.location
+    
+    @property
+    def selected_dbname(self) -> str:
+        if self._selected_dbrep is None:
+            return None
+        else:
+            return self._selected_dbrep.name
+    
+    
+    
     def __init__(self, parent, storagepath, dbname):
         super().__init__(parent)
         GuiHelper.set_icon(self)
         self._configuration = parent.configuration
         self._docarchive = parent.docarchive
+        self._selected_dbrep = None
 
         self._storagepath = storagepath
         self._dbname = dbname
@@ -34,7 +51,6 @@ class ChangeDbDialog(gg.mChangeDbDialog):
                               ]
 
     def showmodal(self):
-        self.selected_db = None
         self._filldialog()
         return self.ShowModal()
     
@@ -60,5 +76,6 @@ class ChangeDbDialog(gg.mChangeDbDialog):
 
 
     def OnDatabaseSelected(self, event):
-        self.selected_db = GuiHelper.get_selected_fromlctrl(self.mDatabasesLBCTRL, self._founddatabases)
+        seldbrep = GuiHelper.get_selected_fromlctrl(self.mDatabasesLBCTRL, self._founddatabases)
+        self._selected_dbrep = seldbrep
         

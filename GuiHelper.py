@@ -278,6 +278,8 @@ class GuiHelper:
 
     @classmethod
     def set_data_for_lstctrl(cls, ctrl : wx.ListCtrl, defins: list, items : list):
+        """set the data for the list control
+        """
         colmax = ctrl.GetColumnCount()
         ct = 0
         itidx = -1
@@ -289,9 +291,11 @@ class GuiHelper:
                 pval = getattr(item, propname, "")
                 pvals = cls.get_eos(pval)
                 if first:
-                    itidx = ctrl.InsertItem(0, pvals)
-                    ctrl.SetItemData(itidx, colct)
+                    itidx = ctrl.InsertItem(ctrl.GetColumnCount(), pvals)
+                    ctrl.SetItemData(itidx, ct)
                     first = False
                 else:
                     done = ctrl.SetItem(itidx, colct, pvals)
+
+            ct += 1
                 

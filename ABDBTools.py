@@ -3,6 +3,7 @@ import os
 import tempfile as tmpf
 import sqlitepersist as sqp
 from DocArchiver import *
+from ConfigReader import ConfigReader
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonPictureInter, PersonDocumentInter
 
 class APDBTools():
@@ -11,10 +12,19 @@ class APDBTools():
     def extractionpath(self):
         return self._extractionpath
     
+    @property
+    def docarchive(self):
+        return self._docarchive
     
-    def __init__(self, conf, logger):
+    @property
+    def fact(self):
+        return self._fact
+    
+    
+    def __init__(self, conf : ConfigReader, logger):
         self._configuration = conf
         self.logger = logger
+        self._sourcepath = conf.get_value_interp("backup", "sourcepath")
 
     @classmethod
     def makesuredirexists(cls, filename):
@@ -27,6 +37,55 @@ class APDBTools():
                 raise Exception("Path {} existst but is no directory".format(dname))
 
         os.makedirs(dname, exist_ok=True)
+
+    def switch_to_db(self, dblocation : str):
+        """switch to the database (sqlite DB and archive) with the given location
+            wihcih contains an Archive directory and a database file always called 
+            AncPicDb.sqlite
+        """
+
+        #database
+        dbfilename = os.path.join(dblocation,"AncPicDb.sqlite")
+        self.filepath = dbfilename
+        self._apppath = self._get_app_path()
+        self.logger.info("Switching to database in db-file %s", dbfilename)
+        self._fact = sqp.SQFactory(name, dbfilename)
+        self._fact.lang = "DEU"
+        doinits = self._configuration.get_value("database", "tryinits")
+        self._fact.set_db_dbglevel(self.logger,
+            self._configuration.get_value("database", "dbglevel"))
+		
+        if doinits:
+            self._initandseeddb()
+
+        #Archive
+        apath = os.path.join(dblocation, "Archive")
+        tdir = tmpf.gettempdir()
+        extdir = tdir + os.path.sep + self._configuration.get_value("archivestore", "localtemp")
+        if not os.path.exists(extdir):
+            os.mkdir(extdir)
+
+        self._extractionpath = extdir
+        self.logger.info("Initialising archive temporary path %s", extdir)
+
+        self._archpath = apath
+        self.logger.info("Initialising archive path %s", apath)
+        if os.path.exists(apath):
+            self._docarchive = DocArchiver(apath) #use existing archive
+            return self._fact, self._docarchive
+
+        self.logger.info("Archive is empty - initialising archive store")
+        dnum = self._configuration.get_value("archivestore", "dirnum")
+        if dnum <= 0:
+            raise Exception("Configuration Error - dirnum must be a positive integer")
+		
+        #we are starting for the first time, so we initialize the document archive here
+        DocArchiver.prepare_archive(apath, dnum)
+        self._docarchive = DocArchiver(apath) #use new archive
+
+        return self._fact, self._docarchive
+    
+
 
 
     def _get_app_path(self):
@@ -91,7 +150,7 @@ class APDBTools():
         self._extractionpath = extdir
         self.logger.info("Initialising archive temporary path %s", extdir)
 
-        self_archpath = apath
+        self._archpath = apath
         self.logger.info("Initialising archive path %s", apath)
         if os.path.exists(apath):
             return DocArchiver(apath) #use existing archive
@@ -103,5 +162,6 @@ class APDBTools():
 		
         #we are starting for the first time, so we initialize the document archive here
         DocArchiver.prepare_archive(apath, dnum)
-        docarchive = DocArchiver(apath) #use new archive
-        return docarchive
+        self._docarchive = DocArchiver(apath) #use new archive
+
+        return self._docarchive

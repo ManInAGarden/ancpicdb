@@ -486,6 +486,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         fname = self._configuration.get_value("backup", "zipname")
         dstr = "{:%Y%m%d}".format(datetime.datetime.now())
         fname = fname.replace("${CreaDate}", dstr)
+        fname = fname.replace("${DbName}", self.dbname)
         pz = PathZipper(srcpath, targpath, fname, self.logger)
         try:
             pz.dozip()
@@ -522,7 +523,13 @@ class AncPicDbMain(gg.AncPicDBMain):
             return
         
         # user selected another database - so now we change the db
-
+        newdb = dbseldial.selected_dblocation
+        if newdb is None:
+            return
+        
+        self._fact, self._docarchive = self._dbt.switch_to_db(newdb)
+        self.dbname = dbseldial.selected_dbname
+        self.init_gui()
         
 
 if __name__ == '__main__':
