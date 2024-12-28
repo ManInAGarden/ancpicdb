@@ -486,7 +486,7 @@ class PBase(object):
     def additional_where(cls):
         """ adds an additional whereclause to every where for this class
             override to add your own additional where for your derived class
-            mybe like: MyCls.MyProp=="something" """
+            maybe like: MyCls.MyProp=="something" """
         return None
 
     def clone(self):

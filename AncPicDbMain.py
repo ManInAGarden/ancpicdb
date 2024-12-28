@@ -23,6 +23,7 @@ from GroupsViewDialog import GroupsViewDialog
 from DataCheckerDialog import DataCheckerDialog
 from ArchiveExtractDialog import ArchiveExtractDialog
 from ChangeDbDialog import ChangeDbDialog
+from AboutDialog import AboutDialog
 from NewDbDialog import NewDbDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
@@ -37,7 +38,7 @@ MAXDOCTITLELEN = 100
 class AncPicDbMain(gg.AncPicDBMain):
     def __init__(self, parent ):
         super().__init__(parent)
-        self._version = "1.0.0"
+        self._version = "1.0.1"
         GuiHelper.set_icon(self)
         self.init_environ()
         self.init_prog()
@@ -54,6 +55,17 @@ class AncPicDbMain(gg.AncPicDBMain):
     @property
     def docarchive(self):
         return self._docarchive
+    
+    @property
+    def appdatapath(self):
+        """property to get the path where all user modifiable data are located"""
+        return self._appdatapath
+    
+    @property
+    def applicationpath(self):
+        """return the path wehere the appplication is located
+        these files may only be modified by an admin"""
+        return self._apppath
 
     def _get_app_path(self):
         if getattr(sys, 'frozen', False):
@@ -80,14 +92,9 @@ class AncPicDbMain(gg.AncPicDBMain):
                 self.expand_dvalue(val, name)
 
     def init_environ(self):
-        if sys.platform.startswith("linux"):
-            if "APPDATA" not in os.environ:
-                appdtap = os.path.expandvars("${HOME}/.AppData")
-                self.makesuredirexists(os.path.join(appdtap, "AncPicDb", "dummifile"))
-                os.environ["AppData"] = appdtap
-        else:
-            appdtap = os.environ["AppData"]
-            self.makesuredirexists(os.path.join(appdtap, "AncPicDb", "dummifile"))
+        appdtap = os.environ["AppData"]
+        self._appdatapath = os.path.join(appdtap, "AncPicDb")
+        self.makesuredirexists(os.path.join(self._appdatapath, "dummifile"))
 
     
     def init_logging(self):
@@ -102,7 +109,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         cnfname = "AncPicDb.conf"
 
         self._ensure_config(cnfname)
-        self._configuration = ConfigReader(os.path.join(self._apppath, cnfname))
+        self._configuration = ConfigReader(os.path.join(self.appdatapath, cnfname))
         self._wantedconfig = WantedPosterPrintDialog.WantedConfig()
 
         self.storagepath, self.dbname = self._get_storagebasics()
@@ -129,13 +136,20 @@ class AncPicDbMain(gg.AncPicDBMain):
     def _ensure_config(self, cnfname):
         """make sure the config exists. if not try to create it from a distributed version
 		"""
-        tgtcnfpath = os.path.join(self._apppath, cnfname)
+        tgtcnfpath = os.path.join(self.appdatapath, cnfname)
         if os.path.exists(tgtcnfpath) and os.path.isfile(tgtcnfpath):
             return
 
-		#try windows
-        distcnfpath = os.path.join(self._apppath, "AncPicDb######.conf")
         done = False
+        #try an already existing conf file in the application path and copy it to the appdata path
+        distcnfpath = os.path.join(self.applicationpath, cnfname)
+        done = self.trycopycnf(distcnfpath, tgtcnfpath)
+
+        if done:
+            return
+        
+		#try windows default from the application path
+        distcnfpath = os.path.join(self._apppath, "AncPicDb######.conf")
         osname = platform.system()
         done = self.trycopycnf(distcnfpath.replace("######", osname), tgtcnfpath)
 
@@ -243,6 +257,11 @@ class AncPicDbMain(gg.AncPicDBMain):
         """refresh the persons details in case a person was selected or the persons data where updated by another
         callback (picture editing/document editing)"""
         pers = self._persons[pos] #we demand that the person had been refreshed in case links where updated!!!!
+          #reread the person from the database and also refresh the pictures and documents for the person
+        q = sqp.SQQuery(self._fact, Person).where(Person.Id==pers._id)
+        self._persons[pos] = q.first()
+        pers = self._persons[pos]
+
         self._fact.fill_joins(pers, 
                               Person.Pictures,
                               Person.Documents)
@@ -433,6 +452,7 @@ class AncPicDbMain(gg.AncPicDBMain):
             return
         
         self._fact.flush(picdial.picture)
+      
         self.refresh_dash_forp(perspos)
 
     def addDocument(self, event):
@@ -530,6 +550,10 @@ class AncPicDbMain(gg.AncPicDBMain):
         self._fact, self._docarchive = self._dbt.switch_to_db(newdb)
         self.dbname = dbseldial.selected_dbname
         self.init_gui()
+
+    def showAbout(self, event):
+        aboutdial = AboutDialog(self, self._fact, self._version, self.dbname, self.storagepath)
+        aboutdial.showmodal()
         
 
 if __name__ == '__main__':

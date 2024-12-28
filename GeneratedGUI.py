@@ -10,6 +10,7 @@
 import wx
 import wx.xrc
 import wx.adv
+import wx.html
 
 ###########################################################################
 ## Class AncPicDBMain
@@ -236,6 +237,7 @@ class AncPicDBMain ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.printWantedPosters, id = self.m_menuItem9.GetId() )
 		self.Bind( wx.EVT_MENU, self.doDataCheck, id = self.m_menuItem10.GetId() )
+		self.Bind( wx.EVT_MENU, self.showAbout, id = self.m_aboutAncPicDB.GetId() )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX, self.personSelected )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editExistingPerson )
 		self.m_newPersonBU.Bind( wx.EVT_LEFT_DOWN, self.editNewPerson )
@@ -284,6 +286,9 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def doDataCheck( self, event ):
+		event.Skip()
+
+	def showAbout( self, event ):
 		event.Skip()
 
 	def personSelected( self, event ):
@@ -635,7 +640,7 @@ class geditPictureDialog ( wx.Dialog ):
 		m_sdbSizer3.AddButton( self.m_sdbSizer3Cancel )
 		m_sdbSizer3.Realize()
 
-		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 4 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
+		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 4 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 		self.m_staticText13 = wx.StaticText( self, wx.ID_ANY, u"Kennummer:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText13.Wrap( -1 )
@@ -776,6 +781,7 @@ class geditPictureDialog ( wx.Dialog ):
 		gbSizer7.AddGrowableRow( 4 )
 		gbSizer7.AddGrowableRow( 6 )
 		gbSizer7.AddGrowableRow( 7 )
+		gbSizer7.AddGrowableRow( 9 )
 
 		self.SetSizer( gbSizer7 )
 		self.Layout()
@@ -2235,5 +2241,43 @@ class mChangeDbDialog ( wx.Dialog ):
 	# Virtual event handlers, override them in your derived class
 	def OnDatabaseSelected( self, event ):
 		event.Skip()
+
+
+###########################################################################
+## Class gAboutDialog
+###########################################################################
+
+class gAboutDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Über AncPicDb", pos = wx.DefaultPosition, size = wx.Size( 566,572 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer24 = wx.GridBagSizer( 0, 0 )
+		gbSizer24.SetFlexibleDirection( wx.BOTH )
+		gbSizer24.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		self.mAboutHTMLWIN = wx.html.HtmlWindow( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.html.HW_SCROLLBAR_AUTO )
+		gbSizer24.Add( self.mAboutHTMLWIN, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		m_sdbSizer14 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer14OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer14.AddButton( self.m_sdbSizer14OK )
+		m_sdbSizer14.Realize()
+
+		gbSizer24.Add( m_sdbSizer14, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer24.AddGrowableCol( 0 )
+		gbSizer24.AddGrowableRow( 0 )
+
+		self.SetSizer( gbSizer24 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
 
 

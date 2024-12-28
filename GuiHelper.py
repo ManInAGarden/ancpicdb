@@ -267,6 +267,12 @@ class GuiHelper:
         ico = wx.Icon(ifname)
         dialog.SetIcon(ico)
 
+    @classmethod
+    def get_ressorcefilename(cls, filename, subdirname="ressources"):
+        appath = cls._get_app_path()
+
+        return os.path.join(appath, subdirname, filename)
+
 
     @classmethod
     def set_columns_forlstctrl(cls, ctrl : wx.ListCtrl, defins : list):
