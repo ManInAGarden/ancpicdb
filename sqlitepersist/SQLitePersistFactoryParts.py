@@ -451,7 +451,7 @@ class SQFactory():
         return tuple(valtuplst), cnames, cquests
 
     def _getupdatevaluestuple(self, pinst):
-        """get a everything for the update statement omitting _id, created bur having lastupdate on the
+        """get a everything for the update statement omitting _id, created but having lastupdate on the
          current date and time
          _id is last in valuestuple but not mentioned in csets!"""
         pinstcls = pinst.__class__
