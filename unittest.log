@@ -9687,3 +9687,123 @@ ST EXEC: DROP TABLE document
 ST EXEC: DROP TABLE documentinfobit 
 ST EXEC: DROP TABLE personpictureinter 
 ST EXEC: DROP TABLE persondocumentinter 
+Setting db debug leveling to DATAFILL
+ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+DF DF: field: <type> contents: <FLUF_MONTH>
+DF DF: field: <code> contents: <MONTH09>
+DF DF: field: <value> contents: <September>
+DF DF: field: <langcode> contents: <DEU>
+DF DF: field: <_id> contents: <0a3b66f3d931471c8cd31942c02e2b03>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.624961>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.624961>
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+DF DF: field: <type> contents: <FLUF_MONTH>
+DF DF: field: <code> contents: <MONTH10>
+DF DF: field: <value> contents: <Oktober>
+DF DF: field: <langcode> contents: <DEU>
+DF DF: field: <_id> contents: <5bc0215fe6ac44b2a267890070c0f393>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.624961>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.624961>
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+DF DF: field: <type> contents: <FLUF_MONTH>
+DF DF: field: <code> contents: <MONTH11>
+DF DF: field: <value> contents: <November>
+DF DF: field: <langcode> contents: <DEU>
+DF DF: field: <_id> contents: <802f2f6b387c44898c20f465049fd1e9>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.624961>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.624961>
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+DF DF: field: <type> contents: <FLUF_MONTH>
+DF DF: field: <code> contents: <MONTH12>
+DF DF: field: <value> contents: <Dezember>
+DF DF: field: <langcode> contents: <DEU>
+DF DF: field: <_id> contents: <288f609add83487b9e4643b8fab693a6>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.624961>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.624961>
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST TRANSACTION BEGIN flush
+ST TRANSACTION COMMIT flush
+ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1970 AND title LIKE 'ExportPic%')
+DF DF: field: <readableid> contents: <None>
+DF DF: field: <groupid> contents: <None>
+DF DF: field: <filepath> contents: <None>
+DF DF: field: <ext> contents: <None>
+DF DF: field: <scandate> contents: <2025-01-01 11:27:00.624961>
+DF DF: field: <takendate> contents: <None>
+DF DF: field: <fluftakenyear> contents: <1970>
+DF DF: field: <title> contents: <ExportPic01>
+DF DF: field: <settledinformation> contents: <None>
+DF DF: field: <_id> contents: <382fbe927e2b4c9890e6370442ee4408>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.624961>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.643334>
+DF DF: field: <readableid> contents: <None>
+DF DF: field: <groupid> contents: <None>
+DF DF: field: <filepath> contents: <None>
+DF DF: field: <ext> contents: <None>
+DF DF: field: <scandate> contents: <2025-01-01 11:27:00.654460>
+DF DF: field: <takendate> contents: <None>
+DF DF: field: <fluftakenyear> contents: <1970>
+DF DF: field: <title> contents: <ExportPic02>
+DF DF: field: <settledinformation> contents: <None>
+DF DF: field: <_id> contents: <7e7c710f86f94378b15d8658af80f28b>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.654460>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.660492>
+DF DF: field: <readableid> contents: <None>
+DF DF: field: <groupid> contents: <None>
+DF DF: field: <filepath> contents: <None>
+DF DF: field: <ext> contents: <None>
+DF DF: field: <scandate> contents: <2025-01-01 11:27:00.673767>
+DF DF: field: <takendate> contents: <None>
+DF DF: field: <fluftakenyear> contents: <1970>
+DF DF: field: <title> contents: <ExportPic03>
+DF DF: field: <settledinformation> contents: <None>
+DF DF: field: <_id> contents: <9475fdb9f2444472a7ecba2ee29718ef>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.673767>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.673767>
+DF DF: field: <readableid> contents: <None>
+DF DF: field: <groupid> contents: <None>
+DF DF: field: <filepath> contents: <None>
+DF DF: field: <ext> contents: <None>
+DF DF: field: <scandate> contents: <2025-01-01 11:27:00.673767>
+DF DF: field: <takendate> contents: <None>
+DF DF: field: <fluftakenyear> contents: <1970>
+DF DF: field: <title> contents: <ExportPic04>
+DF DF: field: <settledinformation> contents: <None>
+DF DF: field: <_id> contents: <b7d431c3edb447d48f36e8c9fda48be8>
+DF DF: field: <created> contents: <2025-01-01 11:27:00.685475>
+DF DF: field: <lastupdate> contents: <2025-01-01 11:27:00.686764>
+ST EXEC: DROP TABLE catalog 
+ST EXEC: DROP TABLE commoninter 
+ST EXEC: DROP TABLE person 
+ST EXEC: DROP TABLE personinfobit 
+ST EXEC: DROP TABLE datagroup 
+ST EXEC: DROP TABLE picture 
+ST EXEC: DROP TABLE pictureinfobit 
+ST EXEC: DROP TABLE document 
+ST EXEC: DROP TABLE documentinfobit 
+ST EXEC: DROP TABLE personpictureinter 
+ST EXEC: DROP TABLE persondocumentinter 

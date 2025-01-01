@@ -30,8 +30,14 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_backupDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Sicherungskopie erstellen", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_backupDbMI )
 
-		self.m_menuItem16 = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Archive extrahieren", u"Extrahiert Doukmente und Bilder so, dass sie separat gespeichert werden können", wx.ITEM_NORMAL )
-		self.m_fileMenu.Append( self.m_menuItem16 )
+		self.m_export = wx.Menu()
+		self.m_extractArchives = wx.MenuItem( self.m_export, wx.ID_ANY, u"Archive extrahieren", u"Extrahiert Doukmente und Bilder so, dass sie separat gespeichert werden können", wx.ITEM_NORMAL )
+		self.m_export.Append( self.m_extractArchives )
+
+		self.mexportCSV = wx.MenuItem( self.m_export, wx.ID_ANY, u"CSV-Export", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_export.Append( self.mexportCSV )
+
+		self.m_fileMenu.AppendSubMenu( self.m_export, u"Export" )
 
 		self.m_changeDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Datenbank wechseln", u"Zu einer anderen bestehenden Datenbank wechseln", wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_changeDbMI )
@@ -228,7 +234,8 @@ class AncPicDBMain ( wx.Frame ):
 
 		# Connect Events
 		self.Bind( wx.EVT_MENU, self.backupDb, id = self.m_backupDbMI.GetId() )
-		self.Bind( wx.EVT_MENU, self.extractArchive, id = self.m_menuItem16.GetId() )
+		self.Bind( wx.EVT_MENU, self.extractArchive, id = self.m_extractArchives.GetId() )
+		self.Bind( wx.EVT_MENU, self.exportDataToCSV, id = self.mexportCSV.GetId() )
 		self.Bind( wx.EVT_MENU, self.changeDb, id = self.m_changeDbMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.createNewDb, id = self.m_createNewDatabaseMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.quit, id = self.m_exitMI.GetId() )
@@ -262,6 +269,9 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def extractArchive( self, event ):
+		event.Skip()
+
+	def exportDataToCSV( self, event ):
 		event.Skip()
 
 	def changeDb( self, event ):
@@ -624,7 +634,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 class geditPictureDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 750,755 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 763,719 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -2274,6 +2284,79 @@ class gAboutDialog ( wx.Dialog ):
 
 		self.SetSizer( gbSizer24 )
 		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
+
+
+###########################################################################
+## Class gExportDataDialog
+###########################################################################
+
+class gExportDataDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Datenexport", pos = wx.DefaultPosition, size = wx.DefaultSize, style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer25 = wx.GridBagSizer( 0, 0 )
+		gbSizer25.SetFlexibleDirection( wx.BOTH )
+		gbSizer25.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		self.m_staticText74 = wx.StaticText( self, wx.ID_ANY, u"Zielverzeichnis", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText74.Wrap( -1 )
+
+		self.m_staticText74.SetHelpText( u"Zielverzeichnis für die Exportdaten. Am besten mit dem Button rechts auswählen." )
+
+		gbSizer25.Add( self.m_staticText74, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText75 = wx.StaticText( self, wx.ID_ANY, u"Filtereinstellungen:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText75.Wrap( -1 )
+
+		gbSizer25.Add( self.m_staticText75, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_checkBox11 = wx.CheckBox( self, wx.ID_ANY, u"Nur Daten mit dem eigenen ID-Kürzel", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer25.Add( self.m_checkBox11, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.mPersonsCB = wx.CheckBox( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.mPersonsCB.SetValue(True)
+		gbSizer25.Add( self.mPersonsCB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.mDocumentsCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.mDocumentsCB.SetValue(True)
+		gbSizer25.Add( self.mDocumentsCB, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.mPicturesCB = wx.CheckBox( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.mPicturesCB.SetValue(True)
+		gbSizer25.Add( self.mPicturesCB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.mtargetDIRP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Auswahl des Zielverzeichnisses", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST|wx.DIRP_SMALL )
+		gbSizer25.Add( self.mtargetDIRP, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline4 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer25.Add( self.m_staticline4, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText76 = wx.StaticText( self, wx.ID_ANY, u"Fortschritt", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText76.Wrap( -1 )
+
+		gbSizer25.Add( self.m_staticText76, wx.GBPosition( 8, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.mWorkDoneGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.mWorkDoneGAUGE.SetValue( 0 )
+		gbSizer25.Add( self.mWorkDoneGAUGE, wx.GBPosition( 8, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.mStartExportBU = wx.Button( self, wx.ID_ANY, u"Start", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer25.Add( self.mStartExportBU, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+
+		gbSizer25.AddGrowableCol( 1 )
+
+		self.SetSizer( gbSizer25 )
+		self.Layout()
+		gbSizer25.Fit( self )
 
 		self.Centre( wx.BOTH )
 

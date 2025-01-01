@@ -27,6 +27,7 @@ from AboutDialog import AboutDialog
 from NewDbDialog import NewDbDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
+from ExportDataDialog import ExportDataDialog
 from ABDBTools import APDBTools
 from WantedPosterPrintDialog import WantedPosterPrintDialog
 import sqlitepersist as sqp
@@ -550,6 +551,10 @@ class AncPicDbMain(gg.AncPicDBMain):
         self._fact, self._docarchive = self._dbt.switch_to_db(newdb)
         self.dbname = dbseldial.selected_dbname
         self.init_gui()
+
+    def exportDataToCSV(self, event):
+        expdial = ExportDataDialog(self, self._fact)
+        expdial.showmodal()
 
     def showAbout(self, event):
         aboutdial = AboutDialog(self, self._fact, self._version, self.dbname, self.storagepath)

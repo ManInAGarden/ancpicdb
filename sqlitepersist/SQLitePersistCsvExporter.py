@@ -11,18 +11,23 @@ class SQLitePersistCsvExporter():
         self._delimitm = itemdelim
         self._delimstr = stringdelim
 
-    def do_export(self, iterab):
+    def do_export(self, iterab) -> int:
         """exporting the queried data (fetched with iterab) by iterating over it and adding the data line by line
-        to the initially opened csv file"""
+        to the initially opened csv file
+        returns the number of written data lines (excluding the header line)
+        """
 
         line = self._get_header() + "\n"
 
         f = self._file
         f.write(line)
-
+        elemct = 0
         for elem in iterab:
             line = self._get_line(elem) + "\n"
+            elemct += 1
             f.write(line)
+
+        return elemct
 
     def _get_header(self) -> str:
         cls = self._cls
