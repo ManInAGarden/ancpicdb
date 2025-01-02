@@ -27,7 +27,7 @@ from AboutDialog import AboutDialog
 from NewDbDialog import NewDbDialog
 from GuiHelper import GuiHelper
 from PathZipper import PathZipper
-from ExportDataDialog import ExportDataDialog
+from ExportDataDialog import ExportDataDialog, CsvExportSettings
 from ABDBTools import APDBTools
 from WantedPosterPrintDialog import WantedPosterPrintDialog
 import sqlitepersist as sqp
@@ -184,7 +184,9 @@ class AncPicDbMain(gg.AncPicDBMain):
         #heavily used data with only a small number of records
         self._persons = self.get_all_persons()
         self.m_mainWindowSB.SetStatusText("DB: {0}".format(self.dbname), 0)
-
+        
+        self._csvexpsettings = None
+        
         self.refresh_dash()
 
     def refresh_pic_stat(self):
@@ -553,8 +555,15 @@ class AncPicDbMain(gg.AncPicDBMain):
         self.init_gui()
 
     def exportDataToCSV(self, event):
-        expdial = ExportDataDialog(self, self._fact)
-        expdial.showmodal()
+        # if we do not have export data yet we start with empty settings
+        if self._csvexpsettings is None:
+            self._csvexpsettings = CsvExportSettings()
+
+        expdial = ExportDataDialog(self, self._fact, self._csvexpsettings)
+
+        res = expdial.showmodal()
+
+        self._csvexpsettings = expdial.csvexpsettings
 
     def showAbout(self, event):
         aboutdial = AboutDialog(self, self._fact, self._version, self.dbname, self.storagepath)

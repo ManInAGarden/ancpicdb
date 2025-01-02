@@ -1,11 +1,14 @@
 from threading import Thread
 import time
+import datetime as dt
 from pathlib import Path
 import wx
 import sqlitepersist as sqp
 import shutil as su
 import os
 from ABDBTools import APDBTools
+
+from PersistClasses import DataGroup, Person, PersonInfoBit, Picture, PictureInfoBit, PersonPictureInter,  Document, DocumentInfoBit, PersonDocumentInter
 
 # Define notification event for thread completion
 EVT_RESULT_ID = wx.NewId()
@@ -84,6 +87,181 @@ class BgArchiveExtractor(BgWorker):
 
         wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
         wx.PostEvent(self.notifywin, ResultEvent(ct))
+
+class BgCsvExtractorParas():
+    def __init__(self, fact, targdir : str, changedAfter, dopersons, dodocs, dopics, doonlyown):
+        self._fact = fact
+        self._dopersons = dopersons
+        self._dodocs = dodocs
+        self._dopics = dopics
+        self._doonlyown = doonlyown
+        self._targetdir = targdir
+        self._changedAfter = changedAfter
+
+class BgCsvExtractor(BgWorker):
+    def __init__(self, notifywin, paras : BgCsvExtractorParas):
+        super().__init__(notifywin)
+        self.paras = paras
+
+    def exportclass(self, fact, excls, targpath, alteredafter, *orderby):
+        name = excls.get_collection_name() + ".csv"
+        filepath = os.path.join(targpath, name)
+        q = sqp.SQQuery(fact, excls).order_by(*orderby)
+        with open(filepath, "w") as f:
+            exp = sqp.SQLitePersistCsvExporter(excls, f)
+            ct = exp.do_export(q)
+        
+        return filepath, ct
+
+    def expbasics(self, fact, targpath):
+        """export all basic data like seeds, groups, ..."""
+        pathes = []
+        sumct = 0
+
+        fpa, ct = self.exportclass(fact, 
+                                   sqp.PCatalog,
+                                   targpath,
+                                   dt.datetime(1900,1,1), 
+                                   sqp.PCatalog.Type, 
+                                   sqp.PCatalog.Code)
+        pathes.append(fpa)
+        sumct += ct
+
+        fpa, ct, = self.exportclass(fact,
+                                    DataGroup,
+                                    targpath,
+                                    dt.datetime(1900,1,1,),
+                                    DataGroup.Created)
+        pathes.append(fpa)
+        sumct += ct
+
+        return pathes, ct
+    
+    def exppersons(self, fact, targpath):
+        """export all person related data like seeds, groups, ..."""
+        pathes = []
+        sumct = 0
+
+        fpa, ct = self.exportclass(fact, 
+                                   Person,
+                                   targpath,
+                                   dt.datetime(1900,1,1), 
+                                   Person.Name, 
+                                   Person.FirstName)
+        pathes.append(fpa)
+        sumct += ct
+
+        fpa, ct, = self.exportclass(fact,
+                                    PersonInfoBit,
+                                    targpath,
+                                    dt.datetime(1900,1,1,),
+                                    PersonInfoBit.Created)
+        pathes.append(fpa)
+        sumct += ct
+
+        return pathes, ct
+    
+    def exppics(self, fact, targpath):
+        """export all person related data like seeds, groups, ..."""
+        pathes = []
+        sumct = 0
+
+        fpa, ct = self.exportclass(fact, 
+                                   Picture,
+                                   targpath,
+                                   dt.datetime(1900,1,1), 
+                                   Picture.Title)
+        pathes.append(fpa)
+        sumct += ct
+
+        fpa, ct, = self.exportclass(fact,
+                                    PersonPictureInter,
+                                    targpath,
+                                    dt.datetime(1900,1,1,),
+                                    PersonPictureInter.Created)
+        pathes.append(fpa)
+        sumct += ct
+
+        fpa, ct, = self.exportclass(fact,
+                                    PictureInfoBit,
+                                    targpath,
+                                    dt.datetime(1900,1,1,),
+                                    PictureInfoBit.Created)
+        pathes.append(fpa)
+        sumct += ct
+
+        return pathes, ct
+    
+
+    def expdocs(self, fact, targpath):
+        """export all document related data like seeds, groups, ..."""
+        pathes = []
+        sumct = 0
+
+        fpa, ct = self.exportclass(fact, 
+                                   Document,
+                                   targpath,
+                                   dt.datetime(1900,1,1), 
+                                   Document.Title)
+        pathes.append(fpa)
+        sumct += ct
+
+        fpa, ct, = self.exportclass(fact,
+                                    PersonDocumentInter,
+                                    targpath,
+                                    dt.datetime(1900,1,1,),
+                                    PersonDocumentInter.Created)
+        pathes.append(fpa)
+        sumct += ct
+
+        fpa, ct, = self.exportclass(fact,
+                                    DocumentInfoBit,
+                                    targpath,
+                                    dt.datetime(1900,1,1,),
+                                    DocumentInfoBit.Created)
+        pathes.append(fpa)
+        sumct += ct
+
+        return pathes, ct
+
+
+
+    def run(self):
+        # The factory needs to be cloned because the original was created in the
+        # parent thread
+        parfact = self.paras._fact
+        fact = sqp.SQFactory(parfact.Name, parfact.DbFileName)
+        targpath = self.paras._targetdir
+        p = self.paras
+        
+        if not (p._dopersons or p._dopics or p._dodocs):
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
+            wx.PostEvent(self.notifywin, ResultEvent(1))
+            return
+        
+        ctsum = 0
+        bfnames, ct = self.expbasics(fact, targpath)
+        wx.PostEvent(self.notifywin, NotifyPercentEvent(20))
+        ctsum += ct
+
+        if self.paras._dopersons:
+            perfnames, ct = self.exppersons(fact, targpath)
+            ctsum += ct
+
+        wx.PostEvent(self.notifywin, NotifyPercentEvent(40))
+
+        if self.paras._dopics:
+            picfnames, ct = self.exppics(fact, targpath)
+            ctsum += ct
+
+        wx.PostEvent(self.notifywin, NotifyPercentEvent(60))  
+
+        if self.paras._dodocs:
+            docnames, ct = self.expdocs(fact, targpath)
+            ctsum += ct
+
+        wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
+        wx.PostEvent(self.notifywin, ResultEvent(ctsum))
 
 
 class DbCreatorParas():

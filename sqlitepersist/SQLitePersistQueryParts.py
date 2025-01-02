@@ -123,6 +123,8 @@ class SQQuery():
                 oi = OrderInfo(arg, OrderDirection.ASCENDING)
             elif tolm is OrderInfo:
                 oi = arg
+            else:
+                raise Exception("Unknown type. Cannot construct orderinfo in order_by")
 
             self._order.append(oi)
 

@@ -6,6 +6,11 @@ from .SQLitePersistQueryParts import *
 class SQLitePersistCsvExporter():
     
     def __init__(self, cls : PBase, f, itemdelim=',', stringdelim='"'):
+        """cls: persistent data class to be handled
+           f : file to be used as target for export
+           itemdelim: delimitier to be used in the csv to create the columns
+           stringdelim: delimiter to enclose strings
+        """
         self._file = f
         self._cls = cls
         self._delimitm = itemdelim

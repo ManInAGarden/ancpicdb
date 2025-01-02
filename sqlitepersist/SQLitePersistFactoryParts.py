@@ -1,4 +1,3 @@
-
 from distutils.filelist import findall
 from importlib.util import module_for_loader
 import sqlite3 as sq3
@@ -36,6 +35,14 @@ class SQFactory():
     @property
     def InTransaction(self):
         return self._intrans
+    
+    @property
+    def DbFileName(self):
+        return self._dbfilename
+    
+    @property
+    def Name(self):
+        return self._name
 
     def begin_transaction(self, loginfo : str = None):
         if self._intrans:

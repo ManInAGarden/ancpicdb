@@ -2318,38 +2318,62 @@ class gExportDataDialog ( wx.Dialog ):
 
 		gbSizer25.Add( self.m_staticText75, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_checkBox11 = wx.CheckBox( self, wx.ID_ANY, u"Nur Daten mit dem eigenen ID-Kürzel", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer25.Add( self.m_checkBox11, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		self.m_onlyOwnedDataCB = wx.CheckBox( self, wx.ID_ANY, u"Nur Daten mit dem eigenen ID-Kürzel", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer25.Add( self.m_onlyOwnedDataCB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.mPersonsCB = wx.CheckBox( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.mPersonsCB.SetValue(True)
-		gbSizer25.Add( self.mPersonsCB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		self.m_personsCB = wx.CheckBox( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_personsCB.SetValue(True)
+		gbSizer25.Add( self.m_personsCB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.mDocumentsCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.mDocumentsCB.SetValue(True)
-		gbSizer25.Add( self.mDocumentsCB, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		self.m_documentsCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_documentsCB.SetValue(True)
+		gbSizer25.Add( self.m_documentsCB, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.mPicturesCB = wx.CheckBox( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.mPicturesCB.SetValue(True)
-		gbSizer25.Add( self.mPicturesCB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		self.m_picturesCB = wx.CheckBox( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_picturesCB.SetValue(True)
+		gbSizer25.Add( self.m_picturesCB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.mtargetDIRP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Auswahl des Zielverzeichnisses", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST|wx.DIRP_SMALL )
-		gbSizer25.Add( self.mtargetDIRP, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_staticText77 = wx.StaticText( self, wx.ID_ANY, u"Nur Elemente neuer als:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText77.Wrap( -1 )
+
+		gbSizer25.Add( self.m_staticText77, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_onlyNewerThanDPI = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT|wx.adv.DP_DROPDOWN )
+		gbSizer25.Add( self.m_onlyNewerThanDPI, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_targetDIRP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Auswahl des Zielverzeichnisses", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST|wx.DIRP_SMALL )
+		gbSizer25.Add( self.m_targetDIRP, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline4 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-		gbSizer25.Add( self.m_staticline4, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+		gbSizer25.Add( self.m_staticline4, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
 
 		self.m_staticText76 = wx.StaticText( self, wx.ID_ANY, u"Fortschritt", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText76.Wrap( -1 )
 
-		gbSizer25.Add( self.m_staticText76, wx.GBPosition( 8, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer25.Add( self.m_staticText76, wx.GBPosition( 9, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.mWorkDoneGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
-		self.mWorkDoneGAUGE.SetValue( 0 )
-		gbSizer25.Add( self.mWorkDoneGAUGE, wx.GBPosition( 8, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_workDoneGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_workDoneGAUGE.SetValue( 0 )
+		gbSizer25.Add( self.m_workDoneGAUGE, wx.GBPosition( 9, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
-		self.mStartExportBU = wx.Button( self, wx.ID_ANY, u"Start", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer25.Add( self.mStartExportBU, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		self.m_staticline5 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer25.Add( self.m_staticline5, wx.GBPosition( 10, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.mCloseBU = wx.Button( self, wx.ID_ANY, u"Schließen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.mCloseBU.SetToolTip( u"Schließt den Dialog" )
+
+		gbSizer25.Add( self.mCloseBU, wx.GBPosition( 11, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
+
+		self.m_startExportBU = wx.Button( self, wx.ID_ANY, u"Start", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_startExportBU.Enable( False )
+		self.m_startExportBU.SetToolTip( u"Startet den CSV-Export" )
+
+		gbSizer25.Add( self.m_startExportBU, wx.GBPosition( 8, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_abortExportBU = wx.Button( self, wx.ID_ANY, u"Abbrechen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_abortExportBU.Enable( False )
+
+		gbSizer25.Add( self.m_abortExportBU, wx.GBPosition( 8, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 
 		gbSizer25.AddGrowableCol( 1 )
@@ -2360,7 +2384,31 @@ class gExportDataDialog ( wx.Dialog ):
 
 		self.Centre( wx.BOTH )
 
+		# Connect Events
+		self.Bind( wx.EVT_CLOSE, self.doCloseDialog )
+		self.m_targetDIRP.Bind( wx.EVT_DIRPICKER_CHANGED, self.targetDirChanged )
+		self.mCloseBU.Bind( wx.EVT_BUTTON, self.doClose )
+		self.m_startExportBU.Bind( wx.EVT_BUTTON, self.startCsvExport )
+		self.m_abortExportBU.Bind( wx.EVT_BUTTON, self.abortCsvExport )
+
 	def __del__( self ):
 		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def doCloseDialog( self, event ):
+		event.Skip()
+
+	def targetDirChanged( self, event ):
+		event.Skip()
+
+	def doClose( self, event ):
+		event.Skip()
+
+	def startCsvExport( self, event ):
+		event.Skip()
+
+	def abortCsvExport( self, event ):
+		event.Skip()
 
 

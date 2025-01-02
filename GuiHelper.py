@@ -166,6 +166,11 @@ class GuiHelper:
                 ctrl.SetPath(val)
             else:
                 ctrl.SetPath("")
+        elif ct is wx.DirPickerCtrl:
+            if val is not None:
+                ctrl.SetPath(val)
+            else:
+                ctrl.SetPath("")
         else:
             raise Exception("Unknown control type in _set_val")
         
