@@ -145,12 +145,9 @@ class ArchiveExtractDialog(gg.gArchiveExtractDialog):
         paras = bgw.ArchExtractorParas(pics + docs,
                                        self._docarchive)
         paras.targetpath = targpath
-        worker = bgw.BgArchiveExtractor(self, paras)
-        pt = worker.start()
+        self.worker = bgw.BgArchiveExtractor(self, paras)
+        pt = self.worker.start()
             
-        
-            
-
 
     def abortExtraction(self, event):
-        return super().abortExtraction(event)
+        self.worker.requestabort()

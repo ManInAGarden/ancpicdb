@@ -3,6 +3,8 @@ import time
 import datetime as dt
 from pathlib import Path
 import wx
+from DocArchiver import DocArchiver
+from PathZipper import PathZipper
 import sqlitepersist as sqp
 import shutil as su
 import os
@@ -45,8 +47,14 @@ class BgWorker(Thread):
     def run(self):
         raise Exception("Override method 'run' in your derived background worker class!")
     
-    def abort(self):
+    def requestabort(self):
+        """request thread to be aborted when possible"""
         self.abortreq = True
+
+    @property
+    def abortrequested(self):
+        """check wether abort has been requested"""
+        return self.abortreq == True
 
 class ArchExtractorParas():
     def __init__(self, objects_lst, docarchive):
@@ -81,7 +89,7 @@ class BgArchiveExtractor(BgWorker):
                 wx.PostEvent(self.notifywin, NotifyPercentEvent(perc))
                 oldperc = perc
 
-            if self.abortreq:
+            if self.abortrequested:
                 wx.PostEvent(self.notifywin, ResultEvent(None))
                 return
 
@@ -89,7 +97,7 @@ class BgArchiveExtractor(BgWorker):
         wx.PostEvent(self.notifywin, ResultEvent(ct))
 
 class BgCsvExtractorParas():
-    def __init__(self, fact, targdir : str, changedAfter, dopersons, dodocs, dopics, doonlyown):
+    def __init__(self, fact, targdir : str, docarchive : DocArchiver, changedAfter, dopersons, dodocs, dopics, doonlyown):
         self._fact = fact
         self._dopersons = dopersons
         self._dodocs = dodocs
@@ -97,11 +105,27 @@ class BgCsvExtractorParas():
         self._doonlyown = doonlyown
         self._targetdir = targdir
         self._changedAfter = changedAfter
+        self._docarchive = docarchive
 
 class BgCsvExtractor(BgWorker):
     def __init__(self, notifywin, paras : BgCsvExtractorParas):
         super().__init__(notifywin)
         self.paras = paras
+
+    def makesure_direxists(self, fname):
+        """make sure the dir for a given filefame already exisist"""
+        dirname = os.path.dirname(fname)
+        if os.path.exists(dirname): return
+
+        os.makedirs(dirname)
+
+
+    def copyarchfile(self, archtarg, src):
+        """copy an archive file (src) to the given targetdir"""
+        targfname = os.path.join(archtarg, src)
+        fullsrc = self.paras._docarchive.get_fullpath(src)
+        self.makesure_direxists(targfname)
+        su.copy2(fullsrc, targfname)
 
     def exportclass(self, fact, excls, targpath, alteredafter, *orderby):
         name = excls.get_collection_name() + ".csv"
@@ -110,7 +134,18 @@ class BgCsvExtractor(BgWorker):
         with open(filepath, "w") as f:
             exp = sqp.SQLitePersistCsvExporter(excls, f)
             ct = exp.do_export(q)
-        
+
+        archtarg = os.path.join(targpath, "Archive")        
+        if excls is Document:
+            for doc in q:
+                if doc.filepath is not None:
+                    self.copyarchfile(archtarg, doc.filepath)
+
+        elif excls is Picture:
+            for pic in q:
+                if pic.filepath is not None:
+                    self.copyarchfile(archtarg, pic.filepath)
+
         return filepath, ct
 
     def expbasics(self, fact, targpath):
@@ -224,44 +259,105 @@ class BgCsvExtractor(BgWorker):
 
         return pathes, ct
 
+    def save_paras(self, p, targp):
+        parafile = os.path.join(targp, "_expparameters.txt")
+        with open(parafile, "w") as f:
+            f.write("Datenbankdatei: {}\n".format(p._fact.DbFileName))
+            f.write("Personenexport: {}\n".format(p._dopersons))
+            f.write("Dokumentenexport: {}\n".format(p._dodocs))
+            f.write("Bilderexport: {}\n".format(p._dopics))
+            f.write("Nur eigene Daten: {}\n".format(p._doonlyown))
+            f.write("Geändert nach: {}\n".format(p._changedAfter))
 
+    def do_zipping(self, pathtozip : str):
+        head,tail = os.path.split(pathtozip)
+        if head is None:
+            return
+        
+        if not os.path.isdir(head):
+            return
+        
+        today = dt.datetime.now()
+        fname = "AncPicDbTeilexport{:%Y%m%d}.zip".format(today)
+        pz = PathZipper(pathtozip, head, fname)
+        pz.dozip()
 
+        
     def run(self):
         # The factory needs to be cloned because the original was created in the
         # parent thread
+
         parfact = self.paras._fact
         fact = sqp.SQFactory(parfact.Name, parfact.DbFileName)
-        targpath = self.paras._targetdir
-        p = self.paras
-        
-        if not (p._dopersons or p._dopics or p._dodocs):
+
+        try:
+            ctsum = 0
+            outer_targpath = self.paras._targetdir
+            targpath = os.path.join(outer_targpath, "data")
+            os.makedirs(targpath)
+            p = self.paras
+
+            self.save_paras(p, targpath)
+            
+            if not (p._dopersons or p._dopics or p._dodocs):
+                wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
+                wx.PostEvent(self.notifywin, ResultEvent(1))
+                return
+            
+            if self.abortrequested:
+                wx.PostEvent(self.notifywin, ResultEvent(None))
+                return
+            
+            bfnames, ct = self.expbasics(fact, targpath)
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(20))
+            ctsum += ct
+
+            if self.abortrequested: 
+                wx.PostEvent(self.notifywin, ResultEvent(None))
+                return
+            
+            if self.paras._dopersons:
+                perfnames, ct = self.exppersons(fact, targpath)
+                ctsum += ct
+
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(40))
+
+            if self.abortrequested: 
+                wx.PostEvent(self.notifywin, ResultEvent(None))
+                return
+            
+            if self.paras._dopics:
+                picfnames, ct = self.exppics(fact, targpath)
+                ctsum += ct
+
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(60))  
+
+            if self.abortrequested: 
+                wx.PostEvent(self.notifywin, ResultEvent(None))
+                return
+            
+            if self.paras._dodocs:
+                docnames, ct = self.expdocs(fact, targpath)
+                ctsum += ct
+
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(80))  
+
+            if self.abortrequested: 
+                wx.PostEvent(self.notifywin, ResultEvent(None))
+                return
+            
+            self.do_zipping(targpath)
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(90))  
+
+            if self.abortrequested: 
+                wx.PostEvent(self.notifywin, ResultEvent(None))
+                return
+            
+            su.rmtree(targpath)
+
+        finally:
             wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
-            wx.PostEvent(self.notifywin, ResultEvent(1))
-            return
-        
-        ctsum = 0
-        bfnames, ct = self.expbasics(fact, targpath)
-        wx.PostEvent(self.notifywin, NotifyPercentEvent(20))
-        ctsum += ct
-
-        if self.paras._dopersons:
-            perfnames, ct = self.exppersons(fact, targpath)
-            ctsum += ct
-
-        wx.PostEvent(self.notifywin, NotifyPercentEvent(40))
-
-        if self.paras._dopics:
-            picfnames, ct = self.exppics(fact, targpath)
-            ctsum += ct
-
-        wx.PostEvent(self.notifywin, NotifyPercentEvent(60))  
-
-        if self.paras._dodocs:
-            docnames, ct = self.expdocs(fact, targpath)
-            ctsum += ct
-
-        wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
-        wx.PostEvent(self.notifywin, ResultEvent(ctsum))
+            wx.PostEvent(self.notifywin, ResultEvent(ctsum))
 
 
 class DbCreatorParas():

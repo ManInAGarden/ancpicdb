@@ -79,6 +79,8 @@ class ExportDataDialog(gg.gExportDataDialog):
         GuiHelper.set_icon(self)
         self._fact = fact
         self._data = data
+        self._docarchive = parent.docarchive
+
         bgw.EVT_RESULT(self, self.workerfinished)
         bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
 
@@ -159,6 +161,7 @@ class ExportDataDialog(gg.gExportDataDialog):
         dodocs = GuiHelper.get_val(self.m_documentsCB)
         paras = bgw.BgCsvExtractorParas(self._fact, 
                                         targetdir,
+                                        self._docarchive,
                                         changed_after,
                                         dopers,
                                         dodocs,

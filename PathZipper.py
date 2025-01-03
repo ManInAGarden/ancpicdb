@@ -33,12 +33,14 @@ class PathZipper():
                                         os.path.join(path, '..')))
     def dozip(self):
         """do the zipping work"""
-        self._logger.info("Doing path backup for path <%s> to zip file <%s>", 
-                          self.srcpath,
-                          self.fullpath)
+        if not self._logger is None:
+            self._logger.info("Doing path backup for path <%s> to zip file <%s>", 
+                              self.srcpath,
+                              self.fullpath)
         
         with zf.ZipFile(self.fullpath, 'w', zf.ZIP_DEFLATED) as zipf:
             self._zipdir(zipf)
 
-        self._logger.info("Succesfully created backupzip %s", self.fullpath)
+        if not self._logger is None:
+            self._logger.info("Succesfully created backupzip %s", self.fullpath)
         
