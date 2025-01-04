@@ -43,6 +43,8 @@ class ArchiveExtractDialog(gg.gArchiveExtractDialog):
         return grp.name
     
     def _filldialog(self):
+        GuiHelper.enable_ctrls(False, self.m_startExtractionBU, self.m_abortExtractionBU)
+
         self.picture_groups = sqp.SQQuery(self._fact,DataGroup).where(DataGroup.GroupType=="PICT").order_by(DataGroup.Name).as_list()
         self.document_groups = sqp.SQQuery(self._fact,DataGroup).where(DataGroup.GroupType=="DOC").order_by(DataGroup.Name).as_list()
         
@@ -147,7 +149,16 @@ class ArchiveExtractDialog(gg.gArchiveExtractDialog):
         paras.targetpath = targpath
         self.worker = bgw.BgArchiveExtractor(self, paras)
         pt = self.worker.start()
+        GuiHelper.enable_ctrls(True, self.m_abortExtractionBU)
+        GuiHelper.enable_ctrls(False, self.m_startExtractionBU)
             
 
     def abortExtraction(self, event):
         self.worker.requestabort()
+
+    def targetDirChanged(self, event):
+        dirval = GuiHelper.get_val(self.m_targetDirDIRP)
+        if dirval is not None and len(dirval)>0:
+            GuiHelper.enable_ctrls(True, self.m_startExtractionBU)
+        else:
+            GuiHelper.enable_ctrls(False, self.m_startExtractionBU)

@@ -2089,7 +2089,7 @@ class gArchiveExtractDialog ( wx.Dialog ):
 
 		gbSizer21.Add( self.m_staticText701, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_targetDirDIRP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Selektiere ein Verzeichnis", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST )
+		self.m_targetDirDIRP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Selektiere ein Verzeichnis", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST|wx.DIRP_SMALL )
 		gbSizer21.Add( self.m_targetDirDIRP, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_startExtractionBU = wx.Button( self, wx.ID_ANY, u"Start Extraktion", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -2111,6 +2111,7 @@ class gArchiveExtractDialog ( wx.Dialog ):
 		# Connect Events
 		self.m_doPicturesCB.Bind( wx.EVT_CHECKBOX, self.picturesChecked )
 		self.m_doDocumentsCB.Bind( wx.EVT_CHECKBOX, self.documentsChecked )
+		self.m_targetDirDIRP.Bind( wx.EVT_DIRPICKER_CHANGED, self.targetDirChanged )
 		self.m_startExtractionBU.Bind( wx.EVT_BUTTON, self.startExtraction )
 		self.m_abortExtractionBU.Bind( wx.EVT_BUTTON, self.abortExtraction )
 
@@ -2123,6 +2124,9 @@ class gArchiveExtractDialog ( wx.Dialog ):
 		event.Skip()
 
 	def documentsChecked( self, event ):
+		event.Skip()
+
+	def targetDirChanged( self, event ):
 		event.Skip()
 
 	def startExtraction( self, event ):
@@ -2316,10 +2320,7 @@ class gExportDataDialog ( wx.Dialog ):
 		self.m_staticText75 = wx.StaticText( self, wx.ID_ANY, u"Filtereinstellungen:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText75.Wrap( -1 )
 
-		gbSizer25.Add( self.m_staticText75, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
-
-		self.m_onlyOwnedDataCB = wx.CheckBox( self, wx.ID_ANY, u"Nur Daten mit dem eigenen ID-Kürzel", wx.DefaultPosition, wx.DefaultSize, 0 )
-		gbSizer25.Add( self.m_onlyOwnedDataCB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer25.Add( self.m_staticText75, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_personsCB = wx.CheckBox( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_personsCB.SetValue(True)

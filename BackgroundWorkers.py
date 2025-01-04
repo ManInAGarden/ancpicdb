@@ -73,39 +73,55 @@ class BgArchiveExtractor(BgWorker):
         self.paras = paras
 
     def run(self):
-        objs = self.paras.objects
-        da = self.paras.docarchive
-        max = len(objs)
-        ct = 0
-        oldperc = 0
-        for obj in objs:
-            ct += 1
-            extname = da.extract_file(obj.filepath, self.paras.targetpath)
-            extpath = Path(extname)
-            targname = Path(extpath.parent, obj.readableid + extpath.suffix)
-            extpath.rename(targname)
-            perc = int(ct/max * 100)
-            if perc != oldperc:
-                wx.PostEvent(self.notifywin, NotifyPercentEvent(perc))
-                oldperc = perc
+        try:
+            objs = self.paras.objects
+            da = self.paras.docarchive
+            max = len(objs)
+            ct = 0
+            oldperc = 0
+            for obj in objs:
+                ct += 1
+                extname = da.extract_file(obj.filepath, self.paras.targetpath)
+                extpath = Path(extname)
+                targname = Path(extpath.parent, obj.readableid + extpath.suffix)
+                extpath.rename(targname)
+                perc = int(ct/max * 100)
+                if perc != oldperc:
+                    wx.PostEvent(self.notifywin, NotifyPercentEvent(perc))
+                    oldperc = perc
 
-            if self.abortrequested:
-                wx.PostEvent(self.notifywin, ResultEvent(None))
-                return
-
-        wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
-        wx.PostEvent(self.notifywin, ResultEvent(ct))
+                if self.abortrequested:
+                    wx.PostEvent(self.notifywin, ResultEvent(None))
+                    return
+        finally:
+            wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
+            wx.PostEvent(self.notifywin, ResultEvent(ct))
 
 class BgCsvExtractorParas():
-    def __init__(self, fact, targdir : str, docarchive : DocArchiver, changedAfter, dopersons, dodocs, dopics, doonlyown):
+    def __init__(self, 
+                 fact, 
+                 targdir : str, 
+                 docarchive : DocArchiver, 
+                 machine_label : str,
+                 changedAfter, 
+                 dopersons : bool, 
+                 dodocs : bool, 
+                 dopics : bool):
+        
         self._fact = fact
         self._dopersons = dopersons
         self._dodocs = dodocs
         self._dopics = dopics
-        self._doonlyown = doonlyown
         self._targetdir = targdir
         self._changedAfter = changedAfter
         self._docarchive = docarchive
+        self._machlabel = machine_label
+
+    def get_caftd(self):
+        if self._changedAfter is None:
+            return dt.datetime(1900,1,1)
+        else:
+            return self._changedAfter
 
 class BgCsvExtractor(BgWorker):
     def __init__(self, notifywin, paras : BgCsvExtractorParas):
@@ -127,10 +143,25 @@ class BgCsvExtractor(BgWorker):
         self.makesure_direxists(targfname)
         su.copy2(fullsrc, targfname)
 
-    def exportclass(self, fact, excls, targpath, alteredafter, *orderby):
+    def exportclass(self, fact, excls, targpath, alteredafter, *orderby, addexp=None):
+        """Export a class to a csv file and, if applicable, also export any archived files connected
+            to the selected objects of that class
+            fact: SQFactory to be used fpr database access
+            excls: persistnet class to export
+            targpath: path of folder to write all the data to
+            alderedfafter: a datetime that will be used to select the data
+            orderby: used for SQQuery oderBy, see there for more explanations
+            addexp: an additional expression that will be applied to select the data
+        """
         name = excls.get_collection_name() + ".csv"
         filepath = os.path.join(targpath, name)
-        q = sqp.SQQuery(fact, excls).order_by(*orderby)
+        
+        exp = excls.LastUpdate > alteredafter
+
+        if addexp is not None:
+            exp = (exp) & (addexp)
+
+        q = sqp.SQQuery(fact, excls).where(exp).order_by(*orderby)
         with open(filepath, "w") as f:
             exp = sqp.SQLitePersistCsvExporter(excls, f)
             ct = exp.do_export(q)
@@ -156,7 +187,7 @@ class BgCsvExtractor(BgWorker):
         fpa, ct = self.exportclass(fact, 
                                    sqp.PCatalog,
                                    targpath,
-                                   dt.datetime(1900,1,1), 
+                                   dt.datetime(1900,1,1),
                                    sqp.PCatalog.Type, 
                                    sqp.PCatalog.Code)
         pathes.append(fpa)
@@ -165,7 +196,7 @@ class BgCsvExtractor(BgWorker):
         fpa, ct, = self.exportclass(fact,
                                     DataGroup,
                                     targpath,
-                                    dt.datetime(1900,1,1,),
+                                    dt.datetime(1900,1,1),
                                     DataGroup.Created)
         pathes.append(fpa)
         sumct += ct
@@ -176,11 +207,13 @@ class BgCsvExtractor(BgWorker):
         """export all person related data like seeds, groups, ..."""
         pathes = []
         sumct = 0
+        
+        caftd = self.paras.get_caftd()
 
         fpa, ct = self.exportclass(fact, 
                                    Person,
                                    targpath,
-                                   dt.datetime(1900,1,1), 
+                                   caftd, 
                                    Person.Name, 
                                    Person.FirstName)
         pathes.append(fpa)
@@ -189,7 +222,7 @@ class BgCsvExtractor(BgWorker):
         fpa, ct, = self.exportclass(fact,
                                     PersonInfoBit,
                                     targpath,
-                                    dt.datetime(1900,1,1,),
+                                    caftd,
                                     PersonInfoBit.Created)
         pathes.append(fpa)
         sumct += ct
@@ -200,11 +233,12 @@ class BgCsvExtractor(BgWorker):
         """export all person related data like seeds, groups, ..."""
         pathes = []
         sumct = 0
+        caftd = self.paras.get_caftd()
 
         fpa, ct = self.exportclass(fact, 
                                    Picture,
                                    targpath,
-                                   dt.datetime(1900,1,1), 
+                                   caftd, 
                                    Picture.Title)
         pathes.append(fpa)
         sumct += ct
@@ -212,7 +246,7 @@ class BgCsvExtractor(BgWorker):
         fpa, ct, = self.exportclass(fact,
                                     PersonPictureInter,
                                     targpath,
-                                    dt.datetime(1900,1,1,),
+                                    caftd,
                                     PersonPictureInter.Created)
         pathes.append(fpa)
         sumct += ct
@@ -220,7 +254,7 @@ class BgCsvExtractor(BgWorker):
         fpa, ct, = self.exportclass(fact,
                                     PictureInfoBit,
                                     targpath,
-                                    dt.datetime(1900,1,1,),
+                                    caftd,
                                     PictureInfoBit.Created)
         pathes.append(fpa)
         sumct += ct
@@ -232,11 +266,12 @@ class BgCsvExtractor(BgWorker):
         """export all document related data like seeds, groups, ..."""
         pathes = []
         sumct = 0
+        caftd = self.paras.get_caftd()
 
         fpa, ct = self.exportclass(fact, 
                                    Document,
                                    targpath,
-                                   dt.datetime(1900,1,1), 
+                                   caftd, 
                                    Document.Title)
         pathes.append(fpa)
         sumct += ct
@@ -244,7 +279,7 @@ class BgCsvExtractor(BgWorker):
         fpa, ct, = self.exportclass(fact,
                                     PersonDocumentInter,
                                     targpath,
-                                    dt.datetime(1900,1,1,),
+                                    caftd,
                                     PersonDocumentInter.Created)
         pathes.append(fpa)
         sumct += ct
@@ -252,7 +287,7 @@ class BgCsvExtractor(BgWorker):
         fpa, ct, = self.exportclass(fact,
                                     DocumentInfoBit,
                                     targpath,
-                                    dt.datetime(1900,1,1,),
+                                    caftd,
                                     DocumentInfoBit.Created)
         pathes.append(fpa)
         sumct += ct
@@ -266,7 +301,6 @@ class BgCsvExtractor(BgWorker):
             f.write("Personenexport: {}\n".format(p._dopersons))
             f.write("Dokumentenexport: {}\n".format(p._dodocs))
             f.write("Bilderexport: {}\n".format(p._dopics))
-            f.write("Nur eigene Daten: {}\n".format(p._doonlyown))
             f.write("Geändert nach: {}\n".format(p._changedAfter))
 
     def do_zipping(self, pathtozip : str):
@@ -294,7 +328,10 @@ class BgCsvExtractor(BgWorker):
             ctsum = 0
             outer_targpath = self.paras._targetdir
             targpath = os.path.join(outer_targpath, "data")
-            os.makedirs(targpath)
+
+            if not os.path.exists(targpath):
+                os.makedirs(targpath)
+
             p = self.paras
 
             self.save_paras(p, targpath)

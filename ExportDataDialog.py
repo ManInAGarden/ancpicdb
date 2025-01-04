@@ -11,7 +11,6 @@ class CsvExportSettings:
     DOPERSONS = 1
     DOPICTURES = 2
     DODOCUMENTS = 4
-    DOOWNDATAONLY = 8
 
     @property
     def targetdir(self):
@@ -49,11 +48,6 @@ class CsvExportSettings:
     @property
     def dodocuments(self):
         return self._expproperties & self.DODOCUMENTS == self.DODOCUMENTS
-    
-    @property
-    def doowndataonly(self):
-        return self._expproperties & self.DOOWNDATAONLY == self.DOOWNDATAONLY
-
 
     def __init__(self):
         self._targetDir = None
@@ -79,7 +73,13 @@ class ExportDataDialog(gg.gExportDataDialog):
         GuiHelper.set_icon(self)
         self._fact = fact
         self._data = data
+        self._bw = None
         self._docarchive = parent.docarchive
+        self._configuration = parent.configuration
+        self._machlabel = self._configuration.get_value("gui", "machlabel")
+        if self._machlabel is None:
+            self._machlabel = "XXXX"
+        
 
         bgw.EVT_RESULT(self, self.workerfinished)
         bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
@@ -103,7 +103,6 @@ class ExportDataDialog(gg.gExportDataDialog):
         d = self._data
         GuiHelper.set_val(self.m_targetDIRP, d.targetdir)
         GuiHelper.set_val(self.m_onlyNewerThanDPI, d.changed_after)
-        GuiHelper.set_val(self.m_onlyOwnedDataCB, d.doowndataonly)
         GuiHelper.set_val(self.m_personsCB, d.dopersons)
         GuiHelper.set_val(self.m_documentsCB, d.dodocuments)
         GuiHelper.set_val(self.m_picturesCB, d.dopictures)
@@ -132,13 +131,16 @@ class ExportDataDialog(gg.gExportDataDialog):
         self.m_workDoneGAUGE.SetValue(perc)
 
     def doClose(self, event):
+
+        if self._bw is not None and self._bw.is_alive():
+            GuiHelper.show_message("Bitte warte bis der Hintergrundjob für den Export beendet ist")
+            return
+        
         d = self._data
         d.targetdir = GuiHelper.get_val(self.m_targetDIRP)
         d.changed_after = GuiHelper.get_val(self.m_onlyNewerThanDPI)
         
         d.exp_properties = 0
-        if GuiHelper.get_val(self.m_onlyOwnedDataCB):
-            self.add_prop(CsvExportSettings.DOOWNDATAONLY)
         if GuiHelper.get_val(self.m_personsCB):
             self.add_prop(CsvExportSettings.DOPERSONS)
         if GuiHelper.get_val(self.m_picturesCB):
@@ -155,22 +157,23 @@ class ExportDataDialog(gg.gExportDataDialog):
         targetdir = GuiHelper.get_val(self.m_targetDIRP)
         changed_after = GuiHelper.get_val(self.m_onlyNewerThanDPI)
         
-        doonlyown = GuiHelper.get_val(self.m_onlyOwnedDataCB)
         dopers = GuiHelper.get_val(self.m_personsCB)
         dopics = GuiHelper.get_val(self.m_picturesCB)
         dodocs = GuiHelper.get_val(self.m_documentsCB)
         paras = bgw.BgCsvExtractorParas(self._fact, 
                                         targetdir,
                                         self._docarchive,
+                                        self._machlabel,
                                         changed_after,
                                         dopers,
                                         dodocs,
-                                        dopics,
-                                        doonlyown)
-        bw = bgw.BgCsvExtractor(notifywin=self, paras=paras)
-        bw.start()
+                                        dopics)
+       
+        self._bw = bgw.BgCsvExtractor(notifywin=self, paras=paras)
+        self._bw.start()
+
         GuiHelper.enable_ctrls(False, self.m_startExportBU)
         GuiHelper.enable_ctrls(True, self.m_abortExportBU)
 
     def abortCsvExport(self, event):
-        pass
+        self._bw.requestabort()

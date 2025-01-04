@@ -30,9 +30,14 @@ class AboutDialog(gg.gAboutDialog):
         with open(filename) as f:
             content = f.read()
 
+        machinelabel = self._configuration.get_value("gui", "machlabel")
+        if machinelabel is None:
+            machinelabel = "undefiniert"
+            
         content = content.replace("VERSION", self._version)
         content = content.replace("DBNAME", self._dbname)
         content = content.replace("STORAGEPATH", self._storagepath)
+        content = content.replace("MASCHLABEL", machinelabel)
 
         tmpdir = tempfile.gettempdir()
         tmpfilename = os.path.join(tmpdir,"aboutmodif.html")
