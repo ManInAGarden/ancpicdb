@@ -1,6 +1,7 @@
 from enum import Enum
 import wx
 import wx.adv
+import BackgroundWorkers as bgw
 import GeneratedGUI as gg
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
@@ -20,12 +21,17 @@ class RegisterDialog(gg.gRegisterDialog):
         GuiHelper.set_icon(self)
         self._fact = fact
         self.style = RegisterDialogStyle.UNKNOWN
+        self.targetfile = None
+        self.doclass = docls
+        self._bw = None
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration
         self.logger = parent.logger
-        self.cls = docls
         self._maxsamples = 100
         self._do_prep()
+
+        bgw.EVT_RESULT(self, self.workerfinished)
+        bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
 
     def _do_prep(self):
         self._dblistdefins =  [
@@ -35,10 +41,10 @@ class RegisterDialog(gg.gRegisterDialog):
                        {"title": "geändert", "width": 50, "propname":"lastupdate" },
                     ]
         
-        if self.cls is Document:
+        if self.doclass is Document:
             title = "Dokumente"
             self.style = RegisterDialogStyle.DOCUMENT
-        elif self.cls is Picture:
+        elif self.doclass is Picture:
             title = "Bilder"
             self.style = RegisterDialogStyle.PICTURE
         else:
@@ -53,7 +59,7 @@ class RegisterDialog(gg.gRegisterDialog):
         return self.ShowModal()
     
     def _getsamples(self):
-        q = sqp.SQQuery(self._fact, self.cls, limit=self._maxsamples).order_by(self.cls.ReadableId)
+        q = sqp.SQQuery(self._fact, self.doclass, limit=self._maxsamples).order_by(self.doclass.ReadableId)
         return q.as_list()
 
     def _filldialog(self):
@@ -65,5 +71,45 @@ class RegisterDialog(gg.gRegisterDialog):
         GuiHelper.set_data_for_lstctrl(self.m_elementsLCTR,
                                        self._dblistdefins,
                                        self.elements)
+        
+    def workerfinished(self, event):
+        GuiHelper.enable_ctrls(True, self.m_startWritingBU)
+        GuiHelper.enable_ctrls(False, self.m_abortWritingBU)
 
+    def notifyperc(self, event):
+        perc = event.data
+        GuiHelper.set_val(self.m_writingGAUGE, perc)
+
+    def fileSelected(self, event):
+        """A file has succesfully been selected"""
+        self.targetfile = GuiHelper.get_val(self.m_targetfileNameFP)
+
+        GuiHelper.enable_ctrls(True, self.m_startWritingBU)
+
+    def get_doc_title(self):
+        if self.style == RegisterDialogStyle.DOCUMENT:
+            return "Register der archivierten Dokumente"
+        elif self.style == RegisterDialogStyle.PICTURE:
+            return "Register der archivierten Bilder und Fotografien"
+        else:
+            raise Exception("Unknown style in RegisterDialog.get_doc_title")
+        
+
+    def startWriting(self, event):
+        paras = {
+                    "fact": self._fact,
+                    "docls" : self.doclass,
+                    "targetfile" : self.targetfile,
+                    "title": self.get_doc_title()
+                }
+        self._bw = bgw.BgRegisterWriter(notifywin=self,paras=paras)
+        self._bw.start()
+
+        GuiHelper.enable_ctrls(True, self.m_abortWritingBU)
+        GuiHelper.enable_ctrls(False, self.m_startWritingBU)
+
+    def abortWriting(self, event):
+        if self._bw is None: return
+
+        self._bw.request_abort()
         

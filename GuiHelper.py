@@ -176,6 +176,14 @@ class GuiHelper:
                 ctrl.SetPath(val)
             else:
                 ctrl.SetPath("")
+        elif ct is wx.Gauge:
+            if val is not None and val>=0:
+                range = ctrl.GetRange()
+                if val<range:
+                    ctrl.SetValue(val)
+                else:
+                    ctrl.SetValue(range)
+
         else:
             raise Exception("Unknown control type in _set_val")
         

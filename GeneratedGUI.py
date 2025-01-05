@@ -2446,7 +2446,7 @@ class gRegisterDialog ( wx.Dialog ):
 		self.m_elementsLCTR = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
 		gbSizer26.Add( self.m_elementsLCTR, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
-		self.m_targetfileNameFP = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE|wx.FLP_SMALL )
+		self.m_targetfileNameFP = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"PDF-Datei (*.pdf)|*.pdf", wx.DefaultPosition, wx.DefaultSize, wx.FLP_SAVE|wx.FLP_SMALL|wx.FLP_USE_TEXTCTRL )
 		gbSizer26.Add( self.m_targetfileNameFP, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline6 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
@@ -2489,7 +2489,23 @@ class gRegisterDialog ( wx.Dialog ):
 
 		self.Centre( wx.BOTH )
 
+		# Connect Events
+		self.m_targetfileNameFP.Bind( wx.EVT_FILEPICKER_CHANGED, self.fileSelected )
+		self.m_startWritingBU.Bind( wx.EVT_BUTTON, self.startWriting )
+		self.m_abortWritingBU.Bind( wx.EVT_BUTTON, self.abortWriting )
+
 	def __del__( self ):
 		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def fileSelected( self, event ):
+		event.Skip()
+
+	def startWriting( self, event ):
+		event.Skip()
+
+	def abortWriting( self, event ):
+		event.Skip()
 
 
