@@ -1,5 +1,6 @@
 import datetime as dt
 import unittest
+from DocArchiver import DocArchiver
 import sqlitepersist as sqp
 from TestBase import TestBase
 from PersistClasses import Picture, FluffyMonthCat
@@ -109,5 +110,26 @@ class TestPictureSelects(TestBase):
         pics_r = sqp.SQQuery(self.Spf, Picture).where((Picture.FlufTakenYear==1970)
                                                       &sqp.IsNotNone(Picture.ScanDate)).as_list()
         assert len(pics_r) == 3
+
+
+    def test_likequeryLimited01(self):
+        titles = ["LimitLikeQuerPic01", "LimitLikeQuerPic02", "LimitLikeQuerPic03", "LimitNotQueryPic04"]
+        monthes = ["MONTH09", "MONTH10", "MONTH11", "MONTH12"]
+        tm = 0
+        for tit in titles:
+            moca = self.Spf.getcat(FluffyMonthCat, monthes[tm])
+            pic = self.Mck.create_picture(title=tit, scandate=dt.datetime.now(),
+                                          yeartaken=1965,
+                                          monthtaken=moca)
+            tm += 1
+            self.Spf.flush(pic)
+
+        pics_r = sqp.SQQuery(self.Spf, Picture, limit=2).where((Picture.FlufTakenYear==1965) 
+                                                            & sqp.IsLike(Picture.Title, "%Like%")).as_list()
+        assert len(pics_r) == 2
+
+        pics_r = sqp.SQQuery(self.Spf, Picture, limit=2).where((Picture.FlufTakenYear==1965) 
+                                                      & sqp.NotIsLike(Picture.Title, "%Like%")).as_list()
+        assert len(pics_r) == 1
 
         

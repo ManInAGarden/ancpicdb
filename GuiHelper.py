@@ -126,6 +126,11 @@ class GuiHelper:
                 ctrl.SetValue(val)
             else:
                 ctrl.SetValue("")
+        elif ct is wx.StaticText:
+            if val is not None:
+                ctrl.SetLabel(val)
+            else:
+                ctrl.SetLabel("")
         elif ct is wx.adv.DatePickerCtrl:
             if val is not None:
                 ctrl.SetValue(wx.pydate2wxdate(val))

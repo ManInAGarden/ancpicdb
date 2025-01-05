@@ -43,12 +43,15 @@ class ChangeDbDialog(gg.mChangeDbDialog):
 
         # set the columdefinitions
         self._dblistdefins =  [
-                                 {"title": "Name", "width": 100, "propname":"name" },
-                                 {"title": "angelegt", "width": 50, "propname":"created" },
-                                 {"title": "mit DB", "width": 10, "propname":"hasdb" },
-                                 {"title": "mit Archiv", "width": 10, "propname":"hasarchive"},
-                                 {"title": "Ablageort", "width": 300, "propname":"location"}
-                              ]
+                      {"title": "Archvierungs-Id", "width": 140, "propname":"readableid" },
+                      {"title": "angelegt", "width": 50, "propname":"created" },
+                      {"title": "letzte Änderung", "width": 50, "propname":"lastupdate" },
+                      {"title": "mit DB", "width": 10, "propname":"hasdb" },
+                      {"title": "mit Archiv", "width": 10, "propname":"hasarchive"},
+                      {"title": "Ablageort", "width": 300, "propname":"location"}
+                    ]
+
+
 
     def showmodal(self):
         self._filldialog()

@@ -31,13 +31,14 @@ class SQQueryIterator():
         return dco
 
 class SQQuery():
-    def __init__(self, fact : SQFactory, cls : PBase): #BaseVarType
+    def __init__(self, fact : SQFactory, cls : PBase, limit=None): #BaseVarType
         assert issubclass(cls, PBase)
         self._sqf = fact
         self._cls = cls
         self._whereop = None
         self._order = None
         self._selfunc = None
+        self._limit = limit
 
         #Make sure classdict gets initialised for queried class now. Automatically
         #recognizes when classdict has already beend initialised for the class
@@ -150,7 +151,8 @@ class SQQuery():
             and returns a cursor to the selected data
         """
         qdict, orderlist = self._generateall()
-        return self._sqf.find(self._cls, qdict, orderlist)
+        return self._sqf.find(self._cls, qdict, orderlist,
+                              limit=self._limit)
 
     def _generateall(self):
         qdg = SQQueryDictGenerator()

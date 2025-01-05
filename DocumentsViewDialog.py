@@ -47,7 +47,7 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
 
     def _create_readid(self):
         dt = datetime.now()
-        return "{0}.{1:%Y%m%d.%H%M%H.%f}".format(self.machlabel, dt)
+        return "{0}.{1:%Y%m%d.%H%M%S.%f}".format(self.machlabel, dt)
 
     def addNewRow(self, event):
         readid = self._create_readid()

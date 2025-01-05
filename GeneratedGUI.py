@@ -72,11 +72,11 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_menu4.Append( self.m_menuItem10 )
 
 		self.m_menu1 = wx.Menu()
-		self.m_menuItem14 = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Dokumente", wx.EmptyString, wx.ITEM_NORMAL )
-		self.m_menu1.Append( self.m_menuItem14 )
+		self.m_printRegisterDocMI = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Dokumente", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu1.Append( self.m_printRegisterDocMI )
 
-		self.m_menuItem15 = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Bilder", wx.EmptyString, wx.ITEM_NORMAL )
-		self.m_menu1.Append( self.m_menuItem15 )
+		self.m_printRegisterPicMI = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Bilder", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu1.Append( self.m_printRegisterPicMI )
 
 		self.m_menu4.AppendSubMenu( self.m_menu1, u"Registerblätter" )
 
@@ -244,6 +244,8 @@ class AncPicDBMain ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.openViewPicturesDialog, id = self.m_picsMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.printWantedPosters, id = self.m_menuItem9.GetId() )
 		self.Bind( wx.EVT_MENU, self.doDataCheck, id = self.m_menuItem10.GetId() )
+		self.Bind( wx.EVT_MENU, self.printDocRegister, id = self.m_printRegisterDocMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.printPicRegister, id = self.m_printRegisterPicMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.showAbout, id = self.m_aboutAncPicDB.GetId() )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX, self.personSelected )
 		self.m_personsLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editExistingPerson )
@@ -296,6 +298,12 @@ class AncPicDBMain ( wx.Frame ):
 		event.Skip()
 
 	def doDataCheck( self, event ):
+		event.Skip()
+
+	def printDocRegister( self, event ):
+		event.Skip()
+
+	def printPicRegister( self, event ):
 		event.Skip()
 
 	def showAbout( self, event ):
@@ -2411,5 +2419,77 @@ class gExportDataDialog ( wx.Dialog ):
 
 	def abortCsvExport( self, event ):
 		event.Skip()
+
+
+###########################################################################
+## Class gRegisterDialog
+###########################################################################
+
+class gRegisterDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Registererstellung", pos = wx.DefaultPosition, size = wx.Size( 550,454 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer26 = wx.GridBagSizer( 0, 0 )
+		gbSizer26.SetFlexibleDirection( wx.BOTH )
+		gbSizer26.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_dialButtonsDBS = wx.StdDialogButtonSizer()
+		self.m_dialButtonsDBSOK = wx.Button( self, wx.ID_OK )
+		m_dialButtonsDBS.AddButton( self.m_dialButtonsDBSOK )
+		m_dialButtonsDBS.Realize()
+
+		gbSizer26.Add( m_dialButtonsDBS, wx.GBPosition( 10, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_elementsLCTR = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer26.Add( self.m_elementsLCTR, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_targetfileNameFP = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a file", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE|wx.FLP_SMALL )
+		gbSizer26.Add( self.m_targetfileNameFP, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline6 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer26.Add( self.m_staticline6, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_startWritingBU = wx.Button( self, wx.ID_ANY, u"Starten", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer26.Add( self.m_startWritingBU, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticline7 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer26.Add( self.m_staticline7, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		bSizer20 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_writingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_writingGAUGE.SetValue( 0 )
+		bSizer20.Add( self.m_writingGAUGE, 0, wx.ALL, 5 )
+
+		self.m_abortWritingBU = wx.Button( self, wx.ID_ANY, u"Abbrechen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer20.Add( self.m_abortWritingBU, 0, wx.ALL, 5 )
+
+
+		gbSizer26.Add( bSizer20, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+
+		self.m_staticText79 = wx.StaticText( self, wx.ID_ANY, u"Dateiname:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText79.Wrap( -1 )
+
+		gbSizer26.Add( self.m_staticText79, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_listTitle = wx.StaticText( self, wx.ID_ANY, u"Verzeichniselemente:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_listTitle.Wrap( -1 )
+
+		gbSizer26.Add( self.m_listTitle, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+
+		gbSizer26.AddGrowableCol( 1 )
+		gbSizer26.AddGrowableRow( 1 )
+
+		self.SetSizer( gbSizer26 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
 
 

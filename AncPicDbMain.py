@@ -29,6 +29,7 @@ from GuiHelper import GuiHelper
 from PathZipper import PathZipper
 from ExportDataDialog import ExportDataDialog, CsvExportSettings
 from ABDBTools import APDBTools
+from RegisterDialog import RegisterDialog
 from WantedPosterPrintDialog import WantedPosterPrintDialog
 import sqlitepersist as sqp
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
@@ -39,7 +40,7 @@ MAXDOCTITLELEN = 100
 class AncPicDbMain(gg.AncPicDBMain):
     def __init__(self, parent ):
         super().__init__(parent)
-        self._version = "1.0.1"
+        self._version = "1.0.2"
         GuiHelper.set_icon(self)
         self.init_environ()
         self.init_prog()
@@ -565,6 +566,14 @@ class AncPicDbMain(gg.AncPicDBMain):
 
         self._csvexpsettings = expdial.csvexpsettings
 
+    def printPicRegister(self, event):
+        regdial = RegisterDialog(self, self._fact, Picture)
+        res = regdial.showmodal()
+
+    def printDocRegister(self, event):
+        regdial = RegisterDialog(self, self._fact, Document)
+        res = regdial.showmodal()
+
     def showAbout(self, event):
         aboutdial = AboutDialog(self, self._fact, self._version, self.dbname, self.storagepath)
         aboutdial.showmodal()
@@ -572,6 +581,6 @@ class AncPicDbMain(gg.AncPicDBMain):
 
 if __name__ == '__main__':
     app = wx.App()
-    frm = AncPicDbMain(None) 
+    frm = AncPicDbMain(None)
     frm.Show()
     app.MainLoop()

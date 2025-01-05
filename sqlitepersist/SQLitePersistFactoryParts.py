@@ -534,12 +534,6 @@ class SQFactory():
                 if not wc is None:
                     stmt += " WHERE " + wc                    
 
-        if limit is not None and limit >0:
-            if findpar is None:
-                stmt += " WHERE ROWNUM < " + str(limit)
-            else:
-                stmt += " AND ROWNUM<" + str(limit)
-
         if orderlist is not None:
             stmt += " ORDER BY "
             first = True
@@ -549,6 +543,9 @@ class SQFactory():
                     stmt += order[0] + self._get_order_dir(order[1])
                 else:
                     stmt += ", " + order[0] + self._get_order_dir(order[1])
+
+        if limit is not None and limit >0:
+            stmt += " LIMIT " + str(limit)
 
         self._stmtlogger.log_stmt("EXEC: {0}", stmt)
         curs = self.conn.cursor()

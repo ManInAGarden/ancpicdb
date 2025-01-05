@@ -1,5 +1,6 @@
 import unittest
 import datetime as dt
+from tempfile import TemporaryDirectory
 from TestBase import TestBase
 from PersistClasses import FullPerson, Person
 from WantedPoster import WantedPoster
@@ -7,6 +8,9 @@ from WantedPoster import WantedPoster
 
 class TestWantedPoster(unittest.TestCase):
     
+    def setUp(self):
+        super().setUp()
+
     def test_write_gustaf(self):
         pfath = Person(name = "Gründgens", firstname="Arnold Hubert")
         pmoth = Person(name="Gründgens", firstname = "Emmi")
@@ -58,6 +62,7 @@ class TestWantedPoster(unittest.TestCase):
         self._add_fchild(p1, "Jagger", "Lucas Maurice Morad", dt.datetime(1999,5,18))
         self._add_fchild(p1, "Jagger", "Deveraux Octavian Basil", dt.datetime(2016,12,8))
          
+        
         pl = [p1]
-        wp = WantedPoster(pl, "testwantedposterMick.pdf")
+        wp = WantedPoster(pl, None, "testwantedposterMick.pdf")
         wp.do_create()
