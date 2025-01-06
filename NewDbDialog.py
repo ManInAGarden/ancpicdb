@@ -4,7 +4,7 @@ import GeneratedGUI as gg
 from PersistClasses import Picture, PictureInfoBit, PersonPictureInter
 import sqlitepersist as sqp
 from GuiHelper import GuiHelper
-import BackgroundWorkers as bgw
+import backgroundworkers as bgw
 from ConfigReader import ConfigReader
 
 

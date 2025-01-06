@@ -4,7 +4,7 @@ import wx
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from PersistClasses import DataGroup, Picture, Document
-import BackgroundWorkers as bgw
+import backgroundworkers as bgw
 
 class ArchiveExtractDialog(gg.gArchiveExtractDialog):
     @property

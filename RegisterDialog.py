@@ -1,7 +1,7 @@
 from enum import Enum
 import wx
 import wx.adv
-import BackgroundWorkers as bgw
+import backgroundworkers as bgw
 import GeneratedGUI as gg
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
@@ -78,7 +78,10 @@ class RegisterDialog(gg.gRegisterDialog):
 
     def notifyperc(self, event):
         perc = event.data
-        GuiHelper.set_val(self.m_writingGAUGE, perc)
+        if perc >= 0:
+            GuiHelper.set_val(self.m_writingGAUGE, perc)
+        else:
+            GuiHelper.pulse(self.m_writingGAUGE)
 
     def fileSelected(self, event):
         """A file has succesfully been selected"""

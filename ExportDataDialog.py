@@ -5,7 +5,7 @@ from PersistClasses import Picture, PersonPictureInter
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 import datetime as dt
-import BackgroundWorkers as bgw
+import backgroundworkers as bgw
 
 class CsvExportSettings:
     DOPERSONS = 1

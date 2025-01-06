@@ -221,6 +221,14 @@ class GuiHelper:
         else:
             raise Exception("Unknown type {} in _get_val()".format(ctt))
         
+    
+    @classmethod
+    def pulse(cls, ctrl):
+        ctt = type(ctrl)
+        assert ctt is wx.Gauge
+
+        ctrl.Pulse()
+
     @classmethod
     def get_sqp_objval(cls, ctrl, datal : list=None):
         """get value from the ctrl assuming its a sqp object"""
