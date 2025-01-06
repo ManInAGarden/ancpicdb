@@ -1,3 +1,4 @@
+import os
 import wx
 import wx.adv
 import GeneratedGUI as gg
@@ -44,21 +45,30 @@ class NewDbDialog(gg.gNewDbDialg) :
     
 
     def workerfinished(self, event):
-        GuiHelper.enable_ctrls(True, self.m_cancelBU)
-        GuiHelper.enable_ctrls(True, self.m_createDbBU)
+        GuiHelper.enable_ctrls(True, self.m_createDbBU, self.m_cancelBU)
 
     def notifyperc(self, event):
         perc = event.data
-        self.m_execuringG.SetValue(perc)
-        return
+        if perc < 0:
+            GuiHelper.pulse(self.m_execuringG)
+        else:
+            GuiHelper.set_val(self.m_execuringG, perc)
 
     def createNewDbNow(self, event):
         newdbname = GuiHelper.get_val(self.m_newNameTB)
         copyold = GuiHelper.get_val(self.m_copyOldCB)
+        
+        targp = os.path.join(self.storagepath, newdbname)
+        if os.path.exists(targp):
+            GuiHelper.show_error("Eine Datenbank dieses Namens existiert bereits. Bitte wähle einen anderen Namen oder lösche die existierende Datenbank.")
+            return
 
         paras = bgw.DbCreatorParas(self.storagepath, newdbname, copyold, self.currdbname)
         worker = bgw.BgDBCreator(self, self._configuration, self.logger, paras)
         worker.start()
+
+        GuiHelper.enable_ctrls(False, self.m_createDbBU, self.m_cancelBU)
+
     
     def cancelNewDbCeation(self, event):
         self.EndModal(wx.ID_CANCEL)

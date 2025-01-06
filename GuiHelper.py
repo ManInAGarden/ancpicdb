@@ -24,7 +24,7 @@ class GuiHelper:
             
 
     @classmethod 
-    def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list) -> (object, int):
+    def get_selected_fromlb(cls, lstbox : wx.ListBox, lst : list) -> tuple[object, int]:
         """get the currently selected item of a ListBox. Returns None when nothing was selected"""
         if lst is None or len(lst)==0:
             return None, None
@@ -304,7 +304,7 @@ class GuiHelper:
     def set_columns_forlstctrl(cls, ctrl : wx.ListCtrl, defins : list):
         ct = 0
         for defin in defins:
-            ctrl.InsertColumn(ct, defin["title"])
+            ctrl.InsertColumn(ct, heading=defin["title"], width=defin["width"])
             ct += 1
 
 

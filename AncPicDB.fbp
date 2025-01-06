@@ -1573,7 +1573,7 @@
       <property name="minimum_size"></property>
       <property name="name">geditDocumentDialog</property>
       <property name="pos"></property>
-      <property name="size">800,750</property>
+      <property name="size">800,760</property>
       <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
       <property name="subclass">; ; forward_declare</property>
       <property name="title">Dokument bearbeiten</property>
@@ -3900,7 +3900,7 @@
       <property name="minimum_size"></property>
       <property name="name">geditPictureDialog</property>
       <property name="pos"></property>
-      <property name="size">800,750</property>
+      <property name="size">800,760</property>
       <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
       <property name="subclass">; ; forward_declare</property>
       <property name="title">Bild bearbeiten</property>
@@ -3917,7 +3917,7 @@
         <property name="hgap">0</property>
         <property name="minimum_size"></property>
         <property name="name">gbSizer7</property>
-        <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_SPECIFIED</property>
+        <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_ALL</property>
         <property name="permission">none</property>
         <property name="vgap">0</property>
         <object class="gbsizeritem" expanded="false">
@@ -17314,7 +17314,7 @@
         </object>
       </object>
     </object>
-    <object class="Dialog" expanded="false">
+    <object class="Dialog" expanded="true">
       <property name="aui_managed">0</property>
       <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
       <property name="bg"></property>
@@ -17333,7 +17333,7 @@
       <property name="minimum_size"></property>
       <property name="name">mChangeDbDialog</property>
       <property name="pos"></property>
-      <property name="size">495,461</property>
+      <property name="size">613,451</property>
       <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
       <property name="subclass">; ; forward_declare</property>
       <property name="title">Zu Datenbank wechseln</property>
@@ -17342,7 +17342,7 @@
       <property name="window_extra_style"></property>
       <property name="window_name"></property>
       <property name="window_style"></property>
-      <object class="wxGridBagSizer" expanded="false">
+      <object class="wxGridBagSizer" expanded="true">
         <property name="empty_cell_size"></property>
         <property name="flexible_direction">wxBOTH</property>
         <property name="growablecols">1</property>
@@ -17350,14 +17350,14 @@
         <property name="hgap">0</property>
         <property name="minimum_size"></property>
         <property name="name">gbSizer23</property>
-        <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_SPECIFIED</property>
+        <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_ALL</property>
         <property name="permission">none</property>
         <property name="vgap">0</property>
         <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">2</property>
           <property name="column">0</property>
-          <property name="flag">wxEXPAND</property>
+          <property name="flag">wxALL|wxEXPAND</property>
           <property name="row">1</property>
           <property name="rowspan">1</property>
           <object class="wxStdDialogButtonSizer" expanded="false">
@@ -17480,7 +17480,7 @@
             <property name="maximum_size"></property>
             <property name="min_size"></property>
             <property name="minimize_button">0</property>
-            <property name="minimum_size"></property>
+            <property name="minimum_size">300,200</property>
             <property name="moveable">1</property>
             <property name="name">mDatabasesLBCTRL</property>
             <property name="pane_border">1</property>
@@ -17492,7 +17492,7 @@
             <property name="resize">Resizable</property>
             <property name="show">1</property>
             <property name="size"></property>
-            <property name="style">wxLC_REPORT|wxLC_SINGLE_SEL|wxLC_SORT_ASCENDING</property>
+            <property name="style">wxLC_REPORT|wxLC_SINGLE_SEL</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="toolbar_pane">0</property>
             <property name="tooltip"></property>
@@ -18699,7 +18699,7 @@
         </object>
       </object>
     </object>
-    <object class="Dialog" expanded="true">
+    <object class="Dialog" expanded="false">
       <property name="aui_managed">0</property>
       <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
       <property name="bg"></property>
@@ -18727,7 +18727,7 @@
       <property name="window_extra_style"></property>
       <property name="window_name"></property>
       <property name="window_style"></property>
-      <object class="wxGridBagSizer" expanded="true">
+      <object class="wxGridBagSizer" expanded="false">
         <property name="empty_cell_size"></property>
         <property name="flexible_direction">wxBOTH</property>
         <property name="growablecols">1</property>
@@ -18738,14 +18738,14 @@
         <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_SPECIFIED</property>
         <property name="permission">none</property>
         <property name="vgap">0</property>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">2</property>
           <property name="column">0</property>
           <property name="flag">wxALL|wxEXPAND</property>
           <property name="row">10</property>
           <property name="rowspan">1</property>
-          <object class="wxStdDialogButtonSizer" expanded="true">
+          <object class="wxStdDialogButtonSizer" expanded="false">
             <property name="Apply">0</property>
             <property name="Cancel">0</property>
             <property name="ContextHelp">0</property>
@@ -18759,14 +18759,14 @@
             <property name="permission">protected</property>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">2</property>
           <property name="column">0</property>
           <property name="flag">wxALL|wxEXPAND</property>
           <property name="row">1</property>
           <property name="rowspan">1</property>
-          <object class="wxListCtrl" expanded="true">
+          <object class="wxListCtrl" expanded="false">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -18825,14 +18825,14 @@
             <property name="window_style"></property>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">1</property>
           <property name="column">1</property>
           <property name="flag">wxALL|wxEXPAND</property>
           <property name="row">2</property>
           <property name="rowspan">1</property>
-          <object class="wxFilePickerCtrl" expanded="true">
+          <object class="wxFilePickerCtrl" expanded="false">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -18895,14 +18895,14 @@
             <event name="OnFileChanged">fileSelected</event>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">2</property>
           <property name="column">0</property>
           <property name="flag">wxEXPAND | wxALL</property>
           <property name="row">5</property>
           <property name="rowspan">1</property>
-          <object class="wxStaticLine" expanded="true">
+          <object class="wxStaticLine" expanded="false">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -18957,14 +18957,14 @@
             <property name="window_style"></property>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">1</property>
           <property name="column">0</property>
           <property name="flag">wxALL</property>
           <property name="row">6</property>
           <property name="rowspan">1</property>
-          <object class="wxButton" expanded="true">
+          <object class="wxButton" expanded="false">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -19035,14 +19035,14 @@
             <event name="OnButtonClick">startWriting</event>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">2</property>
           <property name="column">0</property>
           <property name="flag">wxEXPAND | wxALL</property>
           <property name="row">7</property>
           <property name="rowspan">1</property>
-          <object class="wxStaticLine" expanded="true">
+          <object class="wxStaticLine" expanded="false">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -19097,23 +19097,23 @@
             <property name="window_style"></property>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">1</property>
           <property name="column">1</property>
           <property name="flag">wxEXPAND</property>
           <property name="row">6</property>
           <property name="rowspan">1</property>
-          <object class="wxBoxSizer" expanded="true">
+          <object class="wxBoxSizer" expanded="false">
             <property name="minimum_size"></property>
             <property name="name">bSizer20</property>
             <property name="orient">wxHORIZONTAL</property>
             <property name="permission">none</property>
-            <object class="sizeritem" expanded="true">
+            <object class="sizeritem" expanded="false">
               <property name="border">5</property>
               <property name="flag">wxALL</property>
               <property name="proportion">0</property>
-              <object class="wxGauge" expanded="true">
+              <object class="wxGauge" expanded="false">
                 <property name="BottomDockable">1</property>
                 <property name="LeftDockable">1</property>
                 <property name="RightDockable">1</property>
@@ -19163,7 +19163,7 @@
                 <property name="style">wxGA_HORIZONTAL</property>
                 <property name="subclass">; ; forward_declare</property>
                 <property name="toolbar_pane">0</property>
-                <property name="tooltip"></property>
+                <property name="tooltip">Fortschritt bei der Registererstellung</property>
                 <property name="validator_data_type"></property>
                 <property name="validator_style">wxFILTER_NONE</property>
                 <property name="validator_type">wxDefaultValidator</property>
@@ -19174,11 +19174,11 @@
                 <property name="window_style"></property>
               </object>
             </object>
-            <object class="sizeritem" expanded="true">
+            <object class="sizeritem" expanded="false">
               <property name="border">5</property>
               <property name="flag">wxALL</property>
               <property name="proportion">0</property>
-              <object class="wxButton" expanded="true">
+              <object class="wxButton" expanded="false">
                 <property name="BottomDockable">1</property>
                 <property name="LeftDockable">1</property>
                 <property name="RightDockable">1</property>
@@ -19251,14 +19251,14 @@
             </object>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">1</property>
           <property name="column">0</property>
           <property name="flag">wxALL</property>
           <property name="row">2</property>
           <property name="rowspan">1</property>
-          <object class="wxStaticText" expanded="true">
+          <object class="wxStaticText" expanded="false">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>
@@ -19316,14 +19316,14 @@
             <property name="wrap">-1</property>
           </object>
         </object>
-        <object class="gbsizeritem" expanded="true">
+        <object class="gbsizeritem" expanded="false">
           <property name="border">5</property>
           <property name="colspan">1</property>
           <property name="column">0</property>
           <property name="flag">wxALL</property>
           <property name="row">0</property>
           <property name="rowspan">1</property>
-          <object class="wxStaticText" expanded="true">
+          <object class="wxStaticText" expanded="false">
             <property name="BottomDockable">1</property>
             <property name="LeftDockable">1</property>
             <property name="RightDockable">1</property>

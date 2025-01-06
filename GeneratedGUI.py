@@ -353,7 +353,7 @@ class AncPicDBMain ( wx.Frame ):
 class geditDocumentDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokument bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 800,750 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokument bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 800,760 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -642,14 +642,14 @@ class gDocumentsViewDialog ( wx.Dialog ):
 class geditPictureDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 800,750 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Bild bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 800,760 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
 
 		gbSizer7 = wx.GridBagSizer( 0, 0 )
 		gbSizer7.SetFlexibleDirection( wx.BOTH )
-		gbSizer7.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+		gbSizer7.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_ALL )
 
 		m_sdbSizer3 = wx.StdDialogButtonSizer()
 		self.m_sdbSizer3OK = wx.Button( self, wx.ID_OK )
@@ -2219,13 +2219,13 @@ class gNewDbDialg ( wx.Dialog ):
 class mChangeDbDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Zu Datenbank wechseln", pos = wx.DefaultPosition, size = wx.Size( 495,461 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Zu Datenbank wechseln", pos = wx.DefaultPosition, size = wx.Size( 613,451 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
 		gbSizer23 = wx.GridBagSizer( 0, 0 )
 		gbSizer23.SetFlexibleDirection( wx.BOTH )
-		gbSizer23.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+		gbSizer23.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_ALL )
 
 		m_sdbSizer13 = wx.StdDialogButtonSizer()
 		self.m_sdbSizer13OK = wx.Button( self, wx.ID_OK )
@@ -2234,14 +2234,16 @@ class mChangeDbDialog ( wx.Dialog ):
 		m_sdbSizer13.AddButton( self.m_sdbSizer13Cancel )
 		m_sdbSizer13.Realize()
 
-		gbSizer23.Add( m_sdbSizer13, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND, 5 )
+		gbSizer23.Add( m_sdbSizer13, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText73 = wx.StaticText( self, wx.ID_ANY, u"Datenbanken", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText73.Wrap( -1 )
 
 		gbSizer23.Add( self.m_staticText73, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.mDatabasesLBCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL|wx.LC_SORT_ASCENDING )
+		self.mDatabasesLBCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
+		self.mDatabasesLBCTRL.SetMinSize( wx.Size( 300,200 ) )
+
 		gbSizer23.Add( self.mDatabasesLBCTRL, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 
@@ -2462,6 +2464,8 @@ class gRegisterDialog ( wx.Dialog ):
 
 		self.m_writingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
 		self.m_writingGAUGE.SetValue( 0 )
+		self.m_writingGAUGE.SetToolTip( u"Fortschritt bei der Registererstellung" )
+
 		bSizer20.Add( self.m_writingGAUGE, 0, wx.ALL, 5 )
 
 		self.m_abortWritingBU = wx.Button( self, wx.ID_ANY, u"Abbrechen", wx.DefaultPosition, wx.DefaultSize, 0 )

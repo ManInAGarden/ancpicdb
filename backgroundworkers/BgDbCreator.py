@@ -6,8 +6,6 @@ from backgroundworkers.BgBasics import *
 
 from ABDBTools import APDBTools
 
-
-
 class DbCreatorParas():
     def __init__(self, storagepath, new_db_name, copy_old=False, old_db_name=None):
         self.new_db_name = new_db_name
@@ -29,6 +27,7 @@ class BgDBCreator(BgWorker):
         do_copy = self.paras.copy_old
 
         newdirname = os.path.join(storage_path, new_db_name)
+        wx.PostEvent(self.notifywin, NotifyPercentEvent(-1)) #let the activity gauge pulse to show activity
         
         if do_copy:
             self.logger.info("Kopiere DB %s nach %s", old_db_name, new_db_name)

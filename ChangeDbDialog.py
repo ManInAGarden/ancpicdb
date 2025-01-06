@@ -43,12 +43,11 @@ class ChangeDbDialog(gg.mChangeDbDialog):
 
         # set the columdefinitions
         self._dblistdefins =  [
-                      {"title": "Archvierungs-Id", "width": 140, "propname":"readableid" },
-                      {"title": "angelegt", "width": 50, "propname":"created" },
-                      {"title": "letzte Änderung", "width": 50, "propname":"lastupdate" },
-                      {"title": "mit DB", "width": 10, "propname":"hasdb" },
-                      {"title": "mit Archiv", "width": 10, "propname":"hasarchive"},
-                      {"title": "Ablageort", "width": 300, "propname":"location"}
+                      {"title": "Name", "width": 100, "propname":"name" },
+                      {"title": "Angelegt am", "width": 100, "propname":"created" },
+                      {"title": "Mit DB", "width": 50, "propname":"hasdb" },
+                      {"title": "Mit Archiv", "width": 50, "propname":"hasarchive"},
+                      {"title": "Ablageort", "width": wx.LIST_AUTOSIZE_USEHEADER, "propname":"location"}
                     ]
 
 
@@ -66,6 +65,10 @@ class ChangeDbDialog(gg.mChangeDbDialog):
         GuiHelper.set_data_for_lstctrl(self.mDatabasesLBCTRL,
                                        self._dblistdefins,
                                        self._founddatabases)
+
+        self.mDatabasesLBCTRL.SetColumnWidth(0, wx.LIST_AUTOSIZE)
+        self.mDatabasesLBCTRL.SetColumnWidth(1, wx.LIST_AUTOSIZE)
+        self.mDatabasesLBCTRL.SetColumnWidth(4, wx.LIST_AUTOSIZE)
 
     def _getalldatabases(self):
         dbs = []
