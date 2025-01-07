@@ -3,6 +3,8 @@ from .SQLitePersistFactoryParts import *
 from .SQLitePersistBasicClasses import *
 from .SQLitePersistQueryParts import *
 
+import csv
+
 class SQLitePersistCsvExporter():
     
     def __init__(self, cls : PBase, f, itemdelim=',', stringdelim='"'):
@@ -22,51 +24,47 @@ class SQLitePersistCsvExporter():
         returns the number of written data lines (excluding the header line)
         """
 
-        line = self._get_header() + "\n"
+        fnames= self._get_fnames()
+        self._fieldnames = fnames
 
-        f = self._file
-        f.write(line)
+        dw = csv.DictWriter(self._file, 
+                            delimiter=self._delimitm, 
+                            quotechar=self._delimstr, 
+                            fieldnames=fnames,
+                            lineterminator="\n")
+        
+        dw.writeheader()
         elemct = 0
         for elem in iterab:
-            line = self._get_line(elem) + "\n"
+            rdict = self._get_linedict(elem)
             elemct += 1
-            f.write(line)
+            dw.writerow(rdict)
 
         return elemct
 
-    def _get_header(self) -> str:
+    def _get_fnames(self) -> list:
         cls = self._cls
 
-        answ = ""
-        first = True
+        answ = []
         memd = cls._classdict[cls]
         for key, val in memd.items():
             data = val.get_declaration()
             if data.is_dbstorable():
-                    if first:
-                        answ += key
-                        first = False
-                    else:
-                        answ += self._delimitm + " " + key
+                answ.append(key)
 
         return answ
     
 
-    def _get_line(self, insta : PBase) -> str:
+    def _get_linedict(self, insta : PBase) -> str:
         cls = self._cls
 
-        answ = ""
-        first = True
+        answ = {}
         memd = cls._classdict[cls]
         for key, val in memd.items():
             data = val.get_declaration()
             if data.is_dbstorable():
-                    dt = val._dectype
-                    if first:
-                        answ += self._get_as_csvstr(dt, insta.__getattribute__(key))
-                        first = False
-                    else:
-                        answ += self._delimitm + " " + self._get_as_csvstr(dt, insta.__getattribute__(key))
+                dt = val._dectype
+                answ[key] = self._get_as_csvstr(dt, insta.__getattribute__(key))
 
         return answ
     
@@ -76,35 +74,37 @@ class SQLitePersistCsvExporter():
 
         if dt==String:
             if elem is None:
-               answ = self._delimstr + self._delimstr        
+               answ = None        
             else:
-               answ =elem.replace(self._delimstr, "###SD###")
-               answ = self._delimstr + answ + self._delimstr        
+               answ = elem
         elif dt==Int:
             if elem is None:
                  answ = ""
             else:
                 answ = str(elem)
         elif dt==Float:
-            answ = ""
+            if dt is None:
+                answ = None
+            else:
+                answ = str(dt)
         elif dt==DateTime:
             if elem is None:
-                answ = ""
+                answ = None
             else:
-                answ = str(elem)
+                answ = elem.strftime("%m.%d.%Y %H:%M:%S")
         elif dt == Boolean:
             if elem is None:
-                answ = ""
+                answ = None
             else:
                 answ = str(elem)
         elif dt==UUid:
             if elem is None:
-                answ = ""
+                answ = None
             else:
                 answ = str(elem)
         elif dt == Catalog:
             if elem is None:
-                answ = ""
+                answ = None
             else:
                 answ = elem.code
         else:

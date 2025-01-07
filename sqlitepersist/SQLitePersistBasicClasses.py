@@ -228,7 +228,7 @@ class DateTime(BaseVarType):
         if t is dt.datetime:
             return dta
         elif t is str:
-            return dt.strptime(dta, "%m.%d.%Y %H:%M:%S")
+            return dt.datetime.strptime(dta, "%m.%d.%Y %H:%M:%S")
         else:
             raise Exception("Type <{0}> cannot be tranformed into a datetime".format(t.__name__))
 
