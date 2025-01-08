@@ -20,7 +20,12 @@ class SQLitePersistCsvImporter():
 
         for row in dr:
             obj = self._create_instance(self._impcls, row)
-            self._fact.flush(obj)
+            of = self._fact.ForceWrite
+            self._fact.ForceWrite = True #tell the fact to try an insert after the update for db-writes failed, this way we can write instert data with existing _ids
+            try:
+                self._fact.flush(obj)
+            finally:
+                self._fact.ForceWrite = of #get back to previous forcewrite state
             lc += 1
 
         return lc

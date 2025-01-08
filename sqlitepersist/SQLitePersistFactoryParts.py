@@ -30,7 +30,7 @@ class SQFactory():
         self._stmtlogger = SQPLogger("./doesntmatter", DbgStmtLevel.NONE) #switch off debugging by default
         self._transafterdels = []
         self._intrans = False
-
+        self._forcewrite = False
 
     @property
     def InTransaction(self):
@@ -43,6 +43,14 @@ class SQFactory():
     @property
     def Name(self):
         return self._name
+    
+    @property
+    def ForceWrite(self) -> bool:
+        return self._forcewrite
+    
+    @ForceWrite.setter
+    def ForceWrite(self, val : bool):
+        self._forcewrite = val
 
     def begin_transaction(self, loginfo : str = None):
         if self._intrans:
@@ -416,11 +424,23 @@ class SQFactory():
                     self._insert(curs, pinst)
                     if curs.rowcount!=1:
                         raise Exception("Insert of a single persistent object failed, {} rows were changed on last update".format(curs.rowcount))
-                else: #we need to update
+                else: #normally we need to update, but...
+                    oldupdate = pinst.lastupdate
                     pinst.lastupdate = dt.datetime.now()
                     self._update(curs, pinst)
                     if curs.rowcount!=1:
-                        raise Exception("Update of a single persistent object failed, {} rows were changed on last update".format(curs.rowcount))
+                        if self._forcewrite: #update failed and we shall try an insert after that (used for data import with existing _ids)
+                            if oldupdate is not None:
+                                pinst.lastupdate = oldupdate
+
+                            if pinst._id is not None and pinst.created is not None and pinst.lastupdate is not None:
+                                self._insert(curs, pinst)
+                                if curs.rowcount!=1:
+                                    raise Exception("Insert of a single persistent object with already existing _id failed, {} rows were changed on last update".format(curs.rowcount))
+                            else:
+                                raise Exception("Essential data like created, lastupdate, ... are missing for writing to the database")
+                        else:
+                            raise Exception("Update of a single persistent object failed, {} rows were changed on last update".format(curs.rowcount))
 
                 if microtrans:
                     self.commit_transaction("flush")

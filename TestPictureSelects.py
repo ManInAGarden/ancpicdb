@@ -3,7 +3,7 @@ import unittest
 from DocArchiver import DocArchiver
 import sqlitepersist as sqp
 from TestBase import TestBase
-from PersistClasses import Picture, FluffyMonthCat
+from PersistClasses import Picture, FluffyMonthCat, Person
 
 class TestPictureSelects(TestBase):
     
@@ -112,8 +112,8 @@ class TestPictureSelects(TestBase):
         assert len(pics_r) == 3
 
 
-    def test_likequeryLimited01(self):
-        titles = ["LimitLikeQuerPic01", "LimitLikeQuerPic02", "LimitLikeQuerPic03", "LimitNotQueryPic04"]
+    def test_likequeryLimited010(self):
+        titles = ["010LimitLikeQuerPic01", "010LimitLikeQuerPic02", "010LimitLikeQuerPic03", "010LimitNotQueryPic04"]
         monthes = ["MONTH09", "MONTH10", "MONTH11", "MONTH12"]
         tm = 0
         for tit in titles:
@@ -125,11 +125,25 @@ class TestPictureSelects(TestBase):
             self.Spf.flush(pic)
 
         pics_r = sqp.SQQuery(self.Spf, Picture, limit=2).where((Picture.FlufTakenYear==1965) 
-                                                            & sqp.IsLike(Picture.Title, "%Like%")).as_list()
+                                                            & sqp.IsLike(Picture.Title, "010%Like%")).as_list()
         assert len(pics_r) == 2
 
         pics_r = sqp.SQQuery(self.Spf, Picture, limit=2).where((Picture.FlufTakenYear==1965) 
+                                                      & sqp.IsLike(Picture.Title, "010%")
                                                       & sqp.NotIsLike(Picture.Title, "%Like%")).as_list()
         assert len(pics_r) == 1
+
+    def test_simple_person201(self):
+        pers = self.Mck.create_person(firstname="Willy", name="Wuschel" + "201", 
+                                      birthday=12, birthmonth=3, birthyear=1965,
+                                      biosex_code="MALE")
+
+        pers_r = sqp.SQQuery(self.Spf, Person).where(Person.Id==pers._id).first_or_default(None)
+        assert pers.firstname == pers_r.firstname
+        assert pers.name == pers_r.name
+        assert pers.biosex.code == pers_r.biosex.code
+        assert pers.birthdate == pers_r.birthdate
+
+
 
         

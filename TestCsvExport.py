@@ -92,7 +92,22 @@ class TestCsvExport(TestBase):
             r_recc = 0
             fo.seek(0)
 
+            #remove the data from the test DB (we still have a copy in pics_r)
+            for picr in pics_r:
+                self.Spf.delete(picr) 
+
             impo = sqp.SQLitePersistCsvImporter(Picture, self.Spf)
             impo.do_import(fo)
+
+            #now read the data again
+            pics_r2 = sqp.SQQuery(self.Spf, Picture).where((Picture.FlufTakenYear==1970) 
+                                                      & sqp.IsLike(Picture.Title, "ExImportPic%")).as_list()
+            
+            #and now check that all data are the same
+            assert len(pics_r)==len(pics_r2)
+
+            for i in range(len(pics_r)):
+                assert pics_r[i]._id == pics_r2[i]._id
+                assert pics_r[i].title == pics_r2[i].title
 
 

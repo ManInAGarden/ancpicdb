@@ -45,6 +45,36 @@ class Mocker(object):
         self._sqpf.flush(pic)
 
         return pic
+    
+    def create_person(self, 
+                      firstname = "Heinrich", name="Gurkenhobel", nameofbirth=None,
+                      birthday=None, birthyear= None, birthmonth=None,
+                      biosex_code = None):
+        
+        if birthday is not None and birthyear is not None and birthmonth is not None:
+            bday = datetime.datetime(birthyear, birthmonth, birthday)
+            bd = None
+            bm = None
+            by = None
+        else:
+            bday = None
+            bd = birthday
+            bm = birthmonth
+            by = birthyear
+
+        pers = Person(firstname = firstname,
+                        name = name,
+                        nameofbirth = nameofbirth,
+                        birthdate=bday,
+                        birthyear=by,
+                        birthmonth=bm)
+        
+        if biosex_code is not None:
+            bs = self._sqpf.getcat(Person.BioSex.get_catalogtype(), biosex_code)
+            pers.biosex = bs
+
+        self._sqpf.flush(pers)
+        return pers
 
     # def add_response_preps(self, proj : Project, resps : dict):
     #     assert proj is not None
