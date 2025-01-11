@@ -178,7 +178,7 @@ class BgCsvExtractor(BgWorker):
     
 
     def expdocs(self, fact, targpath):
-        """export all document related data like seeds, groups, ..."""
+        """export all document related data like documents, infobits for docs and the archived docs too"""
         pathes = []
         sumct = 0
         caftd = self.paras.get_caftd()

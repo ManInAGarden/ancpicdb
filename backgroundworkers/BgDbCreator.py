@@ -30,16 +30,16 @@ class BgDBCreator(BgWorker):
         wx.PostEvent(self.notifywin, NotifyPercentEvent(-1)) #let the activity gauge pulse to show activity
         
         if do_copy:
-            self.logger.info("Kopiere DB %s nach %s", old_db_name, new_db_name)
+            self.logger.info("Kopiere DB {} nach {}", old_db_name, new_db_name)
             olddirname = os.path.join(storage_path, old_db_name)
             su.copytree(olddirname, newdirname)
-            self.logger.info("Die Datenbank wurde nach %s kopiert", newdirname)
+            self.logger.debug("Die Datenbank wurde nach {} kopiert", newdirname)
         else:
             dbfilename = self._configuration.get_value_interp("database", "filename")
             dbfilename = os.path.basename(dbfilename)
             newdirname = os.path.join(storage_path, new_db_name)
             newdbfilename = os.path.join(newdirname, dbfilename)
-            self.logger.info("Erzeuge eine neue Datenbank im Verzeichnis %s", newdirname)
+            self.logger.info("Erzeuge eine neue Datenbank im Verzeichnis {}", newdirname)
             dbt = APDBTools(self._configuration, self.logger)
             newdbfact = dbt.init_db("AncPicDb", newdbfilename)
             wx.PostEvent(self.notifywin, NotifyPercentEvent(50))

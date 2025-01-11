@@ -34,7 +34,7 @@ class PathZipper():
     def dozip(self):
         """do the zipping work"""
         if not self._logger is None:
-            self._logger.info("Doing path backup for path <%s> to zip file <%s>", 
+            self._logger.info("Doing path backup for path <{}> to zip file <{}>", 
                               self.srcpath,
                               self.fullpath)
         
@@ -42,5 +42,5 @@ class PathZipper():
             self._zipdir(zipf)
 
         if not self._logger is None:
-            self._logger.info("Succesfully created backupzip %s", self.fullpath)
+            self._logger.info("Succesfully created backupzip <{}>", self.fullpath)
         

@@ -1,8 +1,6 @@
 import os
 import sys
 import shutil
-import logging
-import logging.config
 import tempfile as tmpf
 import datetime
 import platform
@@ -31,7 +29,9 @@ from ExportDataDialog import ExportDataDialog, CsvExportSettings
 from ABDBTools import APDBTools
 from RegisterDialog import RegisterDialog
 from WantedPosterPrintDialog import WantedPosterPrintDialog
+from ImportCsvDialog import ImportCsvDialog
 import sqlitepersist as sqp
+import mylogger as mylo
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
 
 MAXPICTITLELEN = 100
@@ -82,7 +82,26 @@ class AncPicDbMain(gg.AncPicDBMain):
         APDBTools.makesuredirexists(filename)
 
 
-    def expand_dvalue(self, d : dict, name : str):
+    def expand_dvalue(self, d : dict, name : str) -> dict:
+        """expand any value in the dict with the given key recursively
+        and return a coopy of the dict"""
+        answ = {}
+        for key, val in d.items():
+            valt = type(val)
+            if valt is str:
+                if type(key) is str and key==name:
+                    newval = os.path.expandvars(val)
+                    answ[key] = newval
+                else:
+                    answ[key] = val
+            elif valt is dict:
+                answ[key] = self.expand_dvalue(val, name)
+            else:
+                answ[key] = val
+
+        return answ
+
+    def expand_dvalueO(self, d : dict, name : str):
         """expand any value in the dict with the given key recursively"""
         for key, val in d.items():
             valt = type(val)
@@ -101,10 +120,16 @@ class AncPicDbMain(gg.AncPicDBMain):
     
     def init_logging(self):
         cdict = self._configuration.get_section("logging")
-        self.expand_dvalue(cdict, "filename")
-        logging.config.dictConfig(cdict)
-        self.logger = logging.getLogger("mainprog")
-        self.logger.info("Started AncPicDB V%s", self._version)
+        confdict = self.expand_dvalue(cdict, "filename")
+        
+        lvl = confdict.get("level")
+        fname = confdict.get("filename")
+        rotsize = confdict.get("maxbytes")
+
+        self.logger = mylo.Logger(lvl)
+        self.logger.add_handler(mylo.RotatingFileHandler(fname, rotsize))
+        self.logger.info("INF Started AncPicDB V{} log level is {}", self._version, lvl)
+
                         
     def init_prog(self):
         self._apppath = self._get_app_path()
@@ -171,24 +196,29 @@ class AncPicDbMain(gg.AncPicDBMain):
         """Initialise the archive at the configured path"""
         apath = self._configuration.get_value_interp("archivestore","path")
         self._docarchive = self._dbt.init_archive(apath)
+        self.logger.info("Initialised archive at {}", apath)
         self._wantedconfig._archiver = self._docarchive
 
 
     def init_db(self):
         dbfilename = self._configuration.get_value_interp("database", "filename")
         self._fact = self._dbt.init_db("AncPicDb", dbfilename)
+        self.logger.info("Initialised DB with database file {}", dbfilename)
         
 
     def init_gui(self):
         """fill the gui for the first time. This includes to fetch all initially needed data from the DB"""
         
         #heavily used data with only a small number of records
+        self.logger.debug("Initialising the GUI starting")
         self._persons = self.get_all_persons()
         self.m_mainWindowSB.SetStatusText("DB: {0}".format(self.dbname), 0)
         
         self._csvexpsettings = None
         
         self.refresh_dash()
+        self.logger.debug("Initialising the GUI done")
+
 
     def refresh_pic_stat(self):
         """cont the currently available pictures and show result in status bar"""
@@ -202,9 +232,11 @@ class AncPicDbMain(gg.AncPicDBMain):
 
     def refresh_dash(self, prevsel : Person = None):
         """do a complete refresh of the main GUI with the list of persons and the dependent list of documnents and oictures"""
-
+        
+        self.logger.debug("Refreshing the dash")
         self._persons = self.get_all_persons()
 
+        self.logger.debug("Found {:d} persons to be displayed in the main list", len(self._persons))
         self.m_personsLB.Clear()
             
         if len(self._persons) > 0:
@@ -314,12 +346,12 @@ class AncPicDbMain(gg.AncPicDBMain):
 				
         #lastly remove the temp-dir used for temporary extraction
         os.rmdir(expa)
-        self.logger.info("Cleaned temporary %d files in %d directories", fct, dct+1)
+        self.logger.debug("Cleaned temporary {} files in {} directories", fct, dct+1)
 
 	    # Handlers for AncPicDBMainFrame events.
     def quit( self, event ):
-        """The user selected the menu item "close PexDbViewer" """
-        self.logger.info("Quitting PexViewer")
+        """The user selected the menu item "close AncPicDb" """
+        self.logger.info("Quitting AncPicDb")
         self.cleanup_temp()
         self.Close()
 
@@ -573,6 +605,10 @@ class AncPicDbMain(gg.AncPicDBMain):
     def printDocRegister(self, event):
         regdial = RegisterDialog(self, self._fact, Document)
         res = regdial.showmodal()
+
+    def importCsv(self, event):
+        impdial = ImportCsvDialog(self, self._fact)
+        res = impdial.showmodal()
 
     def showAbout(self, event):
         aboutdial = AboutDialog(self, self._fact, self._version, self.dbname, self.storagepath)

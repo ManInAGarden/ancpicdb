@@ -48,7 +48,7 @@ class APDBTools():
         dbfilename = os.path.join(dblocation,"AncPicDb.sqlite")
         self.filepath = dbfilename
         self._apppath = self._get_app_path()
-        self.logger.info("Switching to database in db-file %s", dbfilename)
+        self.logger.info("Switching to database in db-file {}", dbfilename)
         self._fact = sqp.SQFactory(name, dbfilename)
         self._fact.lang = "DEU"
         doinits = self._configuration.get_value("database", "tryinits")
@@ -66,15 +66,15 @@ class APDBTools():
             os.mkdir(extdir)
 
         self._extractionpath = extdir
-        self.logger.info("Initialising archive temporary path %s", extdir)
+        self.logger.info("Initialising archive temporary path {}", extdir)
 
         self._archpath = apath
-        self.logger.info("Initialising archive path %s", apath)
+        self.logger.info("Initialising archive path {}", apath)
         if os.path.exists(apath):
             self._docarchive = DocArchiver(apath) #use existing archive
             return self._fact, self._docarchive
 
-        self.logger.info("Archive is empty - initialising archive store")
+        self.logger.info("Archive is empty - creating a new archive store")
         dnum = self._configuration.get_value("archivestore", "dirnum")
         if dnum <= 0:
             raise Exception("Configuration Error - dirnum must be a positive integer")
@@ -100,7 +100,7 @@ class APDBTools():
     def init_db(self, name, dbfilename):
         self.filepath = dbfilename
         self._apppath = self._get_app_path()
-        self.logger.info("Initialising database in db-file %s", dbfilename)
+        self.logger.info("Initialising database in db-file {}", dbfilename)
         self.makesuredirexists(dbfilename)
         self._fact = sqp.SQFactory(name, dbfilename)
         self._fact.lang = "DEU"
@@ -148,14 +148,14 @@ class APDBTools():
             os.mkdir(extdir)
 
         self._extractionpath = extdir
-        self.logger.info("Initialising archive temporary path %s", extdir)
+        self.logger.info("Initialising archive temporary path {}", extdir)
 
         self._archpath = apath
-        self.logger.info("Initialising archive path %s", apath)
+        self.logger.info("Initialising archive path {}", apath)
         if os.path.exists(apath):
             return DocArchiver(apath) #use existing archive
 
-        self.logger.info("Archive is empty - initialising archive store")
+        self.logger.info("Archive is empty - creating new archive store")
         dnum = self._configuration.get_value("archivestore", "dirnum")
         if dnum <= 0:
             raise Exception("Configuration Error - dirnum must be a positive integer")

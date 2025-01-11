@@ -120,7 +120,7 @@ class SQFactory():
             strmlevelstr : special level to use when db-statements get logged in the dbg-state of the named logger
         """
         self._logger = logger
-        self._logger.info("Setting db debug leveling to %s", stmlevelstr)
+        self._logger.info("Setting db debug leveling to {}", stmlevelstr)
         if type(stmlevelstr) is str:
             lowlev = stmlevelstr.lower()
             if lowlev == "none":

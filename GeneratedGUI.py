@@ -27,8 +27,17 @@ class AncPicDBMain ( wx.Frame ):
 
 		self.m_mainMenuBar = wx.MenuBar( 0 )
 		self.m_fileMenu = wx.Menu()
+		self.m_changeDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Datenbank wechseln"+ u"\t" + u"CTRL+O", u"Zu einer anderen bestehenden Datenbank wechseln", wx.ITEM_NORMAL )
+		self.m_fileMenu.Append( self.m_changeDbMI )
+
 		self.m_backupDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Sicherungskopie erstellen", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_backupDbMI )
+
+		self.m_importSUBM = wx.Menu()
+		self.m_importCsvMI = wx.MenuItem( self.m_importSUBM, wx.ID_ANY, u"CSV-Import", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_importSUBM.Append( self.m_importCsvMI )
+
+		self.m_fileMenu.AppendSubMenu( self.m_importSUBM, u"Import" )
 
 		self.m_export = wx.Menu()
 		self.m_extractArchives = wx.MenuItem( self.m_export, wx.ID_ANY, u"Archive extrahieren", u"Extrahiert Doukmente und Bilder so, dass sie separat gespeichert werden können", wx.ITEM_NORMAL )
@@ -38,9 +47,6 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_export.Append( self.mexportCSV )
 
 		self.m_fileMenu.AppendSubMenu( self.m_export, u"Export" )
-
-		self.m_changeDbMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Datenbank wechseln", u"Zu einer anderen bestehenden Datenbank wechseln", wx.ITEM_NORMAL )
-		self.m_fileMenu.Append( self.m_changeDbMI )
 
 		self.m_createNewDatabaseMI = wx.MenuItem( self.m_fileMenu, wx.ID_ANY, u"Neue Datenbank anlegen", u"Eine neue Datenbank anlegen und dabei gg. eine bestehende kopieren", wx.ITEM_NORMAL )
 		self.m_fileMenu.Append( self.m_createNewDatabaseMI )
@@ -233,10 +239,11 @@ class AncPicDBMain ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.Bind( wx.EVT_MENU, self.changeDb, id = self.m_changeDbMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.backupDb, id = self.m_backupDbMI.GetId() )
+		self.Bind( wx.EVT_MENU, self.importCsv, id = self.m_importCsvMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.extractArchive, id = self.m_extractArchives.GetId() )
 		self.Bind( wx.EVT_MENU, self.exportDataToCSV, id = self.mexportCSV.GetId() )
-		self.Bind( wx.EVT_MENU, self.changeDb, id = self.m_changeDbMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.createNewDb, id = self.m_createNewDatabaseMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.quit, id = self.m_exitMI.GetId() )
 		self.Bind( wx.EVT_MENU, self.openViewGroupsDialog, id = self.m_groupsMI.GetId() )
@@ -267,16 +274,19 @@ class AncPicDBMain ( wx.Frame ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def changeDb( self, event ):
+		event.Skip()
+
 	def backupDb( self, event ):
+		event.Skip()
+
+	def importCsv( self, event ):
 		event.Skip()
 
 	def extractArchive( self, event ):
 		event.Skip()
 
 	def exportDataToCSV( self, event ):
-		event.Skip()
-
-	def changeDb( self, event ):
 		event.Skip()
 
 	def createNewDb( self, event ):
@@ -2510,6 +2520,85 @@ class gRegisterDialog ( wx.Dialog ):
 		event.Skip()
 
 	def abortWriting( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gImportCsvDialog
+###########################################################################
+
+class gImportCsvDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"CSV-Import", pos = wx.DefaultPosition, size = wx.Size( 470,205 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer27 = wx.GridBagSizer( 0, 0 )
+		gbSizer27.SetFlexibleDirection( wx.BOTH )
+		gbSizer27.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer16 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer16OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer16.AddButton( self.m_sdbSizer16OK )
+		m_sdbSizer16.Realize()
+
+		gbSizer27.Add( m_sdbSizer16, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText80 = wx.StaticText( self, wx.ID_ANY, u"Importdaten", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText80.Wrap( -1 )
+
+		gbSizer27.Add( self.m_staticText80, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_zipfileFP = wx.FilePickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Wähle eine ZIP-Datei", u"*.zip", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE|wx.FLP_SMALL )
+		gbSizer27.Add( self.m_zipfileFP, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline8 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer27.Add( self.m_staticline8, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		bSizer22 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_startBU = wx.Button( self, wx.ID_ANY, u"Start", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer22.Add( self.m_startBU, 0, wx.ALL, 5 )
+
+		self.m_importStateGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_importStateGAUGE.SetValue( 0 )
+		bSizer22.Add( self.m_importStateGAUGE, 0, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_abortBU = wx.Button( self, wx.ID_ANY, u"Abbruch", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer22.Add( self.m_abortBU, 0, wx.ALL, 5 )
+
+
+		gbSizer27.Add( bSizer22, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_CENTER|wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline10 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer27.Add( self.m_staticline10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+
+		gbSizer27.AddGrowableCol( 1 )
+
+		self.SetSizer( gbSizer27 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_zipfileFP.Bind( wx.EVT_FILEPICKER_CHANGED, self.fileChanged )
+		self.m_startBU.Bind( wx.EVT_BUTTON, self.startImport )
+		self.m_abortBU.Bind( wx.EVT_BUTTON, self.abortImport )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def fileChanged( self, event ):
+		event.Skip()
+
+	def startImport( self, event ):
+		event.Skip()
+
+	def abortImport( self, event ):
 		event.Skip()
 
 

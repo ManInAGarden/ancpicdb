@@ -3,7 +3,7 @@ import sqlitepersist as sqp
 from  PersistClasses import *
 import MockerParts as mocking
 import json
-import logging
+import mylogger as mylo
 
 class TestBase(unittest.TestCase):
 
@@ -26,8 +26,8 @@ class TestBase(unittest.TestCase):
         fact = sqp.SQFactory("AncPicDb", "AncPicDbTest.sqlite")
         fact.lang = "DEU"
         cls.Spf = fact
-        lhandler = logging.FileHandler(filename="unittest.log", mode="a")
-        logger = logging.Logger("unittstlogger", level="DEBUG")
+        lhandler = mylo.RotatingFileHandler("unittest.log")
+        logger = mylo.Logger(mylo.LogLevelEnum.DEBUG)
         logger.addHandler(lhandler)
         fact.set_db_dbglevel(logger, "DATAFILL") # use "STMTS for statements only or NONE for no sqlite-debugging at all"
 

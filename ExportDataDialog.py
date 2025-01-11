@@ -79,7 +79,6 @@ class ExportDataDialog(gg.gExportDataDialog):
         self._machlabel = self._configuration.get_value("gui", "machlabel")
         if self._machlabel is None:
             self._machlabel = "XXXX"
-        
 
         bgw.EVT_RESULT(self, self.workerfinished)
         bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
