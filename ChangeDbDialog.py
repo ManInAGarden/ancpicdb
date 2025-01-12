@@ -84,4 +84,11 @@ class ChangeDbDialog(gg.mChangeDbDialog):
     def OnDatabaseSelected(self, event):
         seldbrep = GuiHelper.get_selected_fromlctrl(self.mDatabasesLBCTRL, self._founddatabases)
         self._selected_dbrep = seldbrep
-        
+
+    def OnDatabaseActivated(self, event):
+        seldbrep = GuiHelper.get_selected_fromlctrl(self.mDatabasesLBCTRL, self._founddatabases)
+        self._selected_dbrep = seldbrep
+
+        answ = GuiHelper.ask_user(self, "Möchtest du zur Datenbank <{}> wechseln?".format(self.selected_dbname))
+        if answ == wx.ID_YES:
+            self.EndModal(wx.ID_OK)

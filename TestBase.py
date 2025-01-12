@@ -28,7 +28,7 @@ class TestBase(unittest.TestCase):
         cls.Spf = fact
         lhandler = mylo.RotatingFileHandler("unittest.log")
         logger = mylo.Logger(mylo.LogLevelEnum.DEBUG)
-        logger.addHandler(lhandler)
+        logger.add_handler(lhandler)
         fact.set_db_dbglevel(logger, "DATAFILL") # use "STMTS for statements only or NONE for no sqlite-debugging at all"
 
         for tablec in cls.PersTables:

@@ -257,7 +257,7 @@ class BgCsvExtractor(BgWorker):
                 return
             
             if self.abortrequested:
-                wx.PostEvent(self.notifywin, ResultEvent(None))
+                wx.PostEvent(self.notifywin, ResultEvent(0, False))
                 return
             
             bfnames, ct = self.expbasics(fact, targpath)
@@ -265,7 +265,7 @@ class BgCsvExtractor(BgWorker):
             ctsum += ct
 
             if self.abortrequested: 
-                wx.PostEvent(self.notifywin, ResultEvent(None))
+                wx.PostEvent(self.notifywin, ResultEvent(0, False))
                 return
             
             if self.paras._dopersons:
@@ -275,7 +275,7 @@ class BgCsvExtractor(BgWorker):
             wx.PostEvent(self.notifywin, NotifyPercentEvent(40))
 
             if self.abortrequested: 
-                wx.PostEvent(self.notifywin, ResultEvent(None))
+                wx.PostEvent(self.notifywin, ResultEvent(0, False))
                 return
             
             if self.paras._dopics:
@@ -285,7 +285,7 @@ class BgCsvExtractor(BgWorker):
             wx.PostEvent(self.notifywin, NotifyPercentEvent(60))  
 
             if self.abortrequested: 
-                wx.PostEvent(self.notifywin, ResultEvent(None))
+                wx.PostEvent(self.notifywin, ResultEvent(0, False))
                 return
             
             if self.paras._dodocs:
@@ -295,18 +295,19 @@ class BgCsvExtractor(BgWorker):
             wx.PostEvent(self.notifywin, NotifyPercentEvent(80))  
 
             if self.abortrequested: 
-                wx.PostEvent(self.notifywin, ResultEvent(None))
+                wx.PostEvent(self.notifywin, ResultEvent(0, False))
                 return
             
             self.do_zipping(targpath)
             wx.PostEvent(self.notifywin, NotifyPercentEvent(90))  
 
             if self.abortrequested: 
-                wx.PostEvent(self.notifywin, ResultEvent(None))
+                wx.PostEvent(self.notifywin, ResultEvent(0, False))
                 return
             
             su.rmtree(targpath)
-
+        except Exception as exc:
+            wx.PostEvent(self.notifywin, ResultEvent(ctsum, False))
         finally:
             wx.PostEvent(self.notifywin, NotifyPercentEvent(100))
             wx.PostEvent(self.notifywin, ResultEvent(ctsum))

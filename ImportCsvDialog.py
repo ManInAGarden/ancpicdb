@@ -19,6 +19,7 @@ class ImportCsvDialog(gg.gImportCsvDialog):
         self._zipfile = zippath
         self._docarchive = parent._docarchive
         self._targdir = None
+        self._logger = parent.logger
 
         bgw.EVT_RESULT(self, self.workerfinished)
         bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
@@ -31,7 +32,14 @@ class ImportCsvDialog(gg.gImportCsvDialog):
     def isrunning(self):
         return self._worker is not None and self._worker.isalive()
     
-    def workerfinished(self, event):
+    def workerfinished(self, event : bgw.ResultEvent):
+        ct = event.data
+        succ = event.success
+        if succ:
+            GuiHelper.set_val(self.m_endmsgTB, "Import erfolgreich mit {} Datensätzen abgeschlossen".format(ct))
+        else:
+            GuiHelper.set_val(self.m_endmsgTB, "Import nicht erfolgreich!".format(ct))
+            
         GuiHelper.enable_ctrls(True, self.m_startBU)
         GuiHelper.enable_ctrls(False, self.m_abortBU)
 
@@ -63,11 +71,14 @@ class ImportCsvDialog(gg.gImportCsvDialog):
         
 
     def startImport(self, event):
-        paras = bgw.BgCsvImporterParas(self._fact, self._zipfile, self._docarchive)
+        paras = bgw.BgCsvImporterParas(self._fact, self._zipfile, self._docarchive, self._logger)
         self._worker = bgw.BgCsvImporter(self, paras)
+        self._logger.info("Starting a background job for csv import from zipfile <{}> now",
+                          self._zipfile)
         self._worker.start()
         GuiHelper.enable_ctrls(False, self.m_startBU)
         GuiHelper.enable_ctrls(True, self.m_abortBU)
 
     def abortImport(self, event):
+        self._logger.info("Requesting abort for csv-import background job")
         self._worker.requestabort()

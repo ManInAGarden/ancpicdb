@@ -121,13 +121,21 @@ class ExportDataDialog(gg.gExportDataDialog):
     def add_prop(self, prop):
         self._data.exp_properties = self._data.exp_properties | prop
 
-    def workerfinished(self, event):
+    def workerfinished(self, event : bgw.ResultEvent):
+        succ = event.success
+        ct = event.data
+        if succ:
+            GuiHelper.set_val(self.m_bgresultTB, "{} Datenelemente wurden exportiert".format(ct))
+        else:
+            GuiHelper.set_val(self.m_bgresultTB, "Misserfolg! Daten wurde nicht exportiert")
+
         GuiHelper.enable_ctrls(True, self.m_startExportBU)
         GuiHelper.enable_ctrls(False, self.m_abortExportBU)
 
     def notifyperc(self, event):
         perc = event.data
         self.m_workDoneGAUGE.SetValue(perc)
+        GuiHelper.set_val(self.m_bgresultTB, "Datenexport läuft")
 
     def doClose(self, event):
 
@@ -170,7 +178,7 @@ class ExportDataDialog(gg.gExportDataDialog):
        
         self._bw = bgw.BgCsvExtractor(notifywin=self, paras=paras)
         self._bw.start()
-
+        GuiHelper.set_val(self.m_bgresultTB, "Datemexport gestartet")
         GuiHelper.enable_ctrls(False, self.m_startExportBU)
         GuiHelper.enable_ctrls(True, self.m_abortExportBU)
 

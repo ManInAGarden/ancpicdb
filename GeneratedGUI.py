@@ -2266,6 +2266,7 @@ class mChangeDbDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.mDatabasesLBCTRL.Bind( wx.EVT_LIST_ITEM_ACTIVATED, self.OnDatabaseActivated )
 		self.mDatabasesLBCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.OnDatabaseSelected )
 
 	def __del__( self ):
@@ -2273,6 +2274,9 @@ class mChangeDbDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def OnDatabaseActivated( self, event ):
+		event.Skip()
+
 	def OnDatabaseSelected( self, event ):
 		event.Skip()
 
@@ -2377,13 +2381,16 @@ class gExportDataDialog ( wx.Dialog ):
 		self.m_workDoneGAUGE.SetValue( 0 )
 		gbSizer25.Add( self.m_workDoneGAUGE, wx.GBPosition( 9, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
+		self.m_bgresultTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer25.Add( self.m_bgresultTB, wx.GBPosition( 10, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
 		self.m_staticline5 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
-		gbSizer25.Add( self.m_staticline5, wx.GBPosition( 10, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+		gbSizer25.Add( self.m_staticline5, wx.GBPosition( 11, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
 
 		self.mCloseBU = wx.Button( self, wx.ID_ANY, u"Schließen", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.mCloseBU.SetToolTip( u"Schließt den Dialog" )
 
-		gbSizer25.Add( self.mCloseBU, wx.GBPosition( 11, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
+		gbSizer25.Add( self.mCloseBU, wx.GBPosition( 12, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 		self.m_startExportBU = wx.Button( self, wx.ID_ANY, u"Start", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_startExportBU.Enable( False )
@@ -2530,7 +2537,7 @@ class gRegisterDialog ( wx.Dialog ):
 class gImportCsvDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"CSV-Import", pos = wx.DefaultPosition, size = wx.Size( 470,205 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"CSV-Import", pos = wx.DefaultPosition, size = wx.Size( 602,205 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -2544,6 +2551,9 @@ class gImportCsvDialog ( wx.Dialog ):
 		m_sdbSizer16.Realize()
 
 		gbSizer27.Add( m_sdbSizer16, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
+
+		self.m_endmsgTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer27.Add( self.m_endmsgTB, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText80 = wx.StaticText( self, wx.ID_ANY, u"Importdaten", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText80.Wrap( -1 )

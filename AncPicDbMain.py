@@ -253,6 +253,9 @@ class AncPicDbMain(gg.AncPicDBMain):
             self.m_personsLB.SetSelection(sl)
             if sl != wx.NOT_FOUND:
                 self.refresh_dash_forp(sl)
+            else:
+                self.m_picturesLB.Clear()
+                self.m_documentsLB.Clear()
 
         self.m_mainWindowSB.SetStatusText("Personen: {0}".format(len(self._persons)), 1)
         self.refresh_pic_stat()
@@ -379,6 +382,7 @@ class AncPicDbMain(gg.AncPicDBMain):
         edp = pedial.flushnget()
 
         self.refresh_dash(edp)
+        
         
 
     def deletePerson(self, event):
@@ -609,6 +613,7 @@ class AncPicDbMain(gg.AncPicDBMain):
     def importCsv(self, event):
         impdial = ImportCsvDialog(self, self._fact)
         res = impdial.showmodal()
+        self.refresh_dash()
 
     def showAbout(self, event):
         aboutdial = AboutDialog(self, self._fact, self._version, self.dbname, self.storagepath)
