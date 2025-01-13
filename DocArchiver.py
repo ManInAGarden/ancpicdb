@@ -28,11 +28,13 @@ class DocArchiver:
 
         self._numdirs = ct
 
-    def is_archdir(self, fname):
-        if path.isfile(fname):
+    def is_archdir(self, dirfname):
+        if path.isfile(dirfname):
             return False
         
-        if path.isdir(fname):
+        if path.isdir(dirfname):
+            dirparts = pl.Path(dirfname)
+            fname = dirparts.parts[-1]
             parts = fname.split("_")
             if not len(parts) == 2:
                 return False

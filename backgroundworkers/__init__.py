@@ -5,3 +5,4 @@ from .BgCsvExtractor import *
 from .BgCsvImporter import *
 from .BgDbCreator import *
 from .BgRegisterWriter import *
+from .BgDbZipper import *

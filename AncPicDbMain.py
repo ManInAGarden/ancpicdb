@@ -2,7 +2,6 @@ import os
 import sys
 import shutil
 import tempfile as tmpf
-import datetime
 import platform
 
 import wx
@@ -30,6 +29,7 @@ from ABDBTools import APDBTools
 from RegisterDialog import RegisterDialog
 from WantedPosterPrintDialog import WantedPosterPrintDialog
 from ImportCsvDialog import ImportCsvDialog
+from CreateBackupDialog import CreateBackupDialog
 import sqlitepersist as sqp
 import mylogger as mylo
 from PersistClasses import Person, PersonInfoBit, DataGroup, Picture, PictureInfoBit, Document, DocumentInfoBit, PersonDocumentInter, PersonPictureInter
@@ -533,27 +533,10 @@ class AncPicDbMain(gg.AncPicDBMain):
         self.refresh_dash_forp(perspos)
 
     def backupDb(self, event):
-        """creates a backup of the Database and the file archive"""
-        dird = wx.DirDialog(self, "Verzeichnis für die Ablage der Sicherung wählen",
-                            "",
-                            wx.DD_DIR_MUST_EXIST)
-        res = dird.ShowModal()
-        if res != wx.ID_OK:
-            return
-        
-        targpath = dird.GetPath()
-        srcpath = self._configuration.get_value_interp("backup", "sourcepath")
-        fname = self._configuration.get_value("backup", "zipname")
-        dstr = "{:%Y%m%d}".format(datetime.datetime.now())
-        fname = fname.replace("${CreaDate}", dstr)
-        fname = fname.replace("${DbName}", self.dbname)
-        pz = PathZipper(srcpath, targpath, fname, self.logger)
-        try:
-            pz.dozip()
-            GuiHelper.show_message("Sicherungskopie unter {} erfolgreich geschrieben.",
-                                   pz.fullpath)
-        except Exception as exc:
-            GuiHelper.show_error("Unbehandelter Fehler in backupdb: {}", exc)
+        """presents a backup dialog from where a backup of the db may be startet"""
+        creatbadial = CreateBackupDialog(self, self._fact, self.dbname)
+        res = creatbadial.showmodal()
+
 
     def printWantedPosters(self, event):
         wpdial = WantedPosterPrintDialog(self, self._fact, self._docarchive, self._wantedconfig)

@@ -175,7 +175,7 @@ class EditPictureDialog(gg.geditPictureDialog):
                        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as fileDialog:
 
             if fileDialog.ShowModal() == wx.ID_CANCEL:
-                return     # the user changed his mind
+                return     # the user changed his/her mind
 
             # Proceed loading the file chosen by the user
             pathname = fileDialog.GetPath()
@@ -184,7 +184,8 @@ class EditPictureDialog(gg.geditPictureDialog):
                 self._picture.filepath = archname
                 self._picture.ext = extname
             except IOError:
-                wx.LogError("Cannot open file '%s'." % pathname)
+                GuiHelper.show_error("Die Datei {} konnte nicht in das Bildarchiv geladen werden.".format(pathname))
+                wx.LogError("Cannot save file '%s' to archive ." % pathname)
 
         self._display_document()
 

@@ -2612,3 +2612,85 @@ class gImportCsvDialog ( wx.Dialog ):
 		event.Skip()
 
 
+###########################################################################
+## Class gCreateBackupDialog
+###########################################################################
+
+class gCreateBackupDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Sicherungskopie erstellen", pos = wx.DefaultPosition, size = wx.Size( 537,221 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer28 = wx.GridBagSizer( 0, 0 )
+		gbSizer28.SetFlexibleDirection( wx.BOTH )
+		gbSizer28.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer17 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer17OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer17.AddButton( self.m_sdbSizer17OK )
+		m_sdbSizer17.Realize()
+
+		gbSizer28.Add( m_sdbSizer17, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText81 = wx.StaticText( self, wx.ID_ANY, u"Zielverzeichnis", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText81.Wrap( -1 )
+
+		gbSizer28.Add( self.m_staticText81, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_targetDirDP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a folder", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST|wx.DIRP_SMALL )
+		gbSizer28.Add( self.m_targetDirDP, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline10 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer28.Add( self.m_staticline10, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		bSizer22 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_startBackupBU = wx.Button( self, wx.ID_ANY, u"Starte Sicherung", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer22.Add( self.m_startBackupBU, 0, wx.ALL, 5 )
+
+		self.m_backupGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_backupGAUGE.SetValue( 0 )
+		bSizer22.Add( self.m_backupGAUGE, 100, wx.ALL, 5 )
+
+		self.m_cancelBackupBU = wx.Button( self, wx.ID_ANY, u"Abbrechen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer22.Add( self.m_cancelBackupBU, 0, wx.ALL, 5 )
+
+
+		gbSizer28.Add( bSizer22, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline11 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		gbSizer28.Add( self.m_staticline11, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_statusTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer28.Add( self.m_statusTB, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer28.AddGrowableCol( 1 )
+
+		self.SetSizer( gbSizer28 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_targetDirDP.Bind( wx.EVT_DIRPICKER_CHANGED, self.targetDirChanged )
+		self.m_startBackupBU.Bind( wx.EVT_BUTTON, self.startBackup )
+		self.m_cancelBackupBU.Bind( wx.EVT_BUTTON, self.abortBackup )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def targetDirChanged( self, event ):
+		event.Skip()
+
+	def startBackup( self, event ):
+		event.Skip()
+
+	def abortBackup( self, event ):
+		event.Skip()
+
+
