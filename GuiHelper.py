@@ -333,4 +333,22 @@ class GuiHelper:
                     done = ctrl.SetItem(itidx, colct, pvals)
 
             ct += 1
+
+    @classmethod
+    def select_dir(cls, parent, title: str, defaultDir=wx.EmptyString):
+        """open a modal directory selection dialog"""
+        dd = wx.DirDialog(parent, title, defaultDir)
+        return dd.ShowModal()
                 
+    @classmethod
+    def select_files(cls, parent, title : str, defaultDir : str = wx.EmptyString, defaultFile : str =wx.EmptyString,
+                           wildcard : str = wx.FileSelectorDefaultWildcardStr,
+                           style=wx.FD_DEFAULT_STYLE):
+        fd = wx.FileDialog(parent, title, defaultDir, defaultFile,
+                           wildcard, style=style)
+        res = fd.ShowModal()
+
+        if res != wx.ID_OK:
+            return None
+        
+        return fd.Filenames

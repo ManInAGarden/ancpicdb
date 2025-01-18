@@ -9,6 +9,7 @@ from PictureFilterDialog import PictureFilterDialog
 from ConfigReader import ConfigReader
 from GuiHelper import GuiHelper
 from DocArchiver import DocArchiver
+import backgroundworkers as bgw
 
 class FilterData():
     def __init__(self, fact : sqp.SQFactory):
@@ -143,6 +144,17 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         if self.machlabel is None:
             self.machlabel = "XXXX"
 
+        bgw.EVT_RESULT(self, self.workerfinished)
+        bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
+
+    def workerfinished(self, event : bgw.ResultEvent):
+        GuiHelper.enable_ctrls(True, self.m_folderUploadBU)
+        self._filldialog() #refectch pictures from the db and display them in the list
+
+    def notifyperc(self, event):
+        perc = event.data
+        GuiHelper.set_val(self.m_workingGAUGE, perc)
+
     def showmodal(self):
         self._filldialog()
 
@@ -246,3 +258,34 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         self._pictures = q.as_list()
 
         self._fill_piclist()
+
+    def pictureSelected(self, event):
+        selpic, selpos = GuiHelper.get_selected_fromlb(self.m_picturesLB,
+                                                       self._pictures)
+        
+        GuiHelper.enable_ctrls(selpic != None, 
+                                   self.m_downloadPictureBU, 
+                                   self.m_editBU,
+                                   self.m_deletePictureBU)
+        
+    def doFolderUpload(self, event):
+        res = GuiHelper.select_files(self, 
+                                     "Bilddateien auswählen",
+                                     style=wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
+
+        if res == None:
+            return
+        
+        paras = {}
+        paras["fact"] = self._fact
+        paras["files"] = res
+        paras["logger"] = self.logger
+        paras["docarchiver"] = self._docarchive
+        paras["machlabel"] = self.machlabel
+
+        self.bg = bgw.BgPictureMassArchiving(notifywin=self, paras = paras)
+        self.m_workingGAUGE.Show()
+
+        self.bg.start()
+
+        GuiHelper.enable_ctrls(False, self.m_folderUploadBU)

@@ -886,27 +886,54 @@ class gPicturesViewDialog ( wx.Dialog ):
 		self.m_applyFilterBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_applyFilterBU.SetBitmap( wx.Bitmap( u"ressources/Filled-Filter.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_applyFilterBU.SetToolTip( u"Filter für Bilderliste bearbeiten" )
+
 		bSizer10.Add( self.m_applyFilterBU, 0, wx.ALL, 5 )
 
 		self.m_addPictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_addPictureBU.SetBitmap( wx.Bitmap( u"ressources/Add-Row.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_addPictureBU.SetToolTip( u"Neuen Bildeintrag hinzufügen" )
+
 		bSizer10.Add( self.m_addPictureBU, 0, wx.ALL, 5 )
 
 		self.m_editBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_editBU.SetBitmap( wx.Bitmap( u"ressources/Edit.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_editBU.Enable( False )
+		self.m_editBU.SetToolTip( u"Den markierten Bildeintrag bearbeiten" )
+
 		bSizer10.Add( self.m_editBU, 0, wx.ALL, 5 )
 
 		self.m_downloadPictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_downloadPictureBU.SetBitmap( wx.Bitmap( u"ressources/Download.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_downloadPictureBU.Enable( False )
+		self.m_downloadPictureBU.SetToolTip( u"Das Bild aus dem Bildeintrag herunterladen" )
+
 		bSizer10.Add( self.m_downloadPictureBU, 0, wx.ALL, 5 )
 
-		self.deletePictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+		self.m_deletePictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
-		self.deletePictureBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
-		bSizer10.Add( self.deletePictureBU, 0, wx.ALL, 5 )
+		self.m_deletePictureBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_deletePictureBU.Enable( False )
+		self.m_deletePictureBU.SetToolTip( u"Den markierten Bildeintrag und das archivierte Bild löschen" )
+
+		bSizer10.Add( self.m_deletePictureBU, 0, wx.ALL, 5 )
+
+		self.m_folderUploadBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_folderUploadBU.SetBitmap( wx.Bitmap( u"ressources/FolderUpload.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_folderUploadBU.SetToolTip( u"Bildeinträge aus Bilddateien anlegen" )
+
+		bSizer10.Add( self.m_folderUploadBU, 0, wx.ALL, 5 )
+
+		self.m_workingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_workingGAUGE.SetValue( 0 )
+		self.m_workingGAUGE.Hide()
+		self.m_workingGAUGE.SetToolTip( u"Fortschritt der Hintergrundaufgabe" )
+
+		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 5 )
 
 
 		gbSizer6.Add( bSizer10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
@@ -939,18 +966,23 @@ class gPicturesViewDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.m_picturesLB.Bind( wx.EVT_LISTBOX, self.pictureSelected )
 		self.m_picturesLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editPicture )
 		self.m_applyFilterBU.Bind( wx.EVT_BUTTON, self.applyFilter )
 		self.m_addPictureBU.Bind( wx.EVT_BUTTON, self.addNewPicture )
 		self.m_editBU.Bind( wx.EVT_BUTTON, self.editPicture )
 		self.m_downloadPictureBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
-		self.deletePictureBU.Bind( wx.EVT_BUTTON, self.removePicture )
+		self.m_deletePictureBU.Bind( wx.EVT_BUTTON, self.removePicture )
+		self.m_folderUploadBU.Bind( wx.EVT_BUTTON, self.doFolderUpload )
 
 	def __del__( self ):
 		pass
 
 
 	# Virtual event handlers, override them in your derived class
+	def pictureSelected( self, event ):
+		event.Skip()
+
 	def editPicture( self, event ):
 		event.Skip()
 
@@ -965,6 +997,9 @@ class gPicturesViewDialog ( wx.Dialog ):
 		event.Skip()
 
 	def removePicture( self, event ):
+		event.Skip()
+
+	def doFolderUpload( self, event ):
 		event.Skip()
 
 
