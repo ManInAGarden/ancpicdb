@@ -25080,3 +25080,474 @@ ST EXEC: DROP TABLE persondocumentinter
 12.01.2025 12:12:09,435548 DEBUG: ST EXEC: DROP TABLE documentinfobit 
 12.01.2025 12:12:09,435548 DEBUG: ST EXEC: DROP TABLE personpictureinter 
 12.01.2025 12:12:09,435548 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 18:44:26,212255 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 18:44:26,212255 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 18:44:26,226253 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 18:44:26,240250 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:44:26,255980 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:44:26,269224 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:44:26,275951 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:44:26,282954 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:44:26,289953 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:44:26,296000 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:44:26,306219 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 18:44:26,322181 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 18:44:26,371818 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 18:44:26,387082 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 18:44:26,405931 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 18:44:26,416310 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 18:44:26,416310 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 18:44:26,436382 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 18:44:26,452728 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 18:44:26,466393 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 18:44:26,476264 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 18:44:26,486286 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 18:44:26,495506 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 18:47:54,789320 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 18:47:54,789320 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 18:47:54,799097 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 18:47:54,804602 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:47:54,814123 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:47:54,824535 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:47:54,829117 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:47:54,839326 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:47:54,849289 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:47:54,859374 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:47:54,869400 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 18:47:54,954606 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 18:47:54,989248 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 18:47:54,999014 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 18:47:55,009763 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 18:47:55,023411 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 18:47:55,029389 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 18:47:55,039698 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 18:47:55,049032 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 18:47:55,059136 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 18:47:55,072262 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 18:47:55,089427 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 18:47:55,090427 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 18:48:35,494746 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 18:48:35,494746 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 18:48:35,504813 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 18:48:35,514971 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:48:35,524991 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:48:35,539713 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:48:35,544740 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:48:35,554950 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:48:35,575122 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:48:35,580126 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:48:35,594778 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 18:48:35,599782 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 18:48:35,634979 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 18:48:35,646839 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 18:48:35,659819 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 18:48:35,672769 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 18:48:35,684475 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 18:48:35,695568 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 18:48:35,704737 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 18:48:35,714747 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 18:48:35,725127 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 18:48:35,725127 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 18:48:35,739839 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 18:50:20,626717 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 18:50:20,626717 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 18:50:20,639824 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 18:50:20,651478 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:50:20,657858 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:50:20,669999 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:50:20,674015 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:50:20,689034 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:50:20,701819 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:50:20,707818 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:50:20,713817 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 18:50:20,720912 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 18:50:20,757822 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 18:50:20,771966 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 18:50:20,785617 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 18:50:20,793950 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 18:50:20,802366 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 18:50:20,852831 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 18:50:20,855779 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 18:50:20,867776 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 18:50:20,877916 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 18:50:20,883915 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 18:50:20,893755 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 18:52:52,275250 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 18:52:52,278249 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 18:52:52,302733 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 18:52:52,309796 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:52:52,317290 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:52:52,328005 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:52:52,337191 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:52:52,356840 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:52:52,367319 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:52:52,380165 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:52:52,387081 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 18:52:52,406102 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 18:52:52,450773 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 18:52:52,457080 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 18:52:52,469571 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 18:52:52,486926 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 18:52:52,499343 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 18:52:52,512557 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 18:52:52,516975 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 18:52:52,537115 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 18:52:52,547079 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 18:52:52,554027 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 18:52:52,567174 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 18:56:20,095240 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 18:56:20,095240 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 18:56:20,109239 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 18:56:20,118547 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:56:20,127570 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:56:20,148631 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:56:20,153423 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:56:20,160901 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:56:20,165444 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:56:20,172433 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 18:56:20,183539 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 18:56:20,194476 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 18:56:20,230247 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 18:56:20,249616 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 18:56:20,263646 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 18:56:20,303346 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 18:56:20,313362 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 18:56:20,323408 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 18:56:20,328685 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 18:56:20,333709 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 18:56:20,347796 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 18:56:20,353560 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 18:56:20,364957 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 18:59:59,972434 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 18:59:59,974433 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 18:59:59,983959 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 18:59:59,994688 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:00:00,014497 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:00:00,025236 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:00:00,031234 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:00:00,038325 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:00:00,045363 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:00:00,054342 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:00:00,062918 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:00:00,071383 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:00:00,107631 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:00:00,117639 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:00:00,130424 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:00:00,136127 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:00:00,144121 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:00:00,151126 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:00:00,160111 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:00:00,169452 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:00:00,178226 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:00:00,186820 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:00:00,196715 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:01:10,023673 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:01:10,027671 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:01:10,035668 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:01:10,039667 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:01:10,047664 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:01:10,055662 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:01:10,067657 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:01:10,075654 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:01:10,083651 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:01:10,094693 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:01:10,101690 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:01:10,113868 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:01:10,155674 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:01:10,162701 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:01:10,170342 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:01:10,180456 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:01:10,192350 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:01:10,203849 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:01:10,209889 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:01:10,221886 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:01:10,229882 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:01:10,243813 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:01:10,252802 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:02:04,864306 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:02:04,866304 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:02:04,879405 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:02:04,885403 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:02:04,893398 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:02:04,901392 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:02:04,913384 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:02:04,921147 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:02:04,931182 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:02:04,943381 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:02:04,952653 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:02:04,961683 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:02:05,097350 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:02:05,104337 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:02:05,111326 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:02:05,118322 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:02:05,126316 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:02:05,133311 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:02:05,142305 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:02:05,151280 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:02:05,160277 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:02:05,169066 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:02:05,179705 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:15:45,565979 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:15:45,577980 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:15:45,582948 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:15:45,594958 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:15:45,598947 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:15:45,609993 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:15:45,618372 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:15:45,626007 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:15:45,634993 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:15:45,646994 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:15:45,657299 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:15:45,676344 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:16:08,481463 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:16:08,491456 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:16:08,499450 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:16:08,511443 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:16:08,520436 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:16:08,530431 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:16:08,541423 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:16:08,551419 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:16:08,565409 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:16:08,577819 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:16:08,583604 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:18:21,462863 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:18:21,473843 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:18:21,483374 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:18:21,491070 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:18:21,503047 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:18:21,512471 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:18:21,521807 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:18:21,530972 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:18:21,541555 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:18:21,551912 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:18:21,567559 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:18:21,580096 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:18:32,742925 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:18:32,752017 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:18:32,766556 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:18:32,773988 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:18:32,780392 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:18:32,787964 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:18:32,796411 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:18:32,806184 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:18:32,816161 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:18:32,825597 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:18:32,841176 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:21:38,184621 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:21:38,200228 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:21:38,222926 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:21:38,222926 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:21:38,238551 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:21:38,238551 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:21:38,238551 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:21:38,254175 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:21:38,254175 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:21:38,269799 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:21:38,269799 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:21:38,285421 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:21:46,380441 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:21:46,391434 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:21:46,400767 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:21:46,408974 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:21:46,418601 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:21:46,426423 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:21:46,436858 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:21:46,453895 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:21:46,465865 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:21:46,471609 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:21:46,475609 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:22:56,551954 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:22:56,561961 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:22:56,572960 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:22:56,583146 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:22:56,591862 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:22:56,602106 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:22:56,612964 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:22:56,632250 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:22:56,642951 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:22:56,648958 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:22:56,656334 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:22:56,662334 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:23:39,597080 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:23:39,609073 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:23:39,618067 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:23:39,626063 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:23:39,635593 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:23:39,642588 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:23:39,648438 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:23:39,657449 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:23:39,665431 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:23:39,678423 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:23:39,684927 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:26:33,747317 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:26:33,758331 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:26:33,765744 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:26:33,773739 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:26:33,780735 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:26:33,788733 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:26:33,796724 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:26:33,805719 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:26:33,814722 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:26:33,823719 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:26:33,833413 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:26:33,843141 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:26:33,867966 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:26:33,874962 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:26:33,881957 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:26:33,888954 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:26:33,896948 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:26:33,904942 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:26:33,914057 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:26:33,923555 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:26:33,933547 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:26:33,942541 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:26:33,958532 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:27:23,929041 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:27:23,936031 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:27:23,944707 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:27:23,953438 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:27:23,962247 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:27:23,971294 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:27:23,981290 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:27:23,994176 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:27:24,039233 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:27:24,046034 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:27:24,051395 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:27:24,057375 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:27:27,332201 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:27:27,353158 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:27:27,363150 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:27:27,377141 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:27:27,386751 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:27:27,393639 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:27:27,402124 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:27:27,410587 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:27:27,419144 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:27:27,428189 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:27:27,445947 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:29:54,820999 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:29:54,825714 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:29:54,839316 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:29:54,854922 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:29:54,860859 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:29:54,868860 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:29:54,873677 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:29:54,881673 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:29:54,888299 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:29:54,896296 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:29:54,909124 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:29:54,917102 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:29:54,942412 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:29:54,954378 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:29:54,966370 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:29:54,975074 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:29:54,981680 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:29:54,990241 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:29:54,997237 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:29:55,006231 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:29:55,017224 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:29:55,026218 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:29:55,035769 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:30:07,261283 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:30:07,271290 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:30:07,279870 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:30:07,288016 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:30:07,294868 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:30:07,303007 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:30:07,311372 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:30:07,320239 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:30:07,330116 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:30:07,340484 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:30:07,350353 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:30:07,367316 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:32:40,824537 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:32:40,834518 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:32:40,835517 DEBUG: ST ERROR: table catalog already exists
+19.01.2025 19:32:40,836517 DEBUG: ST table catalog already exists
+19.01.2025 19:32:40,837515 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:32:40,838515 DEBUG: ST ERROR: table commoninter already exists
+19.01.2025 19:32:40,838515 DEBUG: ST table commoninter already exists
+19.01.2025 19:32:40,839514 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:32:40,840513 DEBUG: ST ERROR: table person already exists
+19.01.2025 19:32:40,841513 DEBUG: ST table person already exists
+19.01.2025 19:32:40,842512 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:32:40,843518 DEBUG: ST ERROR: table personinfobit already exists
+19.01.2025 19:32:40,843518 DEBUG: ST table personinfobit already exists
+19.01.2025 19:32:40,844511 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:32:40,845510 DEBUG: ST ERROR: table datagroup already exists
+19.01.2025 19:32:40,846510 DEBUG: ST table datagroup already exists
+19.01.2025 19:32:40,847509 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:32:40,848509 DEBUG: ST ERROR: table picture already exists
+19.01.2025 19:32:40,849508 DEBUG: ST table picture already exists
+19.01.2025 19:32:40,849508 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:32:40,851507 DEBUG: ST ERROR: table pictureinfobit already exists
+19.01.2025 19:32:40,851507 DEBUG: ST table pictureinfobit already exists
+19.01.2025 19:32:40,852506 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:32:40,853505 DEBUG: ST ERROR: table document already exists
+19.01.2025 19:32:40,854505 DEBUG: ST table document already exists
+19.01.2025 19:32:40,855504 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:32:40,856512 DEBUG: ST ERROR: table documentinfobit already exists
+19.01.2025 19:32:40,857037 DEBUG: ST table documentinfobit already exists
+19.01.2025 19:32:40,858039 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:32:40,859039 DEBUG: ST ERROR: table personpictureinter already exists
+19.01.2025 19:32:40,859039 DEBUG: ST table personpictureinter already exists
+19.01.2025 19:32:40,860039 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:32:40,861056 DEBUG: ST ERROR: table persondocumentinter already exists
+19.01.2025 19:32:40,862055 DEBUG: ST table persondocumentinter already exists
+19.01.2025 19:33:21,377261 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:33:21,385257 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:33:21,387275 DEBUG: ST ERROR: table catalog already exists
+19.01.2025 19:33:21,387275 DEBUG: ST table catalog already exists
+19.01.2025 19:33:21,388274 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:33:21,389272 DEBUG: ST ERROR: table commoninter already exists
+19.01.2025 19:33:21,390272 DEBUG: ST table commoninter already exists
+19.01.2025 19:33:21,391252 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:21,391252 DEBUG: ST ERROR: table person already exists
+19.01.2025 19:33:21,392272 DEBUG: ST table person already exists
+19.01.2025 19:33:21,393267 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:21,394251 DEBUG: ST ERROR: table personinfobit already exists
+19.01.2025 19:33:21,394251 DEBUG: ST table personinfobit already exists
+19.01.2025 19:33:21,395322 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:21,396330 DEBUG: ST ERROR: table datagroup already exists
+19.01.2025 19:33:21,396330 DEBUG: ST table datagroup already exists
+19.01.2025 19:33:21,398324 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:21,399322 DEBUG: ST ERROR: table picture already exists
+19.01.2025 19:33:21,400322 DEBUG: ST table picture already exists
+19.01.2025 19:33:21,401321 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:21,401321 DEBUG: ST ERROR: table pictureinfobit already exists
+19.01.2025 19:33:21,402321 DEBUG: ST table pictureinfobit already exists
+19.01.2025 19:33:21,403320 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:21,404319 DEBUG: ST ERROR: table document already exists
+19.01.2025 19:33:21,404319 DEBUG: ST table document already exists
+19.01.2025 19:33:21,405332 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:21,406318 DEBUG: ST ERROR: table documentinfobit already exists
+19.01.2025 19:33:21,406318 DEBUG: ST table documentinfobit already exists
+19.01.2025 19:33:21,407317 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:33:21,408317 DEBUG: ST ERROR: table personpictureinter already exists
+19.01.2025 19:33:21,409317 DEBUG: ST table personpictureinter already exists
+19.01.2025 19:33:21,409317 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+19.01.2025 19:33:21,410316 DEBUG: ST ERROR: table persondocumentinter already exists
+19.01.2025 19:33:21,411315 DEBUG: ST table persondocumentinter already exists
+19.01.2025 19:33:21,415313 DEBUG: ST EXEC: DROP TABLE catalog 
+19.01.2025 19:33:21,423308 DEBUG: ST EXEC: DROP TABLE commoninter 
+19.01.2025 19:33:21,431303 DEBUG: ST EXEC: DROP TABLE person 
+19.01.2025 19:33:21,439297 DEBUG: ST EXEC: DROP TABLE personinfobit 
+19.01.2025 19:33:21,448292 DEBUG: ST EXEC: DROP TABLE datagroup 
+19.01.2025 19:33:21,457286 DEBUG: ST EXEC: DROP TABLE picture 
+19.01.2025 19:33:21,466281 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+19.01.2025 19:33:21,477051 DEBUG: ST EXEC: DROP TABLE document 
+19.01.2025 19:33:21,486464 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+19.01.2025 19:33:21,505823 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+19.01.2025 19:33:21,516720 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+19.01.2025 19:33:35,911699 INFO: Setting db debug leveling to DATAFILL
+19.01.2025 19:33:35,920712 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+19.01.2025 19:33:35,929133 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+19.01.2025 19:33:35,937973 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:35,947476 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:35,956968 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:35,967232 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:35,977418 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:35,995596 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:36,001592 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+19.01.2025 19:33:36,007748 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+19.01.2025 19:33:36,015747 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))

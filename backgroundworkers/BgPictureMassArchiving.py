@@ -1,5 +1,6 @@
 import os 
 import datetime as dt
+import time
 import shutil as shu
 import sqlitepersist as sqp
 import mylogger as mylo
@@ -26,6 +27,7 @@ class BgPictureMassArchiving(BgWorker):
         assert type(self._docarchiver) is DocArchiver
 
         self._groups = None
+        self._lastid = None
 
     def run(self):
         parfact = self._fact
@@ -81,19 +83,37 @@ class BgPictureMassArchiving(BgWorker):
         return answ
 
     def _get_subname_parts(self, txt : str):
+        if txt is None: return None
+        if len(txt)==0: return txt
+
         lastupper = True
         answ = ""
         for c in txt:
             if c.isupper(): 
-                if lastupper is False:
+                if not lastupper:
                     answ += " "
                 lastupper = True
             else:
                 lastupper = False
 
             answ += c
-        
-        return answ
+
+        lastdigit = txt[0].isdigit()
+        answ2 = ""
+
+        for c in answ:
+            if c.isdigit(): 
+                if not lastdigit:
+                    answ2 += " "
+                lastdigit = True
+            else:
+                if lastdigit:
+                    answ2 += " "
+                lastdigit = False
+
+            answ2 += c
+
+        return answ2
             
     def _calc_group(self, fpath : str) -> DataGroup:
         """Try to get a group from the parent dir where the file is located
@@ -134,8 +154,16 @@ class BgPictureMassArchiving(BgWorker):
         shu.move(fpath, targdir)
         
     def _create_readid(self):
+        """create a new readabel id and try to make sure that it is unique"""
         tsp = dt.datetime.now()
-        return "{0}.{1:%Y%m%d.%H%M%S.%f}".format(self._machlabel, tsp)
+        newid = "{0}.{1:%Y%m%d.%H%M%S.%f}".format(self._machlabel, tsp) 
+        if self._lastid is not None and self._lastid == newid:
+            time.sleep(0.1) #wait 1/10 of a second that should change the %f part
+            tsp = dt.datetime.now()
+            newid = "{0}.{1:%Y%m%d.%H%M%S.%f}".format(self._machlabel, tsp) 
+
+        self._lastid = newid
+        return newid
 
     def _do_import(self, fname):
         logger = self._logger

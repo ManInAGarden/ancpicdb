@@ -17,6 +17,10 @@ class DocArchiver:
         self._basepath = dirpath
         self._check_archive()
 
+    @property
+    def basepath(self):
+        return self._basepath
+    
     def _check_archive(self):
         subdirs = listdir(self._basepath)
         
