@@ -930,6 +930,8 @@ class gPicturesViewDialog ( wx.Dialog ):
 		self.m_preparePrintBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_preparePrintBU.SetBitmap( wx.Bitmap( u"ressources/icons8-print-32.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_preparePrintBU.Enable( False )
+
 		bSizer10.Add( self.m_preparePrintBU, 0, wx.ALL, 5 )
 
 		self.m_workingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )

@@ -409,3 +409,17 @@ class GuiHelper:
             return None
         
         return fd.Filenames
+    
+
+    @classmethod
+    def select_single_file(cls, parent, title : str, defaultDir : str = wx.EmptyString, defaultFile : str =wx.EmptyString,
+                           wildcard : str = wx.FileSelectorDefaultWildcardStr,
+                           style=wx.FD_DEFAULT_STYLE):
+        fd = wx.FileDialog(parent, title, defaultDir, defaultFile,
+                           wildcard, style=style)
+        res = fd.ShowModal()
+
+        if res != wx.ID_OK:
+            return None
+        
+        return fd.GetPath()

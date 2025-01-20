@@ -300,7 +300,8 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         GuiHelper.enable_ctrls(selpic != None, 
                                    self.m_downloadPictureBU, 
                                    self.m_editBU,
-                                   self.m_deletePictureBU)
+                                   self.m_deletePictureBU,
+                                   self.m_preparePrintBU)
         
     def listDblClick(self, event):
         pict = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
@@ -336,17 +337,22 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
         if selpics is None or len(selpics)==0: return
 
-        filenames = GuiHelper.select_files(self, title="Datei für den Export auswählen", 
-                                           wildcard="csv-Dateien (*.csv)|*.csv")
+        filename = GuiHelper.select_single_file(self, title="Datei für den Export auswählen", 
+                                           wildcard="csv-Dateien (*.csv)|*.csv",
+                                           style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         
-        if filenames is None or len(filenames)==0: return
+        if filename is None or len(filename)==0: return
 
-        fname = filenames[0]
+        if filename.lower().endswith(".csv"):
+            fname = filename
+        else:
+            fname = filename + ".csv"
+
         with open(fname, 'w', newline='') as csvfile:
             csvw = csv.writer(csvfile)
-            csvw.writerow(["_id", "readableid", "title", "bestdatetaken", "groupname", "grouponum"])
+            csvw.writerow(["_id", "readableid", "title", "bestdatestr", "groupname", "grouponum"])
             for sp in selpics:
-                csvw.writerow([sp._id, sp.readableid, sp.title, sp.best_takendate, sp.groupname, sp.groupordernum])
+                csvw.writerow([sp._id, sp.readableid, sp.title, sp.bestdatestr, sp.groupname, sp.groupordernum])
 
-        GuiHelper.show_message("CSV Datei unter {} erfolgreich geschrieben", fname)
+        GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
             
