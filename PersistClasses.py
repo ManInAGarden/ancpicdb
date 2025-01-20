@@ -136,6 +136,20 @@ class Picture(sqp.PBase):
           
           return ds
           
+     @property
+     def groupname(self):
+          if self.picturegroup is None: 
+               return None
+          else:
+               return self.picturegroup.name
+          
+     @property
+     def groupordernum(self):
+          if self.picturegroup is None: 
+               return None
+          else:
+               return "B{}".format(self.picturegroup.ordernum)
+     
      def __str__(self):
           ds = self.bestdatestr
           if ds is None:

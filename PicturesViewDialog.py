@@ -1,4 +1,5 @@
 from datetime import datetime
+import csv
 import wx
 import wx.adv
 import GeneratedGUI as gg
@@ -47,6 +48,31 @@ class FilterData():
         if ms > 0 and ms < 12:
             return "MONTH{:02d}".format(ms)
         
+    def get_info(self) -> str:
+        answ = ""
+        if self.is_defined(self.kennummer):
+            answ += "Kenn#='" + self.kennummer + "'"
+
+        if self.is_defined(self.title):
+            answ += " UND Titel='{}'".format(self.title)
+
+        if self.is_defined(self.daytaken):
+            answ += " UND Aufnahmetag='{}'".format(self.daytaken)
+
+        if self.is_defined(self.monthtaken):
+            answ += " UND Aufnahmemonat='{}'".format(self.monthtaken)
+
+        if self.is_defined(self.yeartaken):
+            answ += " UND Aufnahmejahr='{}'".format(self.yeartaken)
+
+        if self.is_defined(self.gruppe):
+            answ += " UND Gruppe='{}'".format(self.gruppe.name)
+
+        if answ.startswith(" UND "):
+            answ = answ[5:]
+
+        return answ
+        
     def get_query(self) -> sqp.SQQuery:
         """create and return the query for the current filter"""
         q = sqp.SQQuery(self._fact, Picture)
@@ -84,7 +110,7 @@ class FilterData():
                 mc = self._get_monthcode(m)
                 exp = self.add2exp(exp, Picture.FlufTakenMonth==mc)
 
-        return q.where(exp)
+        return q.where(exp).order_by(Picture.ScanDate)
     
     def get_query_info(self) -> str:
         if self.is_strict(self.kennummer):
@@ -123,6 +149,14 @@ class FilterData():
 
 
 class PicturesViewDialog(gg.gPicturesViewDialog):
+    PICLISTDEFINS = [
+            {"propname" : "readableid", "title": "ID", "width":230},
+            {"propname" : "bestdatestr", "title": "Aufnahmedatum", "width":100},
+            {"propname" : "title", "title": "Titel", "width":380},
+            #{"propname" : "groupname", "title": "Gruppe", "width":250},
+            {"propname" : "groupordernum", "title": "Grp#", "width":60}
+        ]
+    
     @property
     def configuration(self):
         return self._configuration
@@ -149,7 +183,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
     def workerfinished(self, event : bgw.ResultEvent):
         GuiHelper.enable_ctrls(True, self.m_folderUploadBU)
-        self._filldialog() #refectch pictures from the db and display them in the list
+        self._refilldialog() #refectch pictures from the db and display them in the list
 
     def notifyperc(self, event):
         perc = event.data
@@ -157,23 +191,24 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
     def showmodal(self):
         self._filldialog()
-
         return self.ShowModal()
     
     def _fill_piclist(self):
-        piclstrs = []
-        self.m_picturesLB.Clear()
-        for pic in self._pictures:
-            piclstrs.append(pic.__str__())
-
-        self.m_picturesLB.AppendItems(piclstrs)
-        
-        GuiHelper.set_val(self.m_filterInfoTB, self._filter.get_query_info())
+        GuiHelper.set_data_for_lstctrl(self.m_picturesLCTRL, self.PICLISTDEFINS, self._pictures)
 
     def _filldialog(self):
+        GuiHelper.set_columns_forlstctrl(self.m_picturesLCTRL, self.PICLISTDEFINS)
+        self._refilldialog()
+
+    def _refilldialog(self):
         """fill dialog with all the pictures"""
-        q = sqp.SQQuery(self._fact, Picture).order_by(sqp.OrderInfo(Picture.ScanDate, sqp.OrderDirection.DESCENDING))
-        self._pictures = list(q)
+        #requery the picture data
+        if self._filter is not None:
+            q = self._filter.get_query()
+        else:
+            q = sqp.SQQuery(self._fact, Picture).order_by(sqp.OrderInfo(Picture.ScanDate, sqp.OrderDirection.DESCENDING))
+
+        self._pictures = q.as_list()
         self._fill_piclist()
 
     def _create_readid(self):
@@ -184,63 +219,67 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         readid = self._create_readid()
         pic = Picture(readableid=readid)
         self._fact.flush(pic)
-        self._pictures.append(pic)
-        self.m_picturesLB.Append(pic.__str__())
-        self.m_picturesLB.Select(len(self._pictures) -1)
 
-    def editPicture(self, event):
-        selpos = self.m_picturesLB.GetSelection()
-        if selpos is wx.NOT_FOUND:
-            return
+        GuiHelper.append_data_for_lstctrl(self.m_picturesLCTRL, self.PICLISTDEFINS, pic)
+        self._pictures.append(pic)
         
-        pict = self._pictures[selpos]
+        self.m_picturesLCTRL.Select(len(self._pictures) -1)
+
+    def _edictPicture(self, pict):
         edial = EditPictureDialog(self, self._fact, pict)
         res = edial.showmodal()
         if res == wx.ID_OK:
             self._fact.flush(edial.picture)
-            self._pictures[selpos] = edial.picture
-            piclstrs = []
-            for pic in self._pictures:
-                piclstrs.append(pic.__str__())
+            self._refilldialog()
 
-            self.m_picturesLB.SetItems(piclstrs)
+    def editPicture(self, event):
+        pict = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
+        if pict is None:
+            return
+        self._edictPicture(pict)
+        
 
     def removePicture(self, event):
-        selpic, selpos = GuiHelper.get_selected_fromlb(self.m_picturesLB,
+        selpics = GuiHelper.get_all_selected_fromlctrl(self.m_picturesLCTRL,
                                                        self._pictures)
-        if selpic is None: return
+        if selpics is None or len(selpics)==0: return
 
-        res = wx.MessageBox("Soll das Bild wirklich gelöscht werden?", "Rückfrage", 
+        res = wx.MessageBox("Sollen die selektierten Bilder wirklich gelöscht werden?", "Rückfrage", 
                             style = wx.YES_NO,
                             parent = self)
         
         if res == wx.YES:
-            self._fact.begin_transaction("Starting transaction for picture delete")
-            try:
-                #delete picture from archive
-                if selpic.filepath is not None and len(selpic.filepath)>0:
-                    self.docarchive.remove_file(selpic.filepath)
+            for selpic in selpics:
+                self._fact.begin_transaction("Starting transaction for picture delete")
+                self.logger.info("Deleting picture {} now,", selpic._id)
+                try:
+                    #delete picture from archive
+                    if selpic.filepath is not None and len(selpic.filepath)>0:
+                        self.docarchive.remove_file(selpic.filepath)
 
-                persinters = sqp.SQQuery(self._fact, PersonPictureInter).where(PersonPictureInter.PictureId==selpic._id).as_list()
-                for persinter in persinters:
-                    self._fact.delete(persinter)
+                    persinters = sqp.SQQuery(self._fact, PersonPictureInter).where(PersonPictureInter.PictureId==selpic._id).as_list()
+                    for persinter in persinters:
+                        self._fact.delete(persinter)
 
-                pictinfobits = sqp.SQQuery(self._fact, PictureInfoBit).where(PictureInfoBit.TargetId==selpic._id).as_list()
-                for pictinfobit in pictinfobits:
-                    self._fact.delete(pictinfobit)
+                    pictinfobits = sqp.SQQuery(self._fact, PictureInfoBit).where(PictureInfoBit.TargetId==selpic._id).as_list()
+                    for pictinfobit in pictinfobits:
+                        self._fact.delete(pictinfobit)
+                        
+                    self._fact.delete(selpic)
+
+                    self._fact.commit_transaction("commiting database operations for picture delete operation")
                     
-                self._fact.delete(selpic)
+                    self.logger.debug("Deleted one pictere, {} person/picture intersect(s) and {} picture info bit(s)",
+                                      len(persinters), 
+                                      len(pictinfobits))
+                    
+                    self.logger.info("Delete of picture {} succesful", selpic._id)
+                except Exception as exc:
+                    self.logger.error("An error during picture delete occured. Original message was: {}", exc)
+                    self._fact.rollback_transaction("rolling back because of error")
 
-                self._fact.commit_transaction("commiting database operations for picture delete operation")
-                done = True
-            except Exception as exc:
-                self.logger.error("Es ist ein Fehler aufgetreten, Text der Originalmeldung: {}".format(exc))
-                self._fact.rollback_transaction("rolling back because of error")
-                done = False
-
-            if done:
-                self._pictures.pop(selpos)
-                self.m_picturesLB.Delete(selpos)
+            self._refilldialog()
+                
 
     def applyFilter(self, event):
         edifiltdial = PictureFilterDialog(self, self._fact, self._filter)
@@ -251,22 +290,22 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
             return
             
         self._filter = edifiltdial.filter
-        
-        #requery the picture data
-        q = self._filter.get_query()
+        GuiHelper.set_val(self.m_filterInfoTB, self._filter.get_info())
+        self._refilldialog()
 
-        self._pictures = q.as_list()
-
-        self._fill_piclist()
 
     def pictureSelected(self, event):
-        selpic, selpos = GuiHelper.get_selected_fromlb(self.m_picturesLB,
-                                                       self._pictures)
+        selpic = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
         
         GuiHelper.enable_ctrls(selpic != None, 
                                    self.m_downloadPictureBU, 
                                    self.m_editBU,
                                    self.m_deletePictureBU)
+        
+    def listDblClick(self, event):
+        pict = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
+        if pict == None: return
+        self._edictPicture(pict)
         
     def doFolderUpload(self, event):
         res = GuiHelper.select_files(self, 
@@ -289,3 +328,25 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         self.bg.start()
 
         GuiHelper.enable_ctrls(False, self.m_folderUploadBU)
+
+    def preparePrint(self, event):
+        """create a list (csv) with info of the selected pictures, ready to be used in a abel print
+        """
+        selpics = GuiHelper.get_all_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
+
+        if selpics is None or len(selpics)==0: return
+
+        filenames = GuiHelper.select_files(self, title="Datei für den Export auswählen", 
+                                           wildcard="csv-Dateien (*.csv)|*.csv")
+        
+        if filenames is None or len(filenames)==0: return
+
+        fname = filenames[0]
+        with open(fname, 'w', newline='') as csvfile:
+            csvw = csv.writer(csvfile)
+            csvw.writerow(["_id", "readableid", "title", "bestdatetaken", "groupname", "grouponum"])
+            for sp in selpics:
+                csvw.writerow([sp._id, sp.readableid, sp.title, sp.best_takendate, sp.groupname, sp.groupordernum])
+
+        GuiHelper.show_message("CSV Datei unter {} erfolgreich geschrieben", fname)
+            

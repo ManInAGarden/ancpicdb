@@ -63,6 +63,35 @@ class GuiHelper:
 
         #return the selected data object
         return lst[lidx]
+    
+    @classmethod
+    def get_all_selected_fromlctrl(cls, lstctrl : wx.ListCtrl, lst : list):
+        """get alle selected items selected in a list controls"""
+        assert type(lstctrl) is wx.ListCtrl
+        assert type(lst) is list
+
+        if lst is None or len(lst)==0:
+            return None
+        
+        answ = []
+        sitm = lstctrl.GetFirstSelected()
+        if sitm == wx.NOT_FOUND: return answ
+
+        lidx = lstctrl.GetItemData(sitm)
+        if lidx is None:
+            raise Exception("No item data found for item in listctrl")
+
+        answ.append(lst[lidx])
+    
+        while sitm != wx.NOT_FOUND:
+            sitm = lstctrl.GetNextSelected(sitm)
+            if sitm != wx.NOT_FOUND:
+                lidx = lstctrl.GetItemData(sitm)
+                if lidx is None:
+                    raise Exception("No item data found for item in listctrl")
+                answ.append(lst[lidx])
+
+        return answ
 
     @classmethod
     def show_error(cls, message, *args):
@@ -305,16 +334,44 @@ class GuiHelper:
 
     @classmethod
     def set_columns_forlstctrl(cls, ctrl : wx.ListCtrl, defins : list):
+        assert type(ctrl) is wx.ListCtrl
+        
         ct = 0
         for defin in defins:
+            assert type(defin) is dict
             ctrl.InsertColumn(ct, heading=defin["title"], width=defin["width"])
             ct += 1
+
+
+    @classmethod
+    def append_data_for_lstctrl(cls, ctrl : wx.ListCtrl, defins: list, item : any):
+        """add an item of data to the end of the list
+        """
+        assert type(ctrl) is wx.ListCtrl
+
+        colmax = ctrl.GetColumnCount()
+        ct = ctrl.GetItemCount()
+        itidx = -1
+
+        first = True
+        for colct in range(0, colmax):
+            defin = defins[colct]
+            propname = defin["propname"]
+            pval = getattr(item, propname, "")
+            pvals = cls.get_eos(pval)
+            if first:
+                itidx = ctrl.InsertItem(ctrl.GetColumnCount(), pvals)
+                ctrl.SetItemData(itidx, ct)
+                first = False
+            else:
+                done = ctrl.SetItem(itidx, colct, pvals)
 
 
     @classmethod
     def set_data_for_lstctrl(cls, ctrl : wx.ListCtrl, defins: list, items : list):
         """set the data for the list control
         """
+        ctrl.DeleteAllItems()
         colmax = ctrl.GetColumnCount()
         ct = 0
         itidx = -1

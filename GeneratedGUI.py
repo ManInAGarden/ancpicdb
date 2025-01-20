@@ -877,9 +877,8 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		gbSizer6.Add( self.m_staticText11, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		m_picturesLBChoices = []
-		self.m_picturesLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 500,-1 ), m_picturesLBChoices, wx.LB_HSCROLL|wx.LB_SINGLE )
-		gbSizer6.Add( self.m_picturesLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_picturesLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer6.Add( self.m_picturesLCTRL, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -928,6 +927,11 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		bSizer10.Add( self.m_folderUploadBU, 0, wx.ALL, 5 )
 
+		self.m_preparePrintBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_preparePrintBU.SetBitmap( wx.Bitmap( u"ressources/icons8-print-32.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer10.Add( self.m_preparePrintBU, 0, wx.ALL, 5 )
+
 		self.m_workingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
 		self.m_workingGAUGE.SetValue( 0 )
 		self.m_workingGAUGE.Hide()
@@ -966,24 +970,25 @@ class gPicturesViewDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
-		self.m_picturesLB.Bind( wx.EVT_LISTBOX, self.pictureSelected )
-		self.m_picturesLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editPicture )
+		self.m_picturesLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.listDblClick )
+		self.m_picturesLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.pictureSelected )
 		self.m_applyFilterBU.Bind( wx.EVT_BUTTON, self.applyFilter )
 		self.m_addPictureBU.Bind( wx.EVT_BUTTON, self.addNewPicture )
 		self.m_editBU.Bind( wx.EVT_BUTTON, self.editPicture )
 		self.m_downloadPictureBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
 		self.m_deletePictureBU.Bind( wx.EVT_BUTTON, self.removePicture )
 		self.m_folderUploadBU.Bind( wx.EVT_BUTTON, self.doFolderUpload )
+		self.m_preparePrintBU.Bind( wx.EVT_BUTTON, self.preparePrint )
 
 	def __del__( self ):
 		pass
 
 
 	# Virtual event handlers, override them in your derived class
-	def pictureSelected( self, event ):
+	def listDblClick( self, event ):
 		event.Skip()
 
-	def editPicture( self, event ):
+	def pictureSelected( self, event ):
 		event.Skip()
 
 	def applyFilter( self, event ):
@@ -992,6 +997,8 @@ class gPicturesViewDialog ( wx.Dialog ):
 	def addNewPicture( self, event ):
 		event.Skip()
 
+	def editPicture( self, event ):
+		event.Skip()
 
 	def downloadPicture( self, event ):
 		event.Skip()
@@ -1000,6 +1007,9 @@ class gPicturesViewDialog ( wx.Dialog ):
 		event.Skip()
 
 	def doFolderUpload( self, event ):
+		event.Skip()
+
+	def preparePrint( self, event ):
 		event.Skip()
 
 
