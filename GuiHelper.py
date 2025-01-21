@@ -13,9 +13,11 @@ class GuiHelper:
             return ""
         
         if formstr is not None:
-            formstr.format(val)
+            answ = formstr.format(val)
+        else:
+            answ = val.__str__()
 
-        return val.__str__()
+        return answ
     
     @classmethod
     def enable_ctrls(cls, targstate : bool, *ctrls):
@@ -381,9 +383,15 @@ class GuiHelper:
                 defin = defins[colct]
                 propname = defin["propname"]
                 pval = getattr(item, propname, "")
-                pvals = cls.get_eos(pval)
+                if "format" in defin:
+                    forms = defin["format"]
+                else:
+                    forms = None
+
+                pvals = cls.get_eos(pval, formstr=forms)
+
                 if first:
-                    itidx = ctrl.InsertItem(ctrl.GetColumnCount(), pvals)
+                    itidx = ctrl.InsertItem(ct, pvals)
                     ctrl.SetItemData(itidx, ct)
                     first = False
                 else:

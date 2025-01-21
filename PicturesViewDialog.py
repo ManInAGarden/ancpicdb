@@ -110,7 +110,7 @@ class FilterData():
                 mc = self._get_monthcode(m)
                 exp = self.add2exp(exp, Picture.FlufTakenMonth==mc)
 
-        return q.where(exp).order_by(Picture.ScanDate)
+        return q.where(exp).order_by(sqp.OrderInfo(Picture.ScanDate, sqp.OrderDirection.DESCENDING))
     
     def get_query_info(self) -> str:
         if self.is_strict(self.kennummer):
@@ -151,6 +151,7 @@ class FilterData():
 class PicturesViewDialog(gg.gPicturesViewDialog):
     PICLISTDEFINS = [
             {"propname" : "readableid", "title": "ID", "width":230},
+            {"propname" : "scandate", "title": "Scandatum", "width":100, "format": "{:%d.%m.%Y}"},
             {"propname" : "bestdatestr", "title": "Aufnahmedatum", "width":100},
             {"propname" : "title", "title": "Titel", "width":380},
             #{"propname" : "groupname", "title": "Gruppe", "width":250},
@@ -200,6 +201,13 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         GuiHelper.set_columns_forlstctrl(self.m_picturesLCTRL, self.PICLISTDEFINS)
         self._refilldialog()
 
+    def _get_picdates(self):
+        answ = []
+        for pic in self._pictures:
+            answ.append(str(pic.scandate))
+
+        return answ
+
     def _refilldialog(self):
         """fill dialog with all the pictures"""
         #requery the picture data
@@ -209,6 +217,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
             q = sqp.SQQuery(self._fact, Picture).order_by(sqp.OrderInfo(Picture.ScanDate, sqp.OrderDirection.DESCENDING))
 
         self._pictures = q.as_list()
+        #picdates = self._get_picdates()
         self._fill_piclist()
 
     def _create_readid(self):

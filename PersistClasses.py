@@ -81,7 +81,7 @@ class Picture(sqp.PBase):
  
      def _getmonum(self, flufmo):
           if flufmo is None or flufmo.code == "NOMONTH": return None
-          return ["MONTH01","MONTH02","MONTH03","MONTH04","MONTH05","MONTH06","MONTH07","MONTH08","MONTH09","MONTH10","MONTH11", "MONTH12"].index(flufmo.code)
+          return ["MONTH01","MONTH02","MONTH03","MONTH04","MONTH05","MONTH06","MONTH07","MONTH08","MONTH09","MONTH10","MONTH11", "MONTH12"].index(flufmo.code) + 1
      
      @property 
      def histkey(self):
