@@ -6,6 +6,7 @@ from PersistClasses import DataGroup, GroupTypeCat
 import sqlitepersist as sqp
 
 class GroupEditDialog(gg.gGroupEditDialog):
+   
     @property
     def configuration(self):
         return self._configuration

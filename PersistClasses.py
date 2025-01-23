@@ -63,6 +63,20 @@ class DataGroup(sqp.PBase):
      def __str__(self):
           return "{}".format(self.name)
      
+     @property
+     def groupordername(self):
+          if self.grouptype is None:
+               grs = "?"
+          else:
+               grs = self.grouptype.value[0]
+
+          if self.ordernum is None:
+               ons = "?"
+          else:
+               ons = str(self.ordernum)
+
+          return grs + ons
+     
 class Picture(sqp.PBase):
      """class for pictures normally with people on them"""
      ReadableId = sqp.String()
@@ -148,7 +162,7 @@ class Picture(sqp.PBase):
           if self.picturegroup is None: 
                return None
           else:
-               return "B{}".format(self.picturegroup.ordernum)
+               return self.picturegroup.groupordername
      
      def __str__(self):
           ds = self.bestdatestr

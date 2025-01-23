@@ -333,15 +333,25 @@ class GuiHelper:
 
         return os.path.join(appath, subdirname, filename)
 
+    @classmethod
+    def _get_value(cls, defins : dict, name:str, default: any =None):
+        if name in defins:
+            return defins[name]
+        else:
+            return default
+
 
     @classmethod
     def set_columns_forlstctrl(cls, ctrl : wx.ListCtrl, defins : list):
         assert type(ctrl) is wx.ListCtrl
-        
+
         ct = 0
         for defin in defins:
             assert type(defin) is dict
-            ctrl.InsertColumn(ct, heading=defin["title"], width=defin["width"])
+            assert("propname" in defin)
+            assert("title" in defin)
+            wi = cls._get_value(defin, "width", wx.LIST_AUTOSIZE)
+            ctrl.InsertColumn(ct, heading=defin["title"], width=wi)
             ct += 1
 
 
@@ -358,8 +368,9 @@ class GuiHelper:
         first = True
         for colct in range(0, colmax):
             defin = defins[colct]
+            assert("propname" in defin)
             propname = defin["propname"]
-            pval = getattr(item, propname, "")
+            pval = cls._get_prop_value(item, propname)
             pvals = cls.get_eos(pval)
             if first:
                 itidx = ctrl.InsertItem(ctrl.GetColumnCount(), pvals)
@@ -368,11 +379,33 @@ class GuiHelper:
             else:
                 done = ctrl.SetItem(itidx, colct, pvals)
 
+    
+    @classmethod
+    def _split_at_first_dot(cls, namestr : str) -> tuple:
+        namestrc = namestr.strip(".")
+        idx = namestrc.find(".")
+        if idx > 0:
+            return namestrc[0:idx], namestrc[idx+1:]
+        else:
+            return namestrc, None
+
+    @classmethod
+    def _get_prop_value(cls, item : any, propname : str):
+        beginning, ending = cls._split_at_first_dot(propname)
+        if ending is None:
+            pval = getattr(item, beginning, "")
+        else:
+            toppval = getattr(item, beginning, "")
+            pval = cls._get_prop_value(toppval, ending)
+
+        return pval
 
     @classmethod
     def set_data_for_lstctrl(cls, ctrl : wx.ListCtrl, defins: list, items : list):
         """set the data for the list control
         """
+        assert type(ctrl) is wx.ListCtrl
+
         ctrl.DeleteAllItems()
         colmax = ctrl.GetColumnCount()
         ct = 0
@@ -381,8 +414,11 @@ class GuiHelper:
             first = True
             for colct in range(0, colmax):
                 defin = defins[colct]
+                assert("propname" in defin)
                 propname = defin["propname"]
-                pval = getattr(item, propname, "")
+
+                pval = cls._get_prop_value(item, propname)
+
                 if "format" in defin:
                     forms = defin["format"]
                 else:

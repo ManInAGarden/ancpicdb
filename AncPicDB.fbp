@@ -31,7 +31,7 @@
     <property name="relative_path">1</property>
     <property name="use_microsoft_bom">0</property>
     <property name="use_native_eol">0</property>
-    <object class="Frame" expanded="false">
+    <object class="Frame" expanded="true">
       <property name="aui_managed">0</property>
       <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
       <property name="bg">wxSYS_COLOUR_MENU</property>
@@ -60,7 +60,7 @@
       <property name="window_name"></property>
       <property name="window_style">wxTAB_TRAVERSAL</property>
       <property name="xrc_skip_sizer">1</property>
-      <object class="wxMenuBar" expanded="false">
+      <object class="wxMenuBar" expanded="true">
         <property name="bg"></property>
         <property name="context_help"></property>
         <property name="context_menu">1</property>
@@ -201,7 +201,7 @@
             <event name="OnMenuSelection">quit</event>
           </object>
         </object>
-        <object class="wxMenu" expanded="false">
+        <object class="wxMenu" expanded="true">
           <property name="label">Bearbeiten</property>
           <property name="name">m_editMenu</property>
           <property name="permission">protected</property>
@@ -215,7 +215,7 @@
             <property name="label">Gruppen</property>
             <property name="name">m_groupsMI</property>
             <property name="permission">none</property>
-            <property name="shortcut"></property>
+            <property name="shortcut">CTRL+G</property>
             <property name="unchecked_bitmap"></property>
             <event name="OnMenuSelection">openViewGroupsDialog</event>
           </object>

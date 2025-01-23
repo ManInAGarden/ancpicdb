@@ -59,7 +59,7 @@ class AncPicDBMain ( wx.Frame ):
 		self.m_mainMenuBar.Append( self.m_fileMenu, u"Datei" )
 
 		self.m_editMenu = wx.Menu()
-		self.m_groupsMI = wx.MenuItem( self.m_editMenu, wx.ID_ANY, u"Gruppen", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_groupsMI = wx.MenuItem( self.m_editMenu, wx.ID_ANY, u"Gruppen"+ u"\t" + u"CTRL+G", wx.EmptyString, wx.ITEM_NORMAL )
 		self.m_editMenu.Append( self.m_groupsMI )
 
 		self.m_documentsMI = wx.MenuItem( self.m_editMenu, wx.ID_ANY, u"Dokumente"+ u"\t" + u"CTRL+D", u"Dokumente sichten", wx.ITEM_NORMAL )

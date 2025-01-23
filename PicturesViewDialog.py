@@ -155,7 +155,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
             {"propname" : "bestdatestr", "title": "Aufnahmedatum", "width":100},
             {"propname" : "title", "title": "Titel", "width":380},
             #{"propname" : "groupname", "title": "Gruppe", "width":250},
-            {"propname" : "groupordernum", "title": "Grp#", "width":60}
+            {"propname" : "picturegroup.groupordername", "title": "Grp#", "width":60}
         ]
     
     @property

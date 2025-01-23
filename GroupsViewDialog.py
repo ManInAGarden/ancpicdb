@@ -8,6 +8,13 @@ from ConfigReader import ConfigReader
 from GroupEditDialog import GroupEditDialog
 
 class GroupsViewDialog(gg.gGroupsDialog):
+    DEFINS=[
+        {"propname":"grouptype.value", "title":"Gruppentyp"},
+        {"propname":"name", "title":"Bezeichnung", "width":300},
+        {"propname":"ordernum", "title":"Ordnungszahl"},
+        {"propname":"groupordername", "title":"Ordnungsname"}
+    ]
+     
     @property
     def configuration(self):
         return self._configuration
@@ -19,10 +26,8 @@ class GroupsViewDialog(gg.gGroupsDialog):
         self._create_grlist_cols()
 
     def _create_grlist_cols(self):
-        self.m_groupsLCTRL.InsertColumn(0, "Gruppentyp")
-        self.m_groupsLCTRL.InsertColumn(1, "Bezeichnung", width=300)
-        self.m_groupsLCTRL.InsertColumn(2, "Ordnungszahl")
-
+        GuiHelper.set_columns_forlstctrl(self.m_groupsLCTRL,
+                                         self.DEFINS)
     def showmodal(self):
         self._filldialog()
 
@@ -41,24 +46,18 @@ class GroupsViewDialog(gg.gGroupsDialog):
     
     def _add_grline(self, dataidx,  grp : DataGroup):
         lct = self.m_groupsLCTRL
-        colc = lct.GetColumnCount()
-        idx = lct.InsertItem(colc, self._ecs(grp.grouptype))
+        itct = lct.GetItemCount() #insert new line at end of list
+        idx = lct.InsertItem(itct, self._ecs(grp.grouptype))
         lct.SetItemData(idx, dataidx)
         lct.SetItem(idx, 1, self._ess(grp.name))
         lct.SetItem(idx, 2, self._ess(grp.ordernum))
 
     def _fill_grcols(self):
-        self.m_groupsLCTRL.DeleteAllItems()
-        if self._groups is None: return
-
-        idx = 0
-        for grp in self._groups:
-            self._add_grline(idx, grp)
-            idx += 1
+        GuiHelper.set_data_for_lstctrl(self.m_groupsLCTRL, self.DEFINS, self._groups)
 
     def _filldialog(self):
         """fill dialog with all groups found in the database"""
-        q = sqp.SQQuery(self._fact, DataGroup).order_by(DataGroup.GroupType)
+        q = sqp.SQQuery(self._fact, DataGroup).order_by(DataGroup.GroupType, DataGroup.OrderNum)
         self._groups = list(q)
         self._fill_grcols()
 
