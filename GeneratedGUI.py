@@ -564,9 +564,8 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		gbSizer6.SetFlexibleDirection( wx.BOTH )
 		gbSizer6.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-		m_documentsLBChoices = []
-		self.m_documentsLB = wx.ListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 500,-1 ), m_documentsLBChoices, wx.LB_HSCROLL|wx.LB_SINGLE )
-		gbSizer6.Add( self.m_documentsLB, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_documentsLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer6.Add( self.m_documentsLCTRL, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -608,7 +607,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
 		m_sdbSizer2.Realize()
 
-		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
+		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
 
 
 		gbSizer6.AddGrowableCol( 0 )
@@ -620,7 +619,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
-		self.m_documentsLB.Bind( wx.EVT_LISTBOX_DCLICK, self.editElement )
+		self.m_documentsLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.editElement )
 		self.m_addRowBU.Bind( wx.EVT_BUTTON, self.addNewRow )
 		self.m_editBU.Bind( wx.EVT_BUTTON, self.editElement )
 		self.m_downloadPictureBU.Bind( wx.EVT_BUTTON, self.downloadPicture )

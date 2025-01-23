@@ -9,6 +9,16 @@ from ConfigReader import ConfigReader
 from EditDocumentDialog import EditDocumentDialog
 
 class DocumentsViewDialog(gg.gDocumentsViewDialog):
+
+    DOCLISTDEFINS=[
+        {"propname" : "readableid", "title": "ID", "width":230},
+        {"propname" : "scandate", "title": "Scandatum", "width":100, "format": "{:%d.%m.%Y}"},
+        {"propname" : "productiondate", "title": "Erstelldatum", "width":100, "format": "{:%d.%m.%Y}"},
+        {"propname" : "title", "title": "Titel", "width":380},
+        #{"propname" : "groupname", "title": "Gruppe", "width":250},
+        {"propname" : "ext", "title": "Typ", "width":40},
+        {"propname" : "documentgroup.groupordername", "title": "Grp#", "width":60}
+    ]
     @property
     def configuration(self):
         return self._configuration
@@ -28,22 +38,25 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         if self.machlabel is None:
             self.machlabel = "XXXX"
 
+
+
+    def _prep_cols(self):
+        GuiHelper.set_columns_forlstctrl(self.m_documentsLCTRL, self.DOCLISTDEFINS)
+        
     def showmodal(self):
+        self._prep_cols()
         self._filldialog()
 
         return self.ShowModal()
     
     def _filldialog(self):
         """fill dialog with all the pictures"""
-        q = sqp.SQQuery(self._fact, Document).order_by(Document.ScanDate)
+        q = sqp.SQQuery(self._fact, Document).order_by(sqp.OrderInfo(Document.ScanDate, sqp.OrderDirection.DESCENDING))
         self._documents = list(q)
-        docstrs = []
 
-        for doc in self._documents:
-            docstrs.append(doc.__str__())
-
-        self.m_documentsLB.Clear()
-        self.m_documentsLB.AppendItems(docstrs)
+        GuiHelper.set_data_for_lstctrl(self.m_documentsLCTRL,
+                                       self.DOCLISTDEFINS,
+                                       self._documents)
 
     def _create_readid(self):
         dt = datetime.now()
@@ -52,14 +65,16 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
     def addNewRow(self, event):
         readid = self._create_readid()
         doc = Document(readableid=readid)
-        doc.type = self._fact.getcat(DocTypeCat, "NSP") #initialse as unspecified
+        doc.type = self._fact.getcat(DocTypeCat, "NSP") #initialise as unspecified
         self._fact.flush(doc)
         self._documents.append(doc)
-        self.m_documentsLB.Append(doc.__str__())
-        self.m_documentsLB.Select(len(self._documents) - 1)
+        
+        GuiHelper.append_data_for_lstctrl(self.m_documentsLCTRL,
+                                          self.DOCLISTDEFINS,
+                                          doc)
 
     def removeRow(self, event):
-        seldoc, seldocpos = GuiHelper.get_selected_fromlb(self.m_documentsLB, self._documents)
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
 
         if seldoc is None:
             return
@@ -79,11 +94,11 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
             return 
         
         self._fact.delete(seldoc)
-        self.m_documentsLB.Delete(seldocpos)
+        self._filldialog()
 
     def editElement(self, event):
-        seldoc, seldocpos = GuiHelper.get_selected_fromlb(self.m_documentsLB, self._documents)
-
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+    
         if seldoc is None:
             return
         

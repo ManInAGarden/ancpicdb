@@ -373,7 +373,7 @@ class GuiHelper:
             pval = cls._get_prop_value(item, propname)
             pvals = cls.get_eos(pval)
             if first:
-                itidx = ctrl.InsertItem(ctrl.GetColumnCount(), pvals)
+                itidx = ctrl.InsertItem(ct, pvals)
                 ctrl.SetItemData(itidx, ct)
                 first = False
             else:
