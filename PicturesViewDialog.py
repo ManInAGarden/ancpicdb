@@ -7,6 +7,7 @@ from PersistClasses import Picture, PictureInfoBit, PersonPictureInter
 import sqlitepersist as sqp
 from EditPictureDialog import EditPictureDialog
 from PictureFilterDialog import PictureFilterDialog
+from ConnectedPerssonsDialog import ConnectedPersonsDialog
 from ConfigReader import ConfigReader
 from GuiHelper import GuiHelper
 from DocArchiver import DocArchiver
@@ -310,7 +311,8 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
                                    self.m_downloadPictureBU, 
                                    self.m_editBU,
                                    self.m_deletePictureBU,
-                                   self.m_preparePrintBU)
+                                   self.m_preparePrintBU,
+                                   self.m_showConnectedPersonsBU)
         
     def listDblClick(self, event):
         pict = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
@@ -365,3 +367,10 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
         GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
             
+    def showConnectedPersons(self, event):
+        selpic = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
+        
+        if selpic is None: return
+
+        conndial = ConnectedPersonsDialog(self, self._fact, selpic)
+        conndial.showmodal()

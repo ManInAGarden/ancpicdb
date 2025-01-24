@@ -919,6 +919,14 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		bSizer10.Add( self.m_deletePictureBU, 0, wx.ALL, 5 )
 
+		self.m_showConnectedPersonsBU = wx.Button( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_showConnectedPersonsBU.SetBitmap( wx.Bitmap( u"ressources/icons8-connected-30.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_showConnectedPersonsBU.Enable( False )
+		self.m_showConnectedPersonsBU.SetToolTip( u"Verbundene Personen anzeigen" )
+
+		bSizer10.Add( self.m_showConnectedPersonsBU, 0, wx.ALL, 5 )
+
 		self.m_folderUploadBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_folderUploadBU.SetBitmap( wx.Bitmap( u"ressources/FolderUpload.png", wx.BITMAP_TYPE_ANY ) )
@@ -978,6 +986,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 		self.m_editBU.Bind( wx.EVT_BUTTON, self.editPicture )
 		self.m_downloadPictureBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
 		self.m_deletePictureBU.Bind( wx.EVT_BUTTON, self.removePicture )
+		self.m_showConnectedPersonsBU.Bind( wx.EVT_BUTTON, self.showConnectedPersons )
 		self.m_folderUploadBU.Bind( wx.EVT_BUTTON, self.doFolderUpload )
 		self.m_preparePrintBU.Bind( wx.EVT_BUTTON, self.preparePrint )
 
@@ -1005,6 +1014,9 @@ class gPicturesViewDialog ( wx.Dialog ):
 		event.Skip()
 
 	def removePicture( self, event ):
+		event.Skip()
+
+	def showConnectedPersons( self, event ):
 		event.Skip()
 
 	def doFolderUpload( self, event ):
@@ -2737,6 +2749,91 @@ class gCreateBackupDialog ( wx.Dialog ):
 		event.Skip()
 
 	def abortBackup( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gConnectedPersonsDialog
+###########################################################################
+
+class gConnectedPersonsDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Verbundene Personen", pos = wx.DefaultPosition, size = wx.Size( 756,375 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer29 = wx.GridBagSizer( 0, 0 )
+		gbSizer29.SetFlexibleDirection( wx.BOTH )
+		gbSizer29.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer18 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer18OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer18.AddButton( self.m_sdbSizer18OK )
+		m_sdbSizer18.Realize()
+
+		gbSizer29.Add( m_sdbSizer18, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText82 = wx.StaticText( self, wx.ID_ANY, u"Bild-Id:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText82.Wrap( -1 )
+
+		gbSizer29.Add( self.m_staticText82, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText83 = wx.StaticText( self, wx.ID_ANY, u"Bildtitel", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText83.Wrap( -1 )
+
+		gbSizer29.Add( self.m_staticText83, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_pictureNameTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer29.Add( self.m_pictureNameTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_connPersLAB = wx.StaticText( self, wx.ID_ANY, u"Zugeordnete Personen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_connPersLAB.Wrap( -1 )
+
+		gbSizer29.Add( self.m_connPersLAB, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_connectionsLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer29.Add( self.m_connectionsLCTRL, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		bSizer23 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_newPersonConnBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_newPersonConnBU.SetBitmap( wx.Bitmap( u"ressources/Add-Link.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer23.Add( self.m_newPersonConnBU, 0, wx.ALL, 5 )
+
+		self.m_removePersonConnBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_removePersonConnBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Link.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer23.Add( self.m_removePersonConnBU, 0, wx.ALL, 5 )
+
+
+		gbSizer29.Add( bSizer23, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_pictureIdTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer29.Add( self.m_pictureIdTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer29.AddGrowableCol( 1 )
+
+		self.SetSizer( gbSizer29 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_newPersonConnBU.Bind( wx.EVT_BUTTON, self.addPersonConn )
+		self.m_removePersonConnBU.Bind( wx.EVT_BUTTON, self.removePersonConn )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def addPersonConn( self, event ):
+		event.Skip()
+
+	def removePersonConn( self, event ):
 		event.Skip()
 
 
