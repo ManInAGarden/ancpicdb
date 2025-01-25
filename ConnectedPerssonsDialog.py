@@ -60,3 +60,11 @@ class ConnectedPersonsDialog(gg.gConnectedPersonsDialog):
 
     def addPersonConn(self, event):
         pass
+
+    def connectionSelected(self, even):
+        selconn = GuiHelper.get_selected_fromlctrl(self.m_connectionsLCTRL, self._perspicints)
+        GuiHelper.enable_ctrls(selconn!=None, self.m_removePersonConnBU)
+
+    def connectionDeselected(self, event):
+        selconn = GuiHelper.get_selected_fromlctrl(self.m_connectionsLCTRL, self._perspicints)
+        GuiHelper.enable_ctrls(selconn!=None, self.m_removePersonConnBU)

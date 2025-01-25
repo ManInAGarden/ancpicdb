@@ -938,6 +938,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		self.m_preparePrintBU.SetBitmap( wx.Bitmap( u"ressources/icons8-print-32.png", wx.BITMAP_TYPE_ANY ) )
 		self.m_preparePrintBU.Enable( False )
+		self.m_preparePrintBU.SetToolTip( u"Etikettendruck vorbereiten (csv)" )
 
 		bSizer10.Add( self.m_preparePrintBU, 0, wx.ALL, 5 )
 
@@ -980,6 +981,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		# Connect Events
 		self.m_picturesLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.listDblClick )
+		self.m_picturesLCTRL.Bind( wx.EVT_LIST_ITEM_DESELECTED, self.pictureDeselected )
 		self.m_picturesLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.pictureSelected )
 		self.m_applyFilterBU.Bind( wx.EVT_BUTTON, self.applyFilter )
 		self.m_addPictureBU.Bind( wx.EVT_BUTTON, self.addNewPicture )
@@ -996,6 +998,9 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 	# Virtual event handlers, override them in your derived class
 	def listDblClick( self, event ):
+		event.Skip()
+
+	def pictureDeselected( self, event ):
 		event.Skip()
 
 	def pictureSelected( self, event ):
@@ -2772,7 +2777,7 @@ class gConnectedPersonsDialog ( wx.Dialog ):
 		m_sdbSizer18.AddButton( self.m_sdbSizer18OK )
 		m_sdbSizer18.Realize()
 
-		gbSizer29.Add( m_sdbSizer18, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer29.Add( m_sdbSizer18, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText82 = wx.StaticText( self, wx.ID_ANY, u"Bild-Id:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText82.Wrap( -1 )
@@ -2800,11 +2805,15 @@ class gConnectedPersonsDialog ( wx.Dialog ):
 		self.m_newPersonConnBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_newPersonConnBU.SetBitmap( wx.Bitmap( u"ressources/Add-Link.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_newPersonConnBU.Hide()
+
 		bSizer23.Add( self.m_newPersonConnBU, 0, wx.ALL, 5 )
 
 		self.m_removePersonConnBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_removePersonConnBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Link.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_removePersonConnBU.Enable( False )
+
 		bSizer23.Add( self.m_removePersonConnBU, 0, wx.ALL, 5 )
 
 
@@ -2822,6 +2831,8 @@ class gConnectedPersonsDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.m_connectionsLCTRL.Bind( wx.EVT_LIST_ITEM_DESELECTED, self.connectionDeselected )
+		self.m_connectionsLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.connectionSelected )
 		self.m_newPersonConnBU.Bind( wx.EVT_BUTTON, self.addPersonConn )
 		self.m_removePersonConnBU.Bind( wx.EVT_BUTTON, self.removePersonConn )
 
@@ -2830,6 +2841,12 @@ class gConnectedPersonsDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def connectionDeselected( self, event ):
+		event.Skip()
+
+	def connectionSelected( self, event ):
+		event.Skip()
+
 	def addPersonConn( self, event ):
 		event.Skip()
 

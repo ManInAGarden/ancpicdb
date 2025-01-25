@@ -314,6 +314,17 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
                                    self.m_preparePrintBU,
                                    self.m_showConnectedPersonsBU)
         
+    def pictureDeselected(self, event):
+        selpic = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
+        
+        GuiHelper.enable_ctrls(selpic != None, 
+                                   self.m_downloadPictureBU, 
+                                   self.m_editBU,
+                                   self.m_deletePictureBU,
+                                   self.m_preparePrintBU,
+                                   self.m_showConnectedPersonsBU)
+        
+        
     def listDblClick(self, event):
         pict = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
         if pict == None: return
