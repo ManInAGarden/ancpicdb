@@ -7,6 +7,7 @@ from Checkers import DocumentChecker, PictureChecker, PersonChecker
 from EditPictureDialog import EditPictureDialog
 from PersonEditDialog import PersonEditDialog
 from EditDocumentDialog import EditDocumentDialog
+from ConnectedPerssonsDialog import ConnectedPersonsDialog
 
 class DataCheckerDialog(gg.gDataCheckerDialog):
 
@@ -34,8 +35,12 @@ class DataCheckerDialog(gg.gDataCheckerDialog):
     def _filldialog(self):
         pass
 
+    def open_picperchk_dialog(self, pic : Picture):
+        perschkdial = ConnectedPersonsDialog(self, self._fact, pic)
+        return None
+    
     def _open_picture_dialog(self, pic : Picture):
-        """Open a picture dialog, returns new data item when it  has been updated, None otherwise"""
+        """Open a picture dialog, returns new data item when it has been updated, None otherwise"""
         picdial = EditPictureDialog(self, self._fact, pic)
         res = picdial.showmodal()
         answ = None
@@ -102,12 +107,22 @@ class DataCheckerDialog(gg.gDataCheckerDialog):
         selid = self.m_chkResultsTCTR.GetSelection()
         dta = self.m_chkResultsTCTR.GetItemData(selid)
 
+        parofsel = self.m_chkResultsTCTR.GetItemParent(selid)
+        if parofsel is not None:
+            partxt = self.m_chkResultsTCTR.GetItemText(parofsel)
+        else:
+            partxt = None
+
         if dta is None:
             return
         
         dtype = type(dta)
         if dtype == Picture:
-            updpic = self._open_picture_dialog(dta)
+            if partxt is not None and partxt == "Bild mit fehlender Zielperson":
+                updpic = self.open_picperchk_dialog(dta)
+            else:
+                updpic = self._open_picture_dialog(dta)
+
             if updpic is not None:
                 self.m_chkResultsTCTR.SetItemData(selid, updpic)
         elif dtype == FullPerson:

@@ -17,7 +17,9 @@ class RotatingFileHandler(BasicHandler):
     def _check_rotation(self):
         if os.path.exists(self._filename) and os.path.getsize(self._filename) > self._size:
             nowstr = dt.datetime.now().strftime("%Y%m%d%H%M%S")
-            newname = nowstr + "_" + self._filename
+            dirpart, fname = os.path.split(self._filename)
+            newname = nowstr + "_" + fname
+            newname = os.path.join(dirpart, nowstr+"_"+fname)
             shutil.move(self._filename, newname)
 
     def write(self, msg : str):
