@@ -769,7 +769,27 @@ class geditPictureDialog ( wx.Dialog ):
 		gbSizer7.Add( self.m_staticText181, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_bitmapPAN = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		gbSizer7.Add( self.m_bitmapPAN, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 3 ), wx.EXPAND |wx.ALL, 5 )
+		gbSizer7.Add( self.m_bitmapPAN, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 2 ), wx.EXPAND |wx.ALL, 5 )
+
+		self.m_persoOnPicLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer7.Add( self.m_persoOnPicLCTRL, wx.GBPosition( 4, 3 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		bSizer25 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_connectPersonBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_connectPersonBU.SetBitmap( wx.Bitmap( u"ressources/Add-Link.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer25.Add( self.m_connectPersonBU, 0, wx.ALL, 5 )
+
+		self.m_disconnectPersonBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_disconnectPersonBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Link.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_disconnectPersonBU.Enable( False )
+
+		bSizer25.Add( self.m_disconnectPersonBU, 0, wx.ALL, 5 )
+
+
+		gbSizer7.Add( bSizer25, wx.GBPosition( 5, 3 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -820,6 +840,10 @@ class geditPictureDialog ( wx.Dialog ):
 		self.m_addPictBitInfoBU.Bind( wx.EVT_BUTTON, self.addInfoBit )
 		self.m_editPictBitInfoBU.Bind( wx.EVT_BUTTON, self.editInfoBit )
 		self.m_deletePictBitInfoBU.Bind( wx.EVT_BUTTON, self.removeInfoBit )
+		self.m_persoOnPicLCTRL.Bind( wx.EVT_LIST_ITEM_DESELECTED, self.personDeselected )
+		self.m_persoOnPicLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.personSelected )
+		self.m_connectPersonBU.Bind( wx.EVT_BUTTON, self.addPerson )
+		self.m_disconnectPersonBU.Bind( wx.EVT_BUTTON, self.removePerson )
 		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadPicture )
 		self.m_viewBU.Bind( wx.EVT_BUTTON, self.viewPicture )
 		self.m_downloadBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
@@ -838,6 +862,18 @@ class geditPictureDialog ( wx.Dialog ):
 
 
 	def removeInfoBit( self, event ):
+		event.Skip()
+
+	def personDeselected( self, event ):
+		event.Skip()
+
+	def personSelected( self, event ):
+		event.Skip()
+
+	def addPerson( self, event ):
+		event.Skip()
+
+	def removePerson( self, event ):
 		event.Skip()
 
 	def uploadPicture( self, event ):
@@ -934,20 +970,19 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		bSizer10.Add( self.m_folderUploadBU, 0, wx.ALL, 5 )
 
-		self.m_preparePrintBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
-
-		self.m_preparePrintBU.SetBitmap( wx.Bitmap( u"ressources/icons8-print-32.png", wx.BITMAP_TYPE_ANY ) )
-		self.m_preparePrintBU.Enable( False )
-		self.m_preparePrintBU.SetToolTip( u"Etikettendruck vorbereiten (csv)" )
-
-		bSizer10.Add( self.m_preparePrintBU, 0, wx.ALL, 5 )
-
 		self.m_workingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
 		self.m_workingGAUGE.SetValue( 0 )
 		self.m_workingGAUGE.Hide()
 		self.m_workingGAUGE.SetToolTip( u"Fortschritt der Hintergrundaufgabe" )
 
 		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 5 )
+
+		self.m_preparePrintBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_preparePrintBU.SetBitmap( wx.Bitmap( u"ressources/icons8-print-32.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_preparePrintBU.Enable( False )
+
+		bSizer10.Add( self.m_preparePrintBU, 0, wx.ALL, 5 )
 
 
 		gbSizer6.Add( bSizer10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
@@ -990,7 +1025,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 		self.m_deletePictureBU.Bind( wx.EVT_BUTTON, self.removePicture )
 		self.m_showConnectedPersonsBU.Bind( wx.EVT_BUTTON, self.showConnectedPersons )
 		self.m_folderUploadBU.Bind( wx.EVT_BUTTON, self.doFolderUpload )
-		self.m_preparePrintBU.Bind( wx.EVT_BUTTON, self.preparePrint )
+		self.m_preparePrintBU.Bind( wx.EVT_BUTTON, self.doPreparePrint )
 
 	def __del__( self ):
 		pass
@@ -1027,7 +1062,7 @@ class gPicturesViewDialog ( wx.Dialog ):
 	def doFolderUpload( self, event ):
 		event.Skip()
 
-	def preparePrint( self, event ):
+	def doPreparePrint( self, event ):
 		event.Skip()
 
 
@@ -2851,6 +2886,72 @@ class gConnectedPersonsDialog ( wx.Dialog ):
 		event.Skip()
 
 	def removePersonConn( self, event ):
+		event.Skip()
+
+
+###########################################################################
+## Class gFindPersonsDialog
+###########################################################################
+
+class gFindPersonsDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Person(en) hinzufügen", pos = wx.DefaultPosition, size = wx.Size( 397,344 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
+		gbSizer30 = wx.GridBagSizer( 0, 0 )
+		gbSizer30.SetFlexibleDirection( wx.BOTH )
+		gbSizer30.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer19 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer19OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer19.AddButton( self.m_sdbSizer19OK )
+		self.m_sdbSizer19Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer19.AddButton( self.m_sdbSizer19Cancel )
+		m_sdbSizer19.Realize()
+
+		gbSizer30.Add( m_sdbSizer19, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText85 = wx.StaticText( self, wx.ID_ANY, u"Vorname", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText85.Wrap( -1 )
+
+		gbSizer30.Add( self.m_staticText85, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_firstNameTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer30.Add( self.m_firstNameTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText86 = wx.StaticText( self, wx.ID_ANY, u"Nachname", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText86.Wrap( -1 )
+
+		gbSizer30.Add( self.m_staticText86, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_nameTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer30.Add( self.m_nameTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_searchBU = wx.Button( self, wx.ID_ANY, u"Suchen", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer30.Add( self.m_searchBU, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_searchResultLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
+		gbSizer30.Add( self.m_searchResultLCTRL, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer30.AddGrowableCol( 1 )
+
+		self.SetSizer( gbSizer30 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_searchBU.Bind( wx.EVT_BUTTON, self.doSearch )
+
+	def __del__( self ):
+		pass
+
+
+	# Virtual event handlers, override them in your derived class
+	def doSearch( self, event ):
 		event.Skip()
 
 

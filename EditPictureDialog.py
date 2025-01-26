@@ -3,16 +3,31 @@ import shutil
 import copy
 import tempfile as tmpf
 import datetime
+from operator import attrgetter
 import wx
 import wx.adv
 import GeneratedGUI as gg
-from PersistClasses import Picture, PictureInfoBit, FluffyMonthCat, DataGroup, GroupTypeCat
+from PersistClasses import Picture, PictureInfoBit, FluffyMonthCat, DataGroup, GroupTypeCat, PersonPictureInter_Hollow
 from GuiHelper import GuiHelper
 import sqlitepersist as sqp
 from DocArchiver import DocArchiver
 from EditInfoBitDialog import EditInfoBitDialog
+from FindPersonsDialog import FindPersonsDialog
 
 class EditPictureDialog(gg.geditPictureDialog):
+
+    PICTINFODEFINS = [
+        {"propname" : "infodate", "title": "Datum", "format": "{:%d.%m.%Y}", "width":120},
+        {"propname" : "suppliedby", "title": "Quelle", "width":150},
+        {"propname" : "infocontent", "title": "Inhalt", "width": 340}
+    ]
+
+    CONNNPERSINFODEFINS =[
+        #{"propname" : "_id", "title": "Id"},
+        {"propname" : "person.firstname", "title": "Vorname"},
+        {"propname" : "person.name", "title": "Name"},
+        {"propname" : "person.cons_birth_year", "title": "Geburtsjahr"}
+    ]
     
     @property
     def picture(self):
@@ -49,42 +64,55 @@ class EditPictureDialog(gg.geditPictureDialog):
         return sqp.SQQuery(self._fact, DataGroup).where(DataGroup.GroupType=="PICT").order_by(DataGroup.OrderNum).as_list()
     
     def _create_infobit_cols(self):
-        self.m_zusatzinfoLCT.InsertColumn(0, 'Datum')
-        self.m_zusatzinfoLCT.InsertColumn(1, 'Quelle')
-        self.m_zusatzinfoLCT.InsertColumn(2, 'Inhalt', width=300)
+        GuiHelper.set_columns_forlstctrl(self.m_zusatzinfoLCT, 
+                                         self.PICTINFODEFINS)
+        GuiHelper.set_columns_forlstctrl(self.m_persoOnPicLCTRL,
+                                         self.CONNNPERSINFODEFINS)
 
-    def _eds(self, dt):
-        if dt is None:
-            return ""
-        
-        return "{:%d.%m.%Y}".format(dt)
+    #def _eds(self, dt):
+    #    if dt is None:
+    #        return ""
+    #    
+    #    return "{:%d.%m.%Y}".format(dt)
     
-    def _ess(self, val):
-        if val is None: return ""
-
-        return val.__str__()
+    #def _ess(self, val):
+    #    if val is None: return ""
+    #
+    #    return val.__str__()
     
-    def _add_ibline(self, dataidx,  ib : PictureInfoBit):
-        lct = self.m_zusatzinfoLCT
-        idx = lct.InsertItem(lct.GetColumnCount(), self._eds(ib.infodate))
-        lct.SetItemData(idx, dataidx)
-        lct.SetItem(idx, 1, self._ess(ib.suppliedby))
-        lct.SetItem(idx, 2,  self._ess(ib.infocontent))
+    #def _add_ibline(self, dataidx,  ib : PictureInfoBit):
+    #    lct = self.m_zusatzinfoLCT
+    #    idx = lct.InsertItem(lct.GetColumnCount(), self._eds(ib.infodate))
+    #    lct.SetItemData(idx, dataidx)
+    #    lct.SetItem(idx, 1, self._ess(ib.suppliedby))
+    #    lct.SetItem(idx, 2,  self._ess(ib.infocontent))
 
     def _fill_ibcols(self):
         if self._picture.pictinfobits is None: return
 
-        idx = 0
-        for ib in self._picture.pictinfobits:
-            self._add_ibline(idx, ib)
-            idx += 1
+        GuiHelper.set_data_for_lstctrl(self.m_zusatzinfoLCT,
+                                       self.PICTINFODEFINS,
+                                       self._picture.pictinfobits)
+
+    def _fill_connpersons(self):
+        self._picinters = sqp.SQQuery(self._fact, PersonPictureInter_Hollow).where(PersonPictureInter_Hollow.PictureId==self._picture._id).as_list()
+        for picinter in self._picinters:
+            self._fact.fill_joins(picinter, PersonPictureInter_Hollow.Person)
+
+        self._picinters.sort(key=attrgetter("person.name", "person.firstname"))
+
+        GuiHelper.set_data_for_lstctrl(self.m_persoOnPicLCTRL,
+                                       self.CONNNPERSINFODEFINS,
+                                       self._picinters)
+
 
     def pgshow(self, arg):
         return arg.name
     
     def _fill_dialog(self):
         p = self._picture
-        self._fact.fill_joins(p, Picture.PictInfoBits, 
+        self._fact.fill_joins(p, 
+                              Picture.PictInfoBits, 
                               Picture.PictureGroup)
         GuiHelper.set_val(self.m_kennummerTB, p.readableid)
         GuiHelper.set_sqp_objval(self.m_groupCB, p.picturegroup, self.pgshow, self._pictgroups)
@@ -96,6 +124,7 @@ class EditPictureDialog(gg.geditPictureDialog):
         GuiHelper.set_val(self.m_fluffytakenyearSPCTRL, p.fluftakenyear)
         self._display_document()
         self._fill_ibcols()
+        self._fill_connpersons()
 
     def showmodal(self):
         self._fill_dialog()
@@ -235,7 +264,10 @@ class EditPictureDialog(gg.geditPictureDialog):
 
         self._picture.pictinfobits.append(newib)
         idx = len(self._picture.pictinfobits)-1
-        self._add_ibline(idx, newib)
+        GuiHelper.append_data_for_lstctrl(self.m_zusatzinfoLCT,
+                                          self.PICTINFODEFINS,
+                                          newib)
+        #self._add_ibline(idx, newib)
 
     def editInfoBit(self, event):
         selib = GuiHelper.get_selected_fromlctrl(self.m_zusatzinfoLCT, self._picture.pictinfobits)
@@ -269,5 +301,42 @@ class EditPictureDialog(gg.geditPictureDialog):
                 self._picture.pictinfobits.pop(remid)
 
             self._fill_ibcols()
+    
+    def personSelected(self, event):
+        selpinter = GuiHelper.get_selected_fromlctrl(self.m_persoOnPicLCTRL, self._picinters)
+        GuiHelper.enable_ctrls(selpinter is not None, self.m_disconnectPersonBU)
+
+    def personDeselected(self, event):
+        selpinter = GuiHelper.get_selected_fromlctrl(self.m_persoOnPicLCTRL, self._picinters)
+        GuiHelper.enable_ctrls(selpinter is not None, self.m_disconnectPersonBU)
+
+    def addPerson(self, event):
+        alreadyconn = []
+        for connper in self._picinters:
+            alreadyconn.append(connper.personid)
+
+        addpidial = FindPersonsDialog(self, self._fact, alreadyconn)
+        res = addpidial.showmodal()
+
+        if res == wx.ID_CANCEL: return
+
+        #adding one ore more person link to the current pictuere now
+        for adper in addpidial.selected:
+            inter = PersonPictureInter_Hollow(pictureid=self._picture._id,
+                                              personid=adper._id)
+            self._fact.flush(inter)
+
+        self._fill_connpersons()
+        
+        
+    def removePerson(self, event):
+        selpinter = GuiHelper.get_selected_fromlctrl(self.m_persoOnPicLCTRL, self._picinters)
+
+        if selpinter is None: return
+
+        self._fact.delete(selpinter)
+        self._fill_connpersons()
+
+
 
         

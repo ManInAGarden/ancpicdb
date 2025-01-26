@@ -352,7 +352,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
         GuiHelper.enable_ctrls(False, self.m_folderUploadBU)
 
-    def preparePrint(self, event):
+    def doPreparePrint(self, event):
         """create a list (csv) with info of the selected pictures, ready to be used in a abel print
         """
         selpics = GuiHelper.get_all_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
