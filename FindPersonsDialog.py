@@ -84,7 +84,7 @@ class FindPersonsDialog(gg.gFindPersonsDialog):
             if self._filterexp is None:
                 self._filterexp = subexp
             else:
-                self._filterexp = self._filterexp and (subexp)
+                self._filterexp = (self._filterexp) & (subexp)
 
         self._fill_gui()
 
