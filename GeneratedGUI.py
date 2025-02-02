@@ -970,19 +970,19 @@ class gPicturesViewDialog ( wx.Dialog ):
 
 		bSizer10.Add( self.m_folderUploadBU, 0, wx.ALL, 5 )
 
-		self.m_workingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
-		self.m_workingGAUGE.SetValue( 0 )
-		self.m_workingGAUGE.Hide()
-		self.m_workingGAUGE.SetToolTip( u"Fortschritt der Hintergrundaufgabe" )
-
-		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 5 )
-
 		self.m_preparePrintBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_preparePrintBU.SetBitmap( wx.Bitmap( u"ressources/icons8-print-32.png", wx.BITMAP_TYPE_ANY ) )
 		self.m_preparePrintBU.Enable( False )
 
 		bSizer10.Add( self.m_preparePrintBU, 0, wx.ALL, 5 )
+
+		self.m_workingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_workingGAUGE.SetValue( 0 )
+		self.m_workingGAUGE.Hide()
+		self.m_workingGAUGE.SetToolTip( u"Fortschritt der Hintergrundaufgabe" )
+
+		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 5 )
 
 
 		gbSizer6.Add( bSizer10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
