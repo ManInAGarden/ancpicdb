@@ -7,6 +7,7 @@ from PersistClasses import Document, DocTypeCat
 import sqlitepersist as sqp
 from ConfigReader import ConfigReader
 from EditDocumentDialog import EditDocumentDialog
+from ConnectedPersonsDialog import ConnectedPersonsDialog
 
 class DocumentsViewDialog(gg.gDocumentsViewDialog):
 
@@ -108,4 +109,40 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
             return
         
         self._filldialog()
+
+    def downloadDocument(self, event):
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+
+        if seldoc is None: return
         
+
+    def documentSelected(self, event):
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+        
+        GuiHelper.enable_ctrls(seldoc != None, 
+                                   self.m_downloadDocumentBU, 
+                                   self.m_editBU,
+                                   self.m_deleteDocumentBU,
+                                   self.m_preparePrintBU,
+                                   self.m_showConnectedPersonsBU)
+        
+    def documentDeselected(self, event):
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+        
+        GuiHelper.enable_ctrls(seldoc != None, 
+                                   self.m_downloadDocumentBU, 
+                                   self.m_editBU,
+                                   self.m_deleteDocumentBU,
+                                   self.m_preparePrintBU,
+                                   self.m_showConnectedPersonsBU)
+        
+    def showConnectedPersons(self, event):
+        """display and edit the connections to persons of the selected document or to the first selected document
+           if more than one is selected
+        """
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+        
+        if seldoc is None: return
+
+        conndial = ConnectedPersonsDialog(self, self._fact, seldoc)
+        conndial.showmodal()

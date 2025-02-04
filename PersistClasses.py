@@ -339,6 +339,14 @@ class PersonPictureInter_Hollow(sqp.PBase):
      Subtitle = sqp.String()
      Position = sqp.Int(default=0)
 
+class PersonDocumentInter_Hollow(sqp.PBase):
+     """class for person/document intersections to be filled as needed in a prog"""
+     _collectionname = "PersonDocumentInter".lower()
+     DocumentId = sqp.UUid(uniquegrp="perspicunique")
+     PersonId = sqp.UUid(uniquegrp="perspicunique")
+     Document = sqp.JoinedEmbeddedObject(targettype=Document, localid="documentid", autofill=False)
+     Person = sqp.JoinedEmbeddedObject(targettype=Person, localid="personid", autofill=False)
+
 
 class FullPerson(Person):
      _collectionname = "Person" #do not use a separate table for this class. It's only 

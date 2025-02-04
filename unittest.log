@@ -25551,3 +25551,1179 @@ ST EXEC: DROP TABLE persondocumentinter
 19.01.2025 19:33:36,001592 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
 19.01.2025 19:33:36,007748 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
 19.01.2025 19:33:36,015747 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:03:38,737777 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:03:38,739782 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:03:38,739782 DEBUG: ST ERROR: table catalog already exists
+03.02.2025 08:03:38,739782 DEBUG: ST table catalog already exists
+03.02.2025 08:03:38,739782 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:03:38,739782 DEBUG: ST ERROR: table commoninter already exists
+03.02.2025 08:03:38,739782 DEBUG: ST table commoninter already exists
+03.02.2025 08:03:38,750438 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:03:38,751037 DEBUG: ST ERROR: table person already exists
+03.02.2025 08:03:38,751037 DEBUG: ST table person already exists
+03.02.2025 08:03:38,751037 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:03:38,751037 DEBUG: ST ERROR: table personinfobit already exists
+03.02.2025 08:03:38,751037 DEBUG: ST table personinfobit already exists
+03.02.2025 08:03:38,751037 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:03:38,751037 DEBUG: ST ERROR: table datagroup already exists
+03.02.2025 08:03:38,751037 DEBUG: ST table datagroup already exists
+03.02.2025 08:03:38,751037 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:03:38,751037 DEBUG: ST ERROR: table picture already exists
+03.02.2025 08:03:38,751037 DEBUG: ST table picture already exists
+03.02.2025 08:03:38,751037 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:03:38,751037 DEBUG: ST ERROR: table pictureinfobit already exists
+03.02.2025 08:03:38,751037 DEBUG: ST table pictureinfobit already exists
+03.02.2025 08:03:38,751037 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:03:38,751037 DEBUG: ST ERROR: table document already exists
+03.02.2025 08:03:38,751037 DEBUG: ST table document already exists
+03.02.2025 08:03:38,751037 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:03:38,751037 DEBUG: ST ERROR: table documentinfobit already exists
+03.02.2025 08:03:38,751037 DEBUG: ST table documentinfobit already exists
+03.02.2025 08:03:38,751037 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:03:38,766661 DEBUG: ST ERROR: table personpictureinter already exists
+03.02.2025 08:03:38,766661 DEBUG: ST table personpictureinter already exists
+03.02.2025 08:03:38,767720 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:03:38,767720 DEBUG: ST ERROR: table persondocumentinter already exists
+03.02.2025 08:03:38,767720 DEBUG: ST table persondocumentinter already exists
+03.02.2025 08:03:38,767720 DEBUG: ST EXEC: DROP TABLE catalog 
+03.02.2025 08:03:38,791794 DEBUG: ST EXEC: DROP TABLE commoninter 
+03.02.2025 08:03:38,804681 DEBUG: ST EXEC: DROP TABLE person 
+03.02.2025 08:03:38,817752 DEBUG: ST EXEC: DROP TABLE personinfobit 
+03.02.2025 08:03:38,817752 DEBUG: ST EXEC: DROP TABLE datagroup 
+03.02.2025 08:03:38,817752 DEBUG: ST EXEC: DROP TABLE picture 
+03.02.2025 08:03:38,834408 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+03.02.2025 08:03:38,834408 DEBUG: ST EXEC: DROP TABLE document 
+03.02.2025 08:03:38,851132 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+03.02.2025 08:03:38,851132 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+03.02.2025 08:03:38,867758 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+03.02.2025 08:04:17,219331 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:04:17,235915 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:04:17,235915 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:04:17,252654 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:04:17,269342 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:04:17,269342 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:04:17,288412 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:04:17,291392 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:04:17,302681 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:04:17,302681 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:04:17,302681 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:04:17,319388 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:04:17,335997 DEBUG: ST EXEC: DROP TABLE catalog 
+03.02.2025 08:04:17,359088 DEBUG: ST EXEC: DROP TABLE commoninter 
+03.02.2025 08:04:17,369938 DEBUG: ST EXEC: DROP TABLE person 
+03.02.2025 08:04:17,388957 DEBUG: ST EXEC: DROP TABLE personinfobit 
+03.02.2025 08:04:17,395952 DEBUG: ST EXEC: DROP TABLE datagroup 
+03.02.2025 08:04:17,402103 DEBUG: ST EXEC: DROP TABLE picture 
+03.02.2025 08:04:17,402103 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+03.02.2025 08:04:17,417728 DEBUG: ST EXEC: DROP TABLE document 
+03.02.2025 08:04:17,417728 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+03.02.2025 08:04:17,433351 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+03.02.2025 08:04:17,448975 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+03.02.2025 08:05:29,596823 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:05:29,612448 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:05:29,612448 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:05:29,635616 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:29,639501 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:29,655144 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:29,703505 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:29,703505 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:29,719110 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:29,719110 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:29,736677 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:05:29,736677 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:05:29,752302 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:29,773743 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:29,773743 DEBUG: ST EXEC: DROP TABLE catalog 
+03.02.2025 08:05:29,790767 DEBUG: ST EXEC: DROP TABLE commoninter 
+03.02.2025 08:05:29,801705 DEBUG: ST EXEC: DROP TABLE person 
+03.02.2025 08:05:29,810756 DEBUG: ST EXEC: DROP TABLE personinfobit 
+03.02.2025 08:05:29,819709 DEBUG: ST EXEC: DROP TABLE datagroup 
+03.02.2025 08:05:29,835333 DEBUG: ST EXEC: DROP TABLE picture 
+03.02.2025 08:05:29,835333 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+03.02.2025 08:05:29,835333 DEBUG: ST EXEC: DROP TABLE document 
+03.02.2025 08:05:29,850958 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+03.02.2025 08:05:29,850958 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+03.02.2025 08:05:29,866580 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+03.02.2025 08:05:49,430581 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:05:49,454883 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:05:49,456501 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:05:49,472128 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:49,472128 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:49,487763 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:49,487763 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:49,503386 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:49,503386 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:49,518997 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:05:49,534647 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:05:49,550245 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:05:49,565879 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,581493 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,581493 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,581493 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,581493 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,603887 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,604541 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,612883 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,613884 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,622595 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,623595 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,624778 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,624778 DEBUG: ST EXEC: SELECT * FROM picture WHERE title IN ('AddQuerPic01', 'AddQuerPic02')
+03.02.2025 08:05:49,624778 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,636345 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <title> contents: <AddQuerPic01>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <_id> contents: <056e0d35694143369835c9587086b723>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,637237 DEBUG: DF DF: field: <_id> contents: <d22deeb34f5c4cd5a65be16366ba77a7>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.605261>
+03.02.2025 08:05:49,652862 DEBUG: ST EXEC: SELECT * FROM picture WHERE (title = 'AddQuerPic01' OR title = 'AddQuerPic02')
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <title> contents: <AddQuerPic01>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <_id> contents: <056e0d35694143369835c9587086b723>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,652862 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <_id> contents: <d22deeb34f5c4cd5a65be16366ba77a7>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.605261>
+03.02.2025 08:05:49,668485 DEBUG: ST EXEC: SELECT * FROM picture WHERE (title = 'AddQuerPic01' OR title = 'AddQuerPic02')
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <title> contents: <AddQuerPic01>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <_id> contents: <056e0d35694143369835c9587086b723>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,668485 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <_id> contents: <d22deeb34f5c4cd5a65be16366ba77a7>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.581493>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.605261>
+03.02.2025 08:05:49,684109 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <code> contents: <MONTH09>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <value> contents: <September>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <_id> contents: <91110aa264084d3ab32ea6271fd0c8dc>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,684109 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,699751 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,721478 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,722478 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,724580 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,724580 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:05:49,724580 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:05:49,724580 DEBUG: DF DF: field: <code> contents: <MONTH10>
+03.02.2025 08:05:49,724580 DEBUG: DF DF: field: <value> contents: <Oktober>
+03.02.2025 08:05:49,724580 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:05:49,724580 DEBUG: DF DF: field: <_id> contents: <2e6523c2a1b145d584c547bc0110f3cc>
+03.02.2025 08:05:49,724580 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,724580 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,724580 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,737260 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,737260 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,737260 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,737260 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:05:49,737260 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:05:49,737260 DEBUG: DF DF: field: <code> contents: <MONTH11>
+03.02.2025 08:05:49,737260 DEBUG: DF DF: field: <value> contents: <November>
+03.02.2025 08:05:49,737260 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:05:49,752886 DEBUG: DF DF: field: <_id> contents: <95746550aa6a4a6dac83e4109bd912f6>
+03.02.2025 08:05:49,752886 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,752886 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,752886 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,752886 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,752886 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,752886 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,752886 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1963 AND fluftakenmonth = 'MONTH10')
+03.02.2025 08:05:49,752886 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,752886 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,752886 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,752886 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.724580>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <fluftakenyear> contents: <1963>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <_id> contents: <6fa3c0776e5a40438ada4935f057fd49>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.724580>
+03.02.2025 08:05:49,768510 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.737260>
+03.02.2025 08:05:49,768510 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,784776 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,785775 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,791842 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,791842 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,805898 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,806917 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,811948 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,811948 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,824541 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,824541 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,824541 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,837181 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1970 AND scandate IS NULL)
+03.02.2025 08:05:49,837275 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1970 AND takendate IS NULL)
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.768510>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <title> contents: <AddQuerPic10>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <_id> contents: <d89696573aa14768a3d53ff3db1fc535>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.768510>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.787412>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.791842>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:05:49,837275 DEBUG: DF DF: field: <title> contents: <AddQuerPic20>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <_id> contents: <84df4692b4d04f55b98c3de19be927c0>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.791842>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.806917>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.811948>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <title> contents: <AddQuerPic30>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <_id> contents: <abf76f1a24b146a79fe1fcf1b193b729>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.811948>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.824541>
+03.02.2025 08:05:49,852900 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1970 AND scandate IS NOT NULL)
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,852900 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,868539 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.768510>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <title> contents: <AddQuerPic10>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <_id> contents: <d89696573aa14768a3d53ff3db1fc535>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.768510>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.787412>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.791842>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <title> contents: <AddQuerPic20>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <_id> contents: <84df4692b4d04f55b98c3de19be927c0>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.791842>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.806917>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,870344 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.811948>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <title> contents: <AddQuerPic30>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <_id> contents: <abf76f1a24b146a79fe1fcf1b193b729>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.811948>
+03.02.2025 08:05:49,885968 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.824541>
+03.02.2025 08:05:49,885968 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,939512 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,940513 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,941654 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,941654 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,953207 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,954226 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,956714 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,956714 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,956714 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,956714 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,972361 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,972361 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:05:49,972361 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:05:49,972361 DEBUG: DF DF: field: <code> contents: <MONTH12>
+03.02.2025 08:05:49,972361 DEBUG: DF DF: field: <value> contents: <Dezember>
+03.02.2025 08:05:49,972361 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:05:49,972361 DEBUG: DF DF: field: <_id> contents: <76e0b773b0ad431db5cb3717b20320d3>
+03.02.2025 08:05:49,972361 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,972361 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.565879>
+03.02.2025 08:05:49,972361 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,972361 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,972361 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:05:49,987963 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:05:49,987963 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1965 AND title LIKE '%Like%')
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.885968>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <title> contents: <AddLikeQuerPic01>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <_id> contents: <81a41cac6b764ba0a0ca94f482a87e76>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.885968>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.941654>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.941654>
+03.02.2025 08:05:49,987963 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <title> contents: <AddLikeQuerPic02>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <_id> contents: <54b58dd412a94c9a97eba23bd177c25c>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.941654>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.955225>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.956714>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <title> contents: <AddLikeQuerPic03>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <_id> contents: <8cd9fdbc1c364c36a5079960fe1d7c71>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.956714>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.956714>
+03.02.2025 08:05:50,003587 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1965 AND title NOT LIKE '%Like%')
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:05:50,003587 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:05:50,019669 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:05:49.972361>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <title> contents: <AddNotQueryPic04>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <_id> contents: <8e484bcb737143f0883a4ad25126b5f5>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:05:49.972361>
+03.02.2025 08:05:50,021388 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:05:49.972361>
+03.02.2025 08:06:04,973019 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:04,985489 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:04,985489 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:04,992537 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:04,992537 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:05,005196 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:05,005610 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:05,005610 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:05,005610 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:05,018773 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:05,018773 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:05,035545 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:05,036564 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:05,042226 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:05,042226 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:05,056745 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:06:05,056745 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1965 AND title LIKE '010%Like%') LIMIT 2
+03.02.2025 08:06:05,056745 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:06:05,056745 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:06:05,056745 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:06:05,056745 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:06:05,056745 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:06:04.972020>
+03.02.2025 08:06:05,056745 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:06:05,066799 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <title> contents: <010LimitLikeQuerPic01>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <_id> contents: <4e1b1aec74ae49c291e87e58276ff3b7>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:06:04.974033>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:06:04.986489>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:06:04.992537>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <title> contents: <010LimitLikeQuerPic02>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <_id> contents: <5bb3f3b9e2cd49e5a7a701a20f1325a2>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:06:04.992537>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:06:05.005610>
+03.02.2025 08:06:05,067925 DEBUG: ST EXEC: SELECT * FROM picture WHERE ((fluftakenyear = 1965 AND title LIKE '010%') AND title NOT LIKE '%Like%') LIMIT 2
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:06:05,067925 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:06:05,083793 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:06:05.036564>
+03.02.2025 08:06:05,084792 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:06:05,086241 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:06:05,087358 DEBUG: DF DF: field: <title> contents: <010LimitNotQueryPic04>
+03.02.2025 08:06:05,087358 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:06:05,088357 DEBUG: DF DF: field: <_id> contents: <08fbbb841a554620885e5535fbbf7916>
+03.02.2025 08:06:05,089356 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:06:05.037544>
+03.02.2025 08:06:05,089773 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:06:05.042226>
+03.02.2025 08:06:05,090773 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:06:05,105327 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:08:03,143369 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:08:03,143369 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:08:03,143369 DEBUG: ST ERROR: table catalog already exists
+03.02.2025 08:08:03,143369 DEBUG: ST table catalog already exists
+03.02.2025 08:08:03,158993 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:08:03,158993 DEBUG: ST ERROR: table commoninter already exists
+03.02.2025 08:08:03,158993 DEBUG: ST table commoninter already exists
+03.02.2025 08:08:03,158993 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:03,158993 DEBUG: ST ERROR: table person already exists
+03.02.2025 08:08:03,158993 DEBUG: ST table person already exists
+03.02.2025 08:08:03,158993 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:03,158993 DEBUG: ST ERROR: table personinfobit already exists
+03.02.2025 08:08:03,158993 DEBUG: ST table personinfobit already exists
+03.02.2025 08:08:03,158993 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:03,158993 DEBUG: ST ERROR: table datagroup already exists
+03.02.2025 08:08:03,158993 DEBUG: ST table datagroup already exists
+03.02.2025 08:08:03,158993 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:03,158993 DEBUG: ST ERROR: table picture already exists
+03.02.2025 08:08:03,158993 DEBUG: ST table picture already exists
+03.02.2025 08:08:03,158993 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:03,158993 DEBUG: ST ERROR: table pictureinfobit already exists
+03.02.2025 08:08:03,158993 DEBUG: ST table pictureinfobit already exists
+03.02.2025 08:08:03,174616 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:03,174616 DEBUG: ST ERROR: table document already exists
+03.02.2025 08:08:03,174616 DEBUG: ST table document already exists
+03.02.2025 08:08:03,174616 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:03,174616 DEBUG: ST ERROR: table documentinfobit already exists
+03.02.2025 08:08:03,174616 DEBUG: ST table documentinfobit already exists
+03.02.2025 08:08:03,174616 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:08:03,174616 DEBUG: ST ERROR: table personpictureinter already exists
+03.02.2025 08:08:03,174616 DEBUG: ST table personpictureinter already exists
+03.02.2025 08:08:03,174616 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:08:03,174616 DEBUG: ST ERROR: table persondocumentinter already exists
+03.02.2025 08:08:03,174616 DEBUG: ST table persondocumentinter already exists
+03.02.2025 08:08:03,174616 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:08:03,199978 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:08:15,257109 DEBUG: ST EXEC: DROP TABLE catalog 
+03.02.2025 08:08:15,269806 DEBUG: ST EXEC: DROP TABLE commoninter 
+03.02.2025 08:08:15,277990 DEBUG: ST EXEC: DROP TABLE person 
+03.02.2025 08:08:15,286988 DEBUG: ST EXEC: DROP TABLE personinfobit 
+03.02.2025 08:08:15,291275 DEBUG: ST EXEC: DROP TABLE datagroup 
+03.02.2025 08:08:15,306256 DEBUG: ST EXEC: DROP TABLE picture 
+03.02.2025 08:08:15,317852 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+03.02.2025 08:08:15,327844 DEBUG: ST EXEC: DROP TABLE document 
+03.02.2025 08:08:15,337698 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+03.02.2025 08:08:15,337698 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+03.02.2025 08:08:15,352198 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+03.02.2025 08:08:35,405182 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:08:35,421866 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:08:35,438582 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:08:35,438582 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:35,455391 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:35,455391 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:35,471610 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:35,471610 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:35,488795 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:35,488795 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:08:35,504420 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:08:35,520724 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:08:35,541110 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:08:35,555364 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:10:55,246895 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:10:55,263420 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:10:55,263615 DEBUG: ST ERROR: table catalog already exists
+03.02.2025 08:10:55,263615 DEBUG: ST table catalog already exists
+03.02.2025 08:10:55,263615 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:10:55,263615 DEBUG: ST ERROR: table commoninter already exists
+03.02.2025 08:10:55,263615 DEBUG: ST table commoninter already exists
+03.02.2025 08:10:55,263615 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:10:55,263615 DEBUG: ST ERROR: table person already exists
+03.02.2025 08:10:55,263615 DEBUG: ST table person already exists
+03.02.2025 08:10:55,263615 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:10:55,263615 DEBUG: ST ERROR: table personinfobit already exists
+03.02.2025 08:10:55,263615 DEBUG: ST table personinfobit already exists
+03.02.2025 08:10:55,263615 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:10:55,263615 DEBUG: ST ERROR: table datagroup already exists
+03.02.2025 08:10:55,263615 DEBUG: ST table datagroup already exists
+03.02.2025 08:10:55,263615 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:10:55,263615 DEBUG: ST ERROR: table picture already exists
+03.02.2025 08:10:55,263615 DEBUG: ST table picture already exists
+03.02.2025 08:10:55,263615 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:10:55,263615 DEBUG: ST ERROR: table pictureinfobit already exists
+03.02.2025 08:10:55,263615 DEBUG: ST table pictureinfobit already exists
+03.02.2025 08:10:55,279508 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:10:55,280109 DEBUG: ST ERROR: table document already exists
+03.02.2025 08:10:55,280109 DEBUG: ST table document already exists
+03.02.2025 08:10:55,280109 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:10:55,280109 DEBUG: ST ERROR: table documentinfobit already exists
+03.02.2025 08:10:55,280109 DEBUG: ST table documentinfobit already exists
+03.02.2025 08:10:55,280109 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:10:55,280109 DEBUG: ST ERROR: table personpictureinter already exists
+03.02.2025 08:10:55,280109 DEBUG: ST table personpictureinter already exists
+03.02.2025 08:10:55,280109 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:10:55,280109 DEBUG: ST ERROR: table persondocumentinter already exists
+03.02.2025 08:10:55,280109 DEBUG: ST table persondocumentinter already exists
+03.02.2025 08:10:55,280109 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:10:55,299773 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:10:55,302761 DEBUG: ST EXEC: DROP TABLE catalog 
+03.02.2025 08:10:55,304570 DEBUG: ST EXEC: DROP TABLE commoninter 
+03.02.2025 08:10:55,317889 DEBUG: ST EXEC: DROP TABLE person 
+03.02.2025 08:10:55,325885 DEBUG: ST EXEC: DROP TABLE personinfobit 
+03.02.2025 08:10:55,334993 DEBUG: ST EXEC: DROP TABLE datagroup 
+03.02.2025 08:10:55,342680 DEBUG: ST EXEC: DROP TABLE picture 
+03.02.2025 08:10:55,356796 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+03.02.2025 08:10:55,366221 DEBUG: ST EXEC: DROP TABLE document 
+03.02.2025 08:10:55,366221 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+03.02.2025 08:10:55,380135 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+03.02.2025 08:10:55,380135 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+03.02.2025 08:11:12,696901 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:11:12,712513 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:11:12,712513 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:11:12,728136 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:11:12,728136 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:11:12,743759 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:11:12,743759 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:11:12,759383 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:11:12,759383 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:11:12,775007 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:11:12,775007 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:11:12,790631 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:11:12,806268 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:11:12,821879 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:17:58,684732 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:17:58,697358 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:17:58,697358 DEBUG: ST ERROR: table catalog already exists
+03.02.2025 08:17:58,697358 DEBUG: ST table catalog already exists
+03.02.2025 08:17:58,697358 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:17:58,697358 DEBUG: ST ERROR: table commoninter already exists
+03.02.2025 08:17:58,697358 DEBUG: ST table commoninter already exists
+03.02.2025 08:17:58,697358 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:17:58,697358 DEBUG: ST ERROR: table person already exists
+03.02.2025 08:17:58,697358 DEBUG: ST table person already exists
+03.02.2025 08:17:58,697358 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:17:58,697358 DEBUG: ST ERROR: table personinfobit already exists
+03.02.2025 08:17:58,697358 DEBUG: ST table personinfobit already exists
+03.02.2025 08:17:58,697358 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:17:58,697358 DEBUG: ST ERROR: table datagroup already exists
+03.02.2025 08:17:58,697358 DEBUG: ST table datagroup already exists
+03.02.2025 08:17:58,697358 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:17:58,712982 DEBUG: ST ERROR: table picture already exists
+03.02.2025 08:17:58,713938 DEBUG: ST table picture already exists
+03.02.2025 08:17:58,713938 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:17:58,713938 DEBUG: ST ERROR: table pictureinfobit already exists
+03.02.2025 08:17:58,713938 DEBUG: ST table pictureinfobit already exists
+03.02.2025 08:17:58,713938 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:17:58,713938 DEBUG: ST ERROR: table document already exists
+03.02.2025 08:17:58,713938 DEBUG: ST table document already exists
+03.02.2025 08:17:58,713938 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:17:58,713938 DEBUG: ST ERROR: table documentinfobit already exists
+03.02.2025 08:17:58,713938 DEBUG: ST table documentinfobit already exists
+03.02.2025 08:17:58,713938 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:17:58,713938 DEBUG: ST ERROR: table personpictureinter already exists
+03.02.2025 08:17:58,713938 DEBUG: ST table personpictureinter already exists
+03.02.2025 08:17:58,713938 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:17:58,713938 DEBUG: ST ERROR: table persondocumentinter already exists
+03.02.2025 08:17:58,713938 DEBUG: ST table persondocumentinter already exists
+03.02.2025 08:17:58,713938 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:17:58,735051 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:17:58,736050 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:17:58,737050 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:17:58,737955 DEBUG: DF DF: field: <code> contents: <MONTH01>
+03.02.2025 08:17:58,737955 DEBUG: DF DF: field: <value> contents: <Januar>
+03.02.2025 08:17:58,737955 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:17:58,737955 DEBUG: DF DF: field: <_id> contents: <494bd0e8ee0f40e9b0acb745abdeeecc>
+03.02.2025 08:17:58,737955 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:11:12.806268>
+03.02.2025 08:17:58,737955 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:11:12.806268>
+03.02.2025 08:17:58,737955 DEBUG: ST EXEC: DROP TABLE catalog 
+03.02.2025 08:17:58,755696 DEBUG: ST EXEC: DROP TABLE commoninter 
+03.02.2025 08:17:58,767363 DEBUG: ST EXEC: DROP TABLE person 
+03.02.2025 08:17:58,780041 DEBUG: ST EXEC: DROP TABLE personinfobit 
+03.02.2025 08:17:58,785733 DEBUG: ST EXEC: DROP TABLE datagroup 
+03.02.2025 08:17:58,785733 DEBUG: ST EXEC: DROP TABLE picture 
+03.02.2025 08:17:58,797299 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+03.02.2025 08:17:58,797299 DEBUG: ST EXEC: DROP TABLE document 
+03.02.2025 08:17:58,797299 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+03.02.2025 08:17:58,813944 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+03.02.2025 08:17:58,829568 DEBUG: ST EXEC: DROP TABLE persondocumentinter 
+03.02.2025 08:18:08,973275 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:18:08,973275 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:18:08,988899 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:18:08,988899 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:09,004533 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:09,004533 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:09,020157 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:09,020157 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:09,035770 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:09,035770 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:09,051394 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:18:09,051394 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:18:09,098301 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:18:09,114683 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:18:09,115682 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:18:09,116681 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:18:09,117680 DEBUG: DF DF: field: <code> contents: <MONTH01>
+03.02.2025 08:18:09,117680 DEBUG: DF DF: field: <value> contents: <Januar>
+03.02.2025 08:18:09,118680 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:18:09,119679 DEBUG: DF DF: field: <_id> contents: <65de4b8cdded4bb7b6c29bb3f36afd03>
+03.02.2025 08:18:09,119679 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:18:09,120712 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:18:51,111447 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:18:51,111447 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:18:51,128179 DEBUG: ST ERROR: table catalog already exists
+03.02.2025 08:18:51,128179 DEBUG: ST table catalog already exists
+03.02.2025 08:18:51,128179 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:18:51,128179 DEBUG: ST ERROR: table commoninter already exists
+03.02.2025 08:18:51,128179 DEBUG: ST table commoninter already exists
+03.02.2025 08:18:51,128179 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:51,128179 DEBUG: ST ERROR: table person already exists
+03.02.2025 08:18:51,128179 DEBUG: ST table person already exists
+03.02.2025 08:18:51,128179 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:51,128179 DEBUG: ST ERROR: table personinfobit already exists
+03.02.2025 08:18:51,128179 DEBUG: ST table personinfobit already exists
+03.02.2025 08:18:51,128179 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:51,128179 DEBUG: ST ERROR: table datagroup already exists
+03.02.2025 08:18:51,128179 DEBUG: ST table datagroup already exists
+03.02.2025 08:18:51,128179 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:51,128179 DEBUG: ST ERROR: table picture already exists
+03.02.2025 08:18:51,128179 DEBUG: ST table picture already exists
+03.02.2025 08:18:51,128179 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:51,128179 DEBUG: ST ERROR: table pictureinfobit already exists
+03.02.2025 08:18:51,143803 DEBUG: ST table pictureinfobit already exists
+03.02.2025 08:18:51,144842 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:51,144842 DEBUG: ST ERROR: table document already exists
+03.02.2025 08:18:51,144842 DEBUG: ST table document already exists
+03.02.2025 08:18:51,144842 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:18:51,144842 DEBUG: ST ERROR: table documentinfobit already exists
+03.02.2025 08:18:51,144842 DEBUG: ST table documentinfobit already exists
+03.02.2025 08:18:51,144842 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:18:51,144842 DEBUG: ST ERROR: table personpictureinter already exists
+03.02.2025 08:18:51,144842 DEBUG: ST table personpictureinter already exists
+03.02.2025 08:18:51,144842 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:18:51,144842 DEBUG: ST ERROR: table persondocumentinter already exists
+03.02.2025 08:18:51,144842 DEBUG: ST table persondocumentinter already exists
+03.02.2025 08:18:51,144842 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:18:51,163436 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:18:51,163436 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:18:51,163436 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:18:51,163436 DEBUG: DF DF: field: <code> contents: <MONTH01>
+03.02.2025 08:18:51,163436 DEBUG: DF DF: field: <value> contents: <Januar>
+03.02.2025 08:18:51,163436 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:18:51,163436 DEBUG: DF DF: field: <_id> contents: <65de4b8cdded4bb7b6c29bb3f36afd03>
+03.02.2025 08:18:51,163436 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:18:51,163436 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,403788 INFO: Setting db debug leveling to DATAFILL
+03.02.2025 08:19:37,420416 DEBUG: ST EXEC: CREATE TABLE catalog (type TEXT,code TEXT,value TEXT,langcode TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _CAT_UNI_01 UNIQUE(type, code, langcode))
+03.02.2025 08:19:37,420416 DEBUG: ST ERROR: table catalog already exists
+03.02.2025 08:19:37,420416 DEBUG: ST table catalog already exists
+03.02.2025 08:19:37,420416 DEBUG: ST EXEC: CREATE TABLE commoninter (upid TEXT,downid TEXT,intertype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT _COMN_INTER_UNI UNIQUE(upid, downid, intertype))
+03.02.2025 08:19:37,420416 DEBUG: ST ERROR: table commoninter already exists
+03.02.2025 08:19:37,420416 DEBUG: ST table commoninter already exists
+03.02.2025 08:19:37,420416 DEBUG: ST EXEC: CREATE TABLE person (name TEXT,firstname TEXT,rufname TEXT,biosex TEXT,nameofbirth TEXT,birthdate TIMESTAMP,birthyear INTEGER,birthmonth TEXT,deathdate TIMESTAMP,deathmonth TEXT,deathyear INTEGER,fatherid TEXT,motherid TEXT,infotext TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:19:37,420416 DEBUG: ST ERROR: table person already exists
+03.02.2025 08:19:37,420416 DEBUG: ST table person already exists
+03.02.2025 08:19:37,420416 DEBUG: ST EXEC: CREATE TABLE personinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:19:37,420416 DEBUG: ST ERROR: table personinfobit already exists
+03.02.2025 08:19:37,420416 DEBUG: ST table personinfobit already exists
+03.02.2025 08:19:37,420416 DEBUG: ST EXEC: CREATE TABLE datagroup (name TEXT,ordernum INTEGER,grouptype TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:19:37,420416 DEBUG: ST ERROR: table datagroup already exists
+03.02.2025 08:19:37,420416 DEBUG: ST table datagroup already exists
+03.02.2025 08:19:37,420416 DEBUG: ST EXEC: CREATE TABLE picture (readableid TEXT,groupid TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,takendate TIMESTAMP,fluftakenmonth TEXT,fluftakenyear INTEGER,title TEXT,settledinformation TEXT,quality TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:19:37,436195 DEBUG: ST ERROR: table picture already exists
+03.02.2025 08:19:37,437036 DEBUG: ST table picture already exists
+03.02.2025 08:19:37,437036 DEBUG: ST EXEC: CREATE TABLE pictureinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:19:37,437036 DEBUG: ST ERROR: table pictureinfobit already exists
+03.02.2025 08:19:37,437036 DEBUG: ST table pictureinfobit already exists
+03.02.2025 08:19:37,437036 DEBUG: ST EXEC: CREATE TABLE document (readableid TEXT,groupid TEXT,title TEXT,filepath TEXT,ext TEXT,scandate TIMESTAMP,type TEXT,productiondate TIMESTAMP,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:19:37,437036 DEBUG: ST ERROR: table document already exists
+03.02.2025 08:19:37,437036 DEBUG: ST table document already exists
+03.02.2025 08:19:37,437036 DEBUG: ST EXEC: CREATE TABLE documentinfobit (targetid TEXT,infocontent TEXT,infodate TIMESTAMP,suppliedby TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP)
+03.02.2025 08:19:37,437036 DEBUG: ST ERROR: table documentinfobit already exists
+03.02.2025 08:19:37,437036 DEBUG: ST table documentinfobit already exists
+03.02.2025 08:19:37,437036 DEBUG: ST EXEC: CREATE TABLE personpictureinter (pictureid TEXT,personid TEXT,subtitle TEXT,position INTEGER,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT perspicunique UNIQUE(pictureid, personid))
+03.02.2025 08:19:37,437036 DEBUG: ST ERROR: table personpictureinter already exists
+03.02.2025 08:19:37,437036 DEBUG: ST table personpictureinter already exists
+03.02.2025 08:19:37,437036 DEBUG: ST EXEC: CREATE TABLE persondocumentinter (documentid TEXT,personid TEXT,_id TEXT PRIMARY KEY,created TIMESTAMP,lastupdate TIMESTAMP, CONSTRAINT persdocunique UNIQUE(documentid, personid))
+03.02.2025 08:19:37,437036 DEBUG: ST ERROR: table persondocumentinter already exists
+03.02.2025 08:19:37,437036 DEBUG: ST table persondocumentinter already exists
+03.02.2025 08:19:37,453751 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,453751 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,453751 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,453751 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,453751 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,470564 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,471563 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,479557 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,480557 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,489867 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,489867 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,489867 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,489867 DEBUG: ST EXEC: SELECT * FROM picture WHERE title IN ('AddQuerPic01', 'AddQuerPic02')
+03.02.2025 08:19:37,489867 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,489867 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,503327 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <title> contents: <AddQuerPic01>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <_id> contents: <232c2d344aba4ad887b669fec38d652b>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <_id> contents: <00a0076ca3a94c949ab039667458115b>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.472563>
+03.02.2025 08:19:37,503792 DEBUG: ST EXEC: SELECT * FROM picture WHERE (title = 'AddQuerPic01' OR title = 'AddQuerPic02')
+03.02.2025 08:19:37,503792 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,519545 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <title> contents: <AddQuerPic01>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <_id> contents: <232c2d344aba4ad887b669fec38d652b>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <_id> contents: <00a0076ca3a94c949ab039667458115b>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.472563>
+03.02.2025 08:19:37,520344 DEBUG: ST EXEC: SELECT * FROM picture WHERE (title = 'AddQuerPic01' OR title = 'AddQuerPic02')
+03.02.2025 08:19:37,520344 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,535967 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,536635 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <title> contents: <AddQuerPic01>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <_id> contents: <232c2d344aba4ad887b669fec38d652b>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <_id> contents: <00a0076ca3a94c949ab039667458115b>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.453751>
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.472563>
+03.02.2025 08:19:37,537126 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:19:37,537126 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:19:37,552910 DEBUG: DF DF: field: <code> contents: <MONTH09>
+03.02.2025 08:19:37,553909 DEBUG: DF DF: field: <value> contents: <September>
+03.02.2025 08:19:37,553909 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:19:37,554908 DEBUG: DF DF: field: <_id> contents: <815ece578ca1468883c0abc09c475f15>
+03.02.2025 08:19:37,555907 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,555907 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,556907 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,565901 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,566901 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,571178 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,571178 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:19:37,571178 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:19:37,571178 DEBUG: DF DF: field: <code> contents: <MONTH10>
+03.02.2025 08:19:37,571178 DEBUG: DF DF: field: <value> contents: <Oktober>
+03.02.2025 08:19:37,571178 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:19:37,571178 DEBUG: DF DF: field: <_id> contents: <f97d36f7954f4ad4a2a4c436e8a2776a>
+03.02.2025 08:19:37,571178 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,571178 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,571178 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,587130 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,587130 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,603770 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,603770 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:19:37,603770 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:19:37,603770 DEBUG: DF DF: field: <code> contents: <MONTH11>
+03.02.2025 08:19:37,603770 DEBUG: DF DF: field: <value> contents: <November>
+03.02.2025 08:19:37,603770 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:19:37,603770 DEBUG: DF DF: field: <_id> contents: <df783759e7b744ec9b6e6250f47c7a3e>
+03.02.2025 08:19:37,603770 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,603770 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,603770 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,620430 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,620430 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,620430 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,620430 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1963 AND fluftakenmonth = 'MONTH10')
+03.02.2025 08:19:37,636054 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.571178>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <fluftakenyear> contents: <1963>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <title> contents: <AddQuerPic02>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <_id> contents: <b60817bf3f904b9eb34c80c9ed485168>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.571178>
+03.02.2025 08:19:37,637205 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.587130>
+03.02.2025 08:19:37,637205 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,637205 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,637205 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,637205 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,637205 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,658998 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,659997 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,664150 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,664150 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,676670 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,676670 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,678429 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,686339 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1970 AND scandate IS NULL)
+03.02.2025 08:19:37,687118 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1970 AND takendate IS NULL)
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <title> contents: <AddQuerPic10>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <_id> contents: <db0d370a359c4c6f9984bad0e31c4148>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <title> contents: <AddQuerPic20>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <_id> contents: <530175be668a40139b3c279db8c04fcd>
+03.02.2025 08:19:37,687118 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.653002>
+03.02.2025 08:19:37,702741 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.660997>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.664150>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <title> contents: <AddQuerPic30>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <_id> contents: <d62185b0122d4e409e7700bc8b5064a1>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.669675>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.677670>
+03.02.2025 08:19:37,703820 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1970 AND scandate IS NOT NULL)
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <title> contents: <AddQuerPic10>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <_id> contents: <db0d370a359c4c6f9984bad0e31c4148>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,703820 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,719700 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.637205>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <title> contents: <AddQuerPic20>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <_id> contents: <530175be668a40139b3c279db8c04fcd>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.653002>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.660997>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.664150>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <fluftakenyear> contents: <1970>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <title> contents: <AddQuerPic30>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <_id> contents: <d62185b0122d4e409e7700bc8b5064a1>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.669675>
+03.02.2025 08:19:37,720464 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.677670>
+03.02.2025 08:19:37,720464 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,744613 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,745612 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,756384 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,757384 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,762937 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,762937 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,872657 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,872657 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,921246 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,921246 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,940730 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,941716 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:19:37,942715 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:19:37,943714 DEBUG: DF DF: field: <code> contents: <MONTH12>
+03.02.2025 08:19:37,943714 DEBUG: DF DF: field: <value> contents: <Dezember>
+03.02.2025 08:19:37,944714 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:19:37,945713 DEBUG: DF DF: field: <_id> contents: <99624303c9fd4b54be5f07f010b82424>
+03.02.2025 08:19:37,945713 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,946712 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:37,947712 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,954011 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,954011 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:37,954011 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:37,954011 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1965 AND title LIKE '%Like%')
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.720464>
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:19:37,954011 DEBUG: DF DF: field: <title> contents: <AddLikeQuerPic01>
+03.02.2025 08:19:37,969635 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <_id> contents: <b3a7846c45dd43babfdbe9bb7fe68b4a>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.720464>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.745612>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.757384>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <title> contents: <AddLikeQuerPic02>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <_id> contents: <6a9a9a0c93f44244933aea5389a1775c>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.757384>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.762937>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.872657>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <title> contents: <AddLikeQuerPic03>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,970721 DEBUG: DF DF: field: <_id> contents: <b694c462564645e999bdaa9e1169060d>
+03.02.2025 08:19:37,986636 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.872657>
+03.02.2025 08:19:37,987637 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.921246>
+03.02.2025 08:19:37,987637 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1965 AND title NOT LIKE '%Like%')
+03.02.2025 08:19:37,988635 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:37,989635 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:37,990634 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:37,990634 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.947712>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <title> contents: <AddNotQueryPic04>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <_id> contents: <c318989f5c774d6cbc70cb2c1fb33c2d>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.947712>
+03.02.2025 08:19:37,992056 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:37.954011>
+03.02.2025 08:19:37,992056 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,007329 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,007329 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,027021 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,053390 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,090651 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,090651 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,106537 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,106537 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,120803 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,120803 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,120803 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,120803 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,137502 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,137502 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,137502 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,137502 DEBUG: ST EXEC: SELECT * FROM picture WHERE (fluftakenyear = 1965 AND title LIKE '010%Like%') LIMIT 2
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:37.992056>
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:19:38,137502 DEBUG: DF DF: field: <title> contents: <010LimitLikeQuerPic01>
+03.02.2025 08:19:38,153126 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:38,153892 DEBUG: DF DF: field: <_id> contents: <0d2e8681907944cd993006adef8ae5d3>
+03.02.2025 08:19:38,154890 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:37.992056>
+03.02.2025 08:19:38,154890 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:38.008328>
+03.02.2025 08:19:38,155890 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:38,155890 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:38,156889 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:38,157888 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:38,157888 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:38.053390>
+03.02.2025 08:19:38,158887 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:38,159887 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <title> contents: <010LimitLikeQuerPic02>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <_id> contents: <02db3a17b826418a985d2eb28fb41da3>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:38.054117>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:38.090651>
+03.02.2025 08:19:38,160510 DEBUG: ST EXEC: SELECT * FROM picture WHERE ((fluftakenyear = 1965 AND title LIKE '010%') AND title NOT LIKE '%Like%') LIMIT 2
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:38.120803>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <fluftakenyear> contents: <1965>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <title> contents: <010LimitNotQueryPic04>
+03.02.2025 08:19:38,160510 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:38,170117 DEBUG: DF DF: field: <_id> contents: <8b6b4f2a58e14979a722c0256b3a5d67>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:38.120803>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:38.137502>
+03.02.2025 08:19:38,170897 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,170897 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,170897 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <type> contents: <FLUF_MONTH>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <code> contents: <MONTH01>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <value> contents: <Januar>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <_id> contents: <65de4b8cdded4bb7b6c29bb3f36afd03>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:38,170897 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.082655>
+03.02.2025 08:19:38,187305 DEBUG: ST EXEC: SELECT * FROM catalog where type=? and code=? and langcode=?
+03.02.2025 08:19:38,188303 DEBUG: DF DF: field: <type> contents: <BIO_SEX>
+03.02.2025 08:19:38,189303 DEBUG: DF DF: field: <code> contents: <MALE>
+03.02.2025 08:19:38,189303 DEBUG: DF DF: field: <value> contents: <männlich>
+03.02.2025 08:19:38,190302 DEBUG: DF DF: field: <langcode> contents: <DEU>
+03.02.2025 08:19:38,190302 DEBUG: DF DF: field: <_id> contents: <c19c6b4de41242c4afce1edb85d11eb2>
+03.02.2025 08:19:38,191301 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:18:09.067028>
+03.02.2025 08:19:38,192300 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:18:09.067028>
+03.02.2025 08:19:38,192300 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,195789 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,203521 DEBUG: ST EXEC: SELECT * FROM person WHERE _id = '15e41c41f77e47d29b949b1a3e0a82fd'
+03.02.2025 08:19:38,204520 DEBUG: DF DF: field: <name> contents: <Wuschel201>
+03.02.2025 08:19:38,204520 DEBUG: DF DF: field: <firstname> contents: <Willy>
+03.02.2025 08:19:38,205519 DEBUG: DF DF: field: <rufname> contents: <None>
+03.02.2025 08:19:38,206518 DEBUG: DF DF: field: <nameofbirth> contents: <None>
+03.02.2025 08:19:38,206518 DEBUG: DF DF: field: <birthdate> contents: <1965-03-12 00:00:00>
+03.02.2025 08:19:38,207517 DEBUG: DF DF: field: <birthyear> contents: <None>
+03.02.2025 08:19:38,208517 DEBUG: DF DF: field: <deathdate> contents: <None>
+03.02.2025 08:19:38,208517 DEBUG: DF DF: field: <deathyear> contents: <None>
+03.02.2025 08:19:38,209516 DEBUG: DF DF: field: <fatherid> contents: <None>
+03.02.2025 08:19:38,209516 DEBUG: DF DF: field: <motherid> contents: <None>
+03.02.2025 08:19:38,210516 DEBUG: DF DF: field: <infotext> contents: <None>
+03.02.2025 08:19:38,211516 DEBUG: DF DF: field: <_id> contents: <15e41c41f77e47d29b949b1a3e0a82fd>
+03.02.2025 08:19:38,211516 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:38.193300>
+03.02.2025 08:19:38,212515 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:38.193300>
+03.02.2025 08:19:38,213514 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,223154 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,223154 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,232149 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,233149 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,237830 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,237830 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,255965 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,255965 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,255965 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,255965 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,255965 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,255965 DEBUG: ST EXEC: SELECT * FROM picture WHERE title = 'TestSelPic01'
+03.02.2025 08:19:38,255965 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:38,270222 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:38.213514>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <title> contents: <TestSelPic01>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <_id> contents: <bf92ec20423b4710b04fec1f26bee33c>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:38.213514>
+03.02.2025 08:19:38,270960 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:38.224154>
+03.02.2025 08:19:38,270960 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,270960 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,270960 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,270960 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,286584 DEBUG: ST TRANSACTION BEGIN flush
+03.02.2025 08:19:38,292923 DEBUG: ST TRANSACTION COMMIT flush
+03.02.2025 08:19:38,293923 DEBUG: ST EXEC: SELECT * FROM picture WHERE _id = '149de51bbae84ae5b3797a2da5f2554f'
+03.02.2025 08:19:38,294921 DEBUG: DF DF: field: <readableid> contents: <None>
+03.02.2025 08:19:38,294921 DEBUG: DF DF: field: <groupid> contents: <None>
+03.02.2025 08:19:38,295921 DEBUG: DF DF: field: <filepath> contents: <None>
+03.02.2025 08:19:38,295921 DEBUG: DF DF: field: <ext> contents: <None>
+03.02.2025 08:19:38,296922 DEBUG: DF DF: field: <scandate> contents: <2025-02-03 08:19:38.270960>
+03.02.2025 08:19:38,298302 DEBUG: DF DF: field: <takendate> contents: <None>
+03.02.2025 08:19:38,298302 DEBUG: DF DF: field: <fluftakenyear> contents: <None>
+03.02.2025 08:19:38,298302 DEBUG: DF DF: field: <title> contents: <Omma Frieda und ihre Enkel>
+03.02.2025 08:19:38,298302 DEBUG: DF DF: field: <settledinformation> contents: <None>
+03.02.2025 08:19:38,298302 DEBUG: DF DF: field: <_id> contents: <149de51bbae84ae5b3797a2da5f2554f>
+03.02.2025 08:19:38,298302 DEBUG: DF DF: field: <created> contents: <2025-02-03 08:19:38.270960>
+03.02.2025 08:19:38,298302 DEBUG: DF DF: field: <lastupdate> contents: <2025-02-03 08:19:38.286927>
+03.02.2025 08:19:38,303865 DEBUG: ST EXEC: DROP TABLE catalog 
+03.02.2025 08:19:38,311859 DEBUG: ST EXEC: DROP TABLE commoninter 
+03.02.2025 08:19:38,322687 DEBUG: ST EXEC: DROP TABLE person 
+03.02.2025 08:19:38,331684 DEBUG: ST EXEC: DROP TABLE personinfobit 
+03.02.2025 08:19:38,342318 DEBUG: ST EXEC: DROP TABLE datagroup 
+03.02.2025 08:19:38,342318 DEBUG: ST EXEC: DROP TABLE picture 
+03.02.2025 08:19:38,370838 DEBUG: ST EXEC: DROP TABLE pictureinfobit 
+03.02.2025 08:19:38,370838 DEBUG: ST EXEC: DROP TABLE document 
+03.02.2025 08:19:38,370838 DEBUG: ST EXEC: DROP TABLE documentinfobit 
+03.02.2025 08:19:38,393601 DEBUG: ST EXEC: DROP TABLE personpictureinter 
+03.02.2025 08:19:38,405500 DEBUG: ST EXEC: DROP TABLE persondocumentinter 

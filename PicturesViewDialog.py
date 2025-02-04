@@ -7,13 +7,14 @@ from PersistClasses import Picture, PictureInfoBit, PersonPictureInter
 import sqlitepersist as sqp
 from EditPictureDialog import EditPictureDialog
 from PictureFilterDialog import PictureFilterDialog
-from ConnectedPerssonsDialog import ConnectedPersonsDialog
+from ConnectedPersonsDialog import ConnectedPersonsDialog
 from ConfigReader import ConfigReader
 from GuiHelper import GuiHelper
 from DocArchiver import DocArchiver
 import backgroundworkers as bgw
 
 class FilterData():
+    """class to store filter date for pictures"""
     def __init__(self, fact : sqp.SQFactory):
         self.kennummer = None
         self.title = None
@@ -150,6 +151,8 @@ class FilterData():
 
 
 class PicturesViewDialog(gg.gPicturesViewDialog):
+    """class representing the GUI for viewing pictures in a list control
+    """
     PICLISTDEFINS = [
             {"propname" : "readableid", "title": "ID", "width":230},
             {"propname" : "scandate", "title": "Scandatum", "width":100, "format": "{:%d.%m.%Y}"},
@@ -353,7 +356,7 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         GuiHelper.enable_ctrls(False, self.m_folderUploadBU)
 
     def doPreparePrint(self, event):
-        """create a list (csv) with info of the selected pictures, ready to be used in a abel print
+        """create a list (csv) with info of the selected pictures, ready to be used in a label print
         """
         selpics = GuiHelper.get_all_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
 
@@ -379,6 +382,9 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
             
     def showConnectedPersons(self, event):
+        """display and edit the connections to persons of the selected picture or to the first selected picture if more than
+        one picture is selected
+        """
         selpic = GuiHelper.get_selected_fromlctrl(self.m_picturesLCTRL, self._pictures)
         
         if selpic is None: return

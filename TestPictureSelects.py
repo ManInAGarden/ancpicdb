@@ -10,6 +10,22 @@ class TestPictureSelects(TestBase):
     def setUp(self):
         super().setUp()
 
+    def test_picture_attributes(self):
+        pic1 = self.Mck.create_picture(title="Testpic01", 
+                                       scandate=dt.datetime.now())
+        pic1.takendate = dt.datetime(1910,12,31)
+
+        assert pic1.bestdatestr == "31.12.1910"
+
+        pic1.takendate = None
+        pic1.fluftakenyear = 1912
+        assert pic1.bestdatestr == "1912"
+
+        moca = self.Spf.getcat(FluffyMonthCat, "MONTH01")
+        pic1.fluftakenmonth = moca
+        assert pic1.bestdatestr == "1.1912"
+
+        
     def test_updating(self):
         pic1 = self.Mck.create_picture(title="Testpic01", scandate=dt.datetime.now())
         self.Spf.flush(pic1)

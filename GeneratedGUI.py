@@ -582,17 +582,52 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		self.m_editBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
 		self.m_editBU.SetBitmap( wx.Bitmap( u"ressources/Edit.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_editBU.Enable( False )
+
 		bSizer10.Add( self.m_editBU, 0, wx.ALL, 5 )
 
-		self.m_downloadPictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+		self.m_downloadDocumentBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
 
-		self.m_downloadPictureBU.SetBitmap( wx.Bitmap( u"ressources/Download.png", wx.BITMAP_TYPE_ANY ) )
-		bSizer10.Add( self.m_downloadPictureBU, 0, wx.ALL, 5 )
+		self.m_downloadDocumentBU.SetBitmap( wx.Bitmap( u"ressources/Download.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_downloadDocumentBU.Enable( False )
 
-		self.deletePictureBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+		bSizer10.Add( self.m_downloadDocumentBU, 0, wx.ALL, 5 )
 
-		self.deletePictureBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
-		bSizer10.Add( self.deletePictureBU, 0, wx.ALL, 5 )
+		self.m_deleteDocumentBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_deleteDocumentBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Row.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_deleteDocumentBU.Enable( False )
+
+		bSizer10.Add( self.m_deleteDocumentBU, 0, wx.ALL, 5 )
+
+		self.m_showConnectedPersonsBU = wx.Button( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_showConnectedPersonsBU.SetBitmap( wx.Bitmap( u"ressources/icons8-connected-30.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_showConnectedPersonsBU.Enable( False )
+		self.m_showConnectedPersonsBU.SetToolTip( u"Verbundene Personen anzeigen" )
+
+		bSizer10.Add( self.m_showConnectedPersonsBU, 0, wx.ALL, 5 )
+
+		self.m_folderUploadBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_folderUploadBU.SetBitmap( wx.Bitmap( u"ressources/FolderUpload.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_folderUploadBU.SetToolTip( u"Bildeinträge aus Bilddateien anlegen" )
+
+		bSizer10.Add( self.m_folderUploadBU, 0, wx.ALL, 5 )
+
+		self.m_preparePrintBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_preparePrintBU.SetBitmap( wx.Bitmap( u"ressources/icons8-print-32.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_preparePrintBU.Enable( False )
+
+		bSizer10.Add( self.m_preparePrintBU, 0, wx.ALL, 5 )
+
+		self.m_workingGAUGE = wx.Gauge( self, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL )
+		self.m_workingGAUGE.SetValue( 0 )
+		self.m_workingGAUGE.Hide()
+		self.m_workingGAUGE.SetToolTip( u"Fortschritt der Hintergrundaufgabe" )
+
+		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALL, 5 )
 
 
 		gbSizer6.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
@@ -620,10 +655,15 @@ class gDocumentsViewDialog ( wx.Dialog ):
 
 		# Connect Events
 		self.m_documentsLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.editElement )
+		self.m_documentsLCTRL.Bind( wx.EVT_LIST_ITEM_DESELECTED, self.documentDeselected )
+		self.m_documentsLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.documentSelected )
 		self.m_addRowBU.Bind( wx.EVT_BUTTON, self.addNewRow )
 		self.m_editBU.Bind( wx.EVT_BUTTON, self.editElement )
-		self.m_downloadPictureBU.Bind( wx.EVT_BUTTON, self.downloadPicture )
-		self.deletePictureBU.Bind( wx.EVT_BUTTON, self.removeRow )
+		self.m_downloadDocumentBU.Bind( wx.EVT_BUTTON, self.downloadDocument )
+		self.m_deleteDocumentBU.Bind( wx.EVT_BUTTON, self.removeRow )
+		self.m_showConnectedPersonsBU.Bind( wx.EVT_BUTTON, self.showConnectedPersons )
+		self.m_folderUploadBU.Bind( wx.EVT_BUTTON, self.doFolderUpload )
+		self.m_preparePrintBU.Bind( wx.EVT_BUTTON, self.doPreparePrint )
 
 	def __del__( self ):
 		pass
@@ -633,14 +673,29 @@ class gDocumentsViewDialog ( wx.Dialog ):
 	def editElement( self, event ):
 		event.Skip()
 
+	def documentDeselected( self, event ):
+		event.Skip()
+
+	def documentSelected( self, event ):
+		event.Skip()
+
 	def addNewRow( self, event ):
 		event.Skip()
 
 
-	def downloadPicture( self, event ):
+	def downloadDocument( self, event ):
 		event.Skip()
 
 	def removeRow( self, event ):
+		event.Skip()
+
+	def showConnectedPersons( self, event ):
+		event.Skip()
+
+	def doFolderUpload( self, event ):
+		event.Skip()
+
+	def doPreparePrint( self, event ):
 		event.Skip()
 
 
@@ -2814,12 +2869,12 @@ class gConnectedPersonsDialog ( wx.Dialog ):
 
 		gbSizer29.Add( m_sdbSizer18, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
-		self.m_staticText82 = wx.StaticText( self, wx.ID_ANY, u"Bild-Id:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText82 = wx.StaticText( self, wx.ID_ANY, u"Id:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText82.Wrap( -1 )
 
 		gbSizer29.Add( self.m_staticText82, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_staticText83 = wx.StaticText( self, wx.ID_ANY, u"Bildtitel", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText83 = wx.StaticText( self, wx.ID_ANY, u"Titel", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText83.Wrap( -1 )
 
 		gbSizer29.Add( self.m_staticText83, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )

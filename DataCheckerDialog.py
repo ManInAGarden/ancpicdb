@@ -7,7 +7,7 @@ from Checkers import DocumentChecker, PictureChecker, PersonChecker
 from EditPictureDialog import EditPictureDialog
 from PersonEditDialog import PersonEditDialog
 from EditDocumentDialog import EditDocumentDialog
-from ConnectedPerssonsDialog import ConnectedPersonsDialog
+from ConnectedPersonsDialog import ConnectedPersonsDialog
 
 class DataCheckerDialog(gg.gDataCheckerDialog):
 
