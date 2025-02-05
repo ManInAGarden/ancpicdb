@@ -4039,7 +4039,7 @@
             </object>
             <object class="sizeritem" expanded="true">
               <property name="border">5</property>
-              <property name="flag">wxALL</property>
+              <property name="flag">wxALIGN_CENTER_VERTICAL|wxALL|wxRESERVE_SPACE_EVEN_IF_HIDDEN</property>
               <property name="proportion">0</property>
               <object class="wxGauge" expanded="true">
                 <property name="BottomDockable">1</property>

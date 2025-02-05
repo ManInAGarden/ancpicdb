@@ -1,4 +1,5 @@
 from datetime import datetime
+import csv
 import wx
 import wx.adv
 import GeneratedGUI as gg
@@ -18,7 +19,7 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         {"propname" : "productiondate", "title": "Erstelldatum", "width":100, "format": "{:%d.%m.%Y}"},
         {"propname" : "title", "title": "Titel", "width":380},
         #{"propname" : "groupname", "title": "Gruppe", "width":250},
-        {"propname" : "ext", "title": "Typ", "width":40},
+        {"propname" : "type.value", "title": "Typ", "width":40},
         {"propname" : "documentgroup.groupordername", "title": "Grp#", "width":60}
     ]
     @property
@@ -36,6 +37,7 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         self._fact = fact
         self._docarchive = parent.docarchive
         self._configuration = parent.configuration
+        self.logger = parent.logger
         self.machlabel = self._configuration.get_value("gui", "machlabel")
         if self.machlabel is None:
             self.machlabel = "XXXX"
@@ -50,7 +52,6 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
     def notifyperc(self, event):
         perc = event.data
         GuiHelper.set_val(self.m_workingGAUGE, perc)
-
 
 
     def _prep_cols(self):
@@ -105,8 +106,10 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         
         if res != wx.YES:
             return 
-        
+
         self._fact.delete(seldoc)
+        self.logger.WriteInfo("Row for document {} removed and document deleted", seldoc._id)
+
         self._filldialog()
 
     def _editElement(self, document):
@@ -191,3 +194,29 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         self.bg.start()
 
         GuiHelper.enable_ctrls(False, self.m_folderUploadBU)
+
+    def doPreparePrint(self, event):
+        """create a list (csv) with info of the selected documents, ready to be used in a label print
+        """
+        seldocs = GuiHelper.get_all_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+
+        if seldocs is None or len(seldocs)==0: return
+
+        filename = GuiHelper.select_single_file(self, title="Datei für den Export auswählen", 
+                                           wildcard="csv-Dateien (*.csv)|*.csv",
+                                           style = wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        
+        if filename is None or len(filename)==0: return
+
+        if filename.lower().endswith(".csv"):
+            fname = filename
+        else:
+            fname = filename + ".csv"
+
+        with open(fname, 'w', newline='') as csvfile:
+            csvw = csv.writer(csvfile)
+            csvw.writerow(["_id", "readableid", "title", "bestdatestr", "groupname", "grouponum"])
+            for sd in seldocs:
+                csvw.writerow([sd._id, sd.readableid, sd.besttitle, sd.bestdatestr, sd.groupname, sd.groupordernum])
+
+        GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)

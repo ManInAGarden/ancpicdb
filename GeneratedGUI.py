@@ -627,7 +627,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		self.m_workingGAUGE.Hide()
 		self.m_workingGAUGE.SetToolTip( u"Fortschritt der Hintergrundaufgabe" )
 
-		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALL, 5 )
+		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 5 )
 
 
 		gbSizer6.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )

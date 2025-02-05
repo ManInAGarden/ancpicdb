@@ -197,9 +197,43 @@ class Document(sqp.PBase):
      @property 
      def histkey(self):
           if self.productiondate is not None:
-               return "{:%Y%M%D}".format(self.productiondate)
+               return "{:%Y%m%d}".format(self.productiondate)
           else:
                return "ZZZZZZZZ"
+          
+     @property
+     def groupname(self):
+          return self.documentgroup.name
+     
+     @property
+     def groupordernum(self):
+          if self.documentgroup is None: return None
+
+          return self.documentgroup.groupordername
+     
+     @property
+     def besttitle(self):
+          if self.type is not None:
+               typart = self.type.value
+          else:
+               typart = ""
+
+          if self.title is not None:
+               titpart = self.title
+          else:
+               titpart = ""
+          
+          if typart.lower() in titpart.lower():
+               return titpart
+          else:
+               return typart + " " + titpart
+          
+     @property
+     def bestdatestr(self):
+          if self.productiondate is not None:
+               return "{:%d.%m.%Y}".format(self.productiondate)
+          else:
+               return ""
      
 class PersonDocumentInter(sqp.PBase):
      """intersection of Person and Documents"""
