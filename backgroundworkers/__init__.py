@@ -7,3 +7,4 @@ from .BgDbCreator import *
 from .BgRegisterWriter import *
 from .BgDbZipper import *
 from .BgPictureMassArchiving import *
+from .BgDocumentMassArchiving import *

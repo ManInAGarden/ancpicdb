@@ -8,6 +8,7 @@ import sqlitepersist as sqp
 from ConfigReader import ConfigReader
 from EditDocumentDialog import EditDocumentDialog
 from ConnectedPersonsDialog import ConnectedPersonsDialog
+import backgroundworkers as bgw
 
 class DocumentsViewDialog(gg.gDocumentsViewDialog):
 
@@ -38,6 +39,17 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         self.machlabel = self._configuration.get_value("gui", "machlabel")
         if self.machlabel is None:
             self.machlabel = "XXXX"
+        
+        bgw.EVT_RESULT(self, self.workerfinished)
+        bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
+
+    def workerfinished(self, event : bgw.ResultEvent):
+        GuiHelper.enable_ctrls(True, self.m_folderUploadBU)
+        self._filldialog() #refectch pictures from the db and display them in the list
+
+    def notifyperc(self, event):
+        perc = event.data
+        GuiHelper.set_val(self.m_workingGAUGE, perc)
 
 
 
@@ -97,18 +109,22 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         self._fact.delete(seldoc)
         self._filldialog()
 
-    def editElement(self, event):
-        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
-    
-        if seldoc is None:
-            return
-        
-        dial = EditDocumentDialog(self, self._fact, seldoc)
+    def _editElement(self, document):
+        dial = EditDocumentDialog(self, self._fact, document)
         res = dial.showmodal()
         if res == wx.ID_CANCEL:
             return
         
         self._filldialog()
+
+    def editButnClick(self, event):
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+    
+        if seldoc is None:
+            return
+        
+        self._editElement(seldoc)
+
 
     def downloadDocument(self, event):
         seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
@@ -135,7 +151,14 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
                                    self.m_deleteDocumentBU,
                                    self.m_preparePrintBU,
                                    self.m_showConnectedPersonsBU)
-        
+
+
+    def listDblClick(self, event):
+        seldoc = GuiHelper.get_selected_fromlctrl(self.m_documentsLCTRL, self._documents)
+        if seldoc == None: return
+        self._editElement(seldoc)
+
+
     def showConnectedPersons(self, event):
         """display and edit the connections to persons of the selected document or to the first selected document
            if more than one is selected
@@ -146,3 +169,25 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
 
         conndial = ConnectedPersonsDialog(self, self._fact, seldoc)
         conndial.showmodal()
+
+    def doFolderUpload(self, event):
+        res = GuiHelper.select_files(self, 
+                                     "Dokumente auswählen",
+                                     style=wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE)
+
+        if res == None:
+            return
+        
+        paras = {}
+        paras["fact"] = self._fact
+        paras["files"] = res
+        paras["logger"] = self.logger
+        paras["docarchiver"] = self._docarchive
+        paras["machlabel"] = self.machlabel
+
+        self.bg = bgw.BgDocumentMassArchiving(notifywin=self, paras = paras)
+        self.m_workingGAUGE.Show()
+
+        self.bg.start()
+
+        GuiHelper.enable_ctrls(False, self.m_folderUploadBU)

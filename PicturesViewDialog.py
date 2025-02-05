@@ -67,7 +67,7 @@ class FilterData():
         if self.is_defined(self.yeartaken):
             answ += " UND Aufnahmejahr='{}'".format(self.yeartaken)
 
-        if self.is_defined(self.gruppe):
+        if self.gruppe is not None and self.is_defined(self.gruppe.name):
             answ += " UND Gruppe='{}'".format(self.gruppe.name)
 
         if answ.startswith(" UND "):

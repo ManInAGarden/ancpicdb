@@ -654,11 +654,11 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
-		self.m_documentsLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.editElement )
+		self.m_documentsLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.listDblClick )
 		self.m_documentsLCTRL.Bind( wx.EVT_LIST_ITEM_DESELECTED, self.documentDeselected )
 		self.m_documentsLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.documentSelected )
 		self.m_addRowBU.Bind( wx.EVT_BUTTON, self.addNewRow )
-		self.m_editBU.Bind( wx.EVT_BUTTON, self.editElement )
+		self.m_editBU.Bind( wx.EVT_BUTTON, self.editButnClick )
 		self.m_downloadDocumentBU.Bind( wx.EVT_BUTTON, self.downloadDocument )
 		self.m_deleteDocumentBU.Bind( wx.EVT_BUTTON, self.removeRow )
 		self.m_showConnectedPersonsBU.Bind( wx.EVT_BUTTON, self.showConnectedPersons )
@@ -670,7 +670,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 
 
 	# Virtual event handlers, override them in your derived class
-	def editElement( self, event ):
+	def listDblClick( self, event ):
 		event.Skip()
 
 	def documentDeselected( self, event ):
@@ -682,6 +682,8 @@ class gDocumentsViewDialog ( wx.Dialog ):
 	def addNewRow( self, event ):
 		event.Skip()
 
+	def editButnClick( self, event ):
+		event.Skip()
 
 	def downloadDocument( self, event ):
 		event.Skip()
