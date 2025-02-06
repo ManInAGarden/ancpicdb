@@ -40,7 +40,7 @@ MAXDOCTITLELEN = 100
 class AncPicDbMain(gg.AncPicDBMain):
     def __init__(self, parent ):
         super().__init__(parent)
-        self._version = "1.0.4"
+        self._version = "1.0.5"
         GuiHelper.set_icon(self)
         self.init_environ()
         self.init_prog()
