@@ -213,10 +213,13 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         else:
             fname = filename + ".csv"
 
-        with open(fname, 'w', newline='') as csvfile:
-            csvw = csv.writer(csvfile)
-            csvw.writerow(["_id", "readableid", "title", "bestdatestr", "groupname", "grouponum"])
-            for sd in seldocs:
-                csvw.writerow([sd._id, sd.readableid, sd.besttitle, sd.bestdatestr, sd.groupname, sd.groupordernum])
-
-        GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
+        try:
+            with open(fname, 'w', newline='',encoding="ansi") as csvfile:
+                csvw = csv.writer(csvfile)
+                csvw.writerow(["_id", "readableid", "title", "bestdatestr", "groupname", "grouponum"])
+                for sd in seldocs:
+                    csvw.writerow([sd._id, sd.readableid, sd.besttitle, sd.bestdatestr, sd.groupname, sd.groupordernum])
+                
+            GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
+        except Exception as exc:
+            GuiHelper.show_error("Die Datei kann nicht geschrieben werden. {}", exc)

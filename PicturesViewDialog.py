@@ -373,13 +373,17 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
         else:
             fname = filename + ".csv"
 
-        with open(fname, 'w', newline='') as csvfile:
-            csvw = csv.writer(csvfile)
-            csvw.writerow(["_id", "readableid", "title", "bestdatestr", "groupname", "grouponum"])
-            for sp in selpics:
-                csvw.writerow([sp._id, sp.readableid, sp.title, sp.bestdatestr, sp.groupname, sp.groupordernum])
+        try:
+            with open(fname, 'w', newline='', encoding="ansi") as csvfile:
+                csvw = csv.writer(csvfile)
+                csvw.writerow(["_id", "readableid", "title", "bestdatestr", "groupname", "grouponum"])
+                for sp in selpics:
+                    csvw.writerow([sp._id, sp.readableid, sp.title, sp.bestdatestr, sp.groupname, sp.groupordernum])
+            
+            GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
+        except Exception as exc:
+            GuiHelper.show_error("Die Datei kann nicht geschrieben werden. {}", exc)
 
-        GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
             
     def showConnectedPersons(self, event):
         """display and edit the connections to persons of the selected picture or to the first selected picture if more than
