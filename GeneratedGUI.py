@@ -363,7 +363,7 @@ class AncPicDBMain ( wx.Frame ):
 class geditDocumentDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokument bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 800,760 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokument bearbeiten", pos = wx.DefaultPosition, size = wx.Size( 860,760 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
@@ -379,7 +379,7 @@ class geditDocumentDialog ( wx.Dialog ):
 		m_sdbSizer3.AddButton( self.m_sdbSizer3Cancel )
 		m_sdbSizer3.Realize()
 
-		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 9, 3 ), wx.GBSpan( 1, 3 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
+		gbSizer7.Add( m_sdbSizer3, wx.GBPosition( 10, 3 ), wx.GBSpan( 1, 3 ), wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 		self.m_staticText13 = wx.StaticText( self, wx.ID_ANY, u"Kennummer:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText13.Wrap( -1 )
@@ -396,7 +396,7 @@ class geditDocumentDialog ( wx.Dialog ):
 
 		m_groupCBChoices = []
 		self.m_groupCB = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( 300,-1 ), m_groupCBChoices, wx.CB_READONLY )
-		gbSizer7.Add( self.m_groupCB, wx.GBPosition( 0, 4 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer7.Add( self.m_groupCB, wx.GBPosition( 0, 4 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText14 = wx.StaticText( self, wx.ID_ANY, u"Typ:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText14.Wrap( -1 )
@@ -423,6 +423,11 @@ class geditDocumentDialog ( wx.Dialog ):
 		self.m_produktionsDatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer7.Add( self.m_produktionsDatumDP, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
+		self.m_staticText88 = wx.StaticText( self, wx.ID_ANY, u"Personenbezüge:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText88.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText88, wx.GBPosition( 3, 4 ), wx.GBSpan( 1, 1 ), wx.ALIGN_BOTTOM|wx.ALL, 5 )
+
 		self.m_staticText16 = wx.StaticText( self, wx.ID_ANY, u"Scandatum:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText16.Wrap( -1 )
 
@@ -431,10 +436,10 @@ class geditDocumentDialog ( wx.Dialog ):
 		self.m_staticText18 = wx.StaticText( self, wx.ID_ANY, u"Informationen:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText18.Wrap( -1 )
 
-		gbSizer7.Add( self.m_staticText18, wx.GBPosition( 7, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer7.Add( self.m_staticText18, wx.GBPosition( 8, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_zusatzinfoLCT = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
-		gbSizer7.Add( self.m_zusatzinfoLCT, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 4 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer7.Add( self.m_zusatzinfoLCT, wx.GBPosition( 8, 1 ), wx.GBSpan( 1, 4 ), wx.ALL|wx.EXPAND, 5 )
 
 		bSizer5 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -454,21 +459,29 @@ class geditDocumentDialog ( wx.Dialog ):
 		bSizer5.Add( self.m_deletePictBitInfoBU, 0, wx.ALL, 5 )
 
 
-		gbSizer7.Add( bSizer5, wx.GBPosition( 8, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_TOP|wx.EXPAND, 5 )
+		gbSizer7.Add( bSizer5, wx.GBPosition( 9, 1 ), wx.GBSpan( 1, 1 ), wx.ALIGN_TOP|wx.EXPAND, 5 )
 
 		self.m_scanDatumDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT )
 		gbSizer7.Add( self.m_scanDatumDP, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_staticText181 = wx.StaticText( self, wx.ID_ANY, u"Dokument:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_conPersoLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
+		gbSizer7.Add( self.m_conPersoLCTRL, wx.GBPosition( 4, 4 ), wx.GBSpan( 3, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText181 = wx.StaticText( self, wx.ID_ANY, u"Archivdatei:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText181.Wrap( -1 )
 
-		gbSizer7.Add( self.m_staticText181, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer7.Add( self.m_staticText181, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_archivepathTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
-		gbSizer7.Add( self.m_archivepathTB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
+		self.m_archivepathTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( -1,-1 ), wx.TE_BESTWRAP|wx.TE_READONLY )
+		gbSizer7.Add( self.m_archivepathTB, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 3 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_docextTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
-		gbSizer7.Add( self.m_docextTB, wx.GBPosition( 5, 4 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+		gbSizer7.Add( self.m_docextTB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_staticText87 = wx.StaticText( self, wx.ID_ANY, u"Dokumenttyp:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText87.Wrap( -1 )
+
+		gbSizer7.Add( self.m_staticText87, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -499,11 +512,28 @@ class geditDocumentDialog ( wx.Dialog ):
 		bSizer6.Add( self.m_button23, 0, wx.ALL, 5 )
 
 
-		gbSizer7.Add( bSizer6, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+		gbSizer7.Add( bSizer6, wx.GBPosition( 7, 1 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
+
+		bSizer26 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_addPersonsBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_addPersonsBU.SetBitmap( wx.Bitmap( u"ressources/Add-Link.png", wx.BITMAP_TYPE_ANY ) )
+		bSizer26.Add( self.m_addPersonsBU, 0, wx.ALL, 5 )
+
+		self.m_removePersonsBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
+
+		self.m_removePersonsBU.SetBitmap( wx.Bitmap( u"ressources/Delete-Link.png", wx.BITMAP_TYPE_ANY ) )
+		self.m_removePersonsBU.Enable( False )
+
+		bSizer26.Add( self.m_removePersonsBU, 0, wx.ALL, 5 )
+
+
+		gbSizer7.Add( bSizer26, wx.GBPosition( 7, 4 ), wx.GBSpan( 1, 1 ), wx.EXPAND, 5 )
 
 
 		gbSizer7.AddGrowableCol( 1 )
-		gbSizer7.AddGrowableRow( 7 )
+		gbSizer7.AddGrowableRow( 8 )
 
 		self.SetSizer( gbSizer7 )
 		self.Layout()
@@ -515,10 +545,14 @@ class geditDocumentDialog ( wx.Dialog ):
 		self.m_addPictBitInfoBU.Bind( wx.EVT_BUTTON, self.addInfoBit )
 		self.m_editPictBitInfoBU.Bind( wx.EVT_BUTTON, self.editInfoBit )
 		self.m_deletePictBitInfoBU.Bind( wx.EVT_BUTTON, self.removeInfoBit )
+		self.m_conPersoLCTRL.Bind( wx.EVT_LIST_ITEM_DESELECTED, self.conPerDeSelected )
+		self.m_conPersoLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.conPerSelected )
 		self.m_uploadBU.Bind( wx.EVT_BUTTON, self.uploadDocument )
 		self.m_viewDocumentBU.Bind( wx.EVT_BUTTON, self.viewDocument )
 		self.m_downloadBU.Bind( wx.EVT_BUTTON, self.downloadDocument )
 		self.m_button23.Bind( wx.EVT_BUTTON, self.removeDocument )
+		self.m_addPersonsBU.Bind( wx.EVT_BUTTON, self.connectPerson )
+		self.m_removePersonsBU.Bind( wx.EVT_BUTTON, self.disconnectPerson )
 
 	def __del__( self ):
 		pass
@@ -535,6 +569,12 @@ class geditDocumentDialog ( wx.Dialog ):
 	def removeInfoBit( self, event ):
 		event.Skip()
 
+	def conPerDeSelected( self, event ):
+		event.Skip()
+
+	def conPerSelected( self, event ):
+		event.Skip()
+
 	def uploadDocument( self, event ):
 		event.Skip()
 
@@ -545,6 +585,12 @@ class geditDocumentDialog ( wx.Dialog ):
 		event.Skip()
 
 	def removeDocument( self, event ):
+		event.Skip()
+
+	def connectPerson( self, event ):
+		event.Skip()
+
+	def disconnectPerson( self, event ):
 		event.Skip()
 
 

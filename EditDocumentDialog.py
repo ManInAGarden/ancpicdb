@@ -3,15 +3,29 @@ import datetime
 import copy
 import wx
 import wx.adv
+from FindPersonsDialog import FindPersonsDialog
 import sqlitepersist as sqp
 
-from PersistClasses import Document, DocumentInfoBit, DocTypeCat, DataGroup
+from PersistClasses import Document, DocumentInfoBit, DocTypeCat, DataGroup, PersonDocumentInter_Hollow
 import GeneratedGUI as gg
 from GuiHelper import GuiHelper
 from EditInfoBitDialog import EditInfoBitDialog
 
 class EditDocumentDialog(gg.geditDocumentDialog):
-    
+    DOCINFODEFINS = [
+        {"propname" : "infodate", "title": "Datum", "format": "{:%d.%m.%Y}", "width":120},
+        {"propname" : "suppliedby", "title": "Quelle", "width":150},
+        {"propname" : "infocontent", "title": "Inhalt", "width": 340}
+    ]
+
+    CONNNPERSINFODEFINS =[
+        #{"propname" : "_id", "title": "Id"},
+        {"propname" : "person.firstname", "title": "Vorname"},
+        {"propname" : "person.name", "title": "Name"},
+        {"propname" : "person.cons_birth_year", "title": "Geburtsjahr"}
+    ]
+
+
     @property
     def document(self): return self._document
 
@@ -28,41 +42,34 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         self._document = copy.copy(document)
         self._docgroups = self._get_docgroups()
         self._temp = tmpf.gettempdir()
-        self._create_infobit_cols()
+        self._create_lctrl_cols()
 
     def _get_docgroups(self):
         return sqp.SQQuery(self._fact, DataGroup).where(DataGroup.GroupType=="DOC").order_by(DataGroup.OrderNum).as_list()
         
-    def _create_infobit_cols(self):
-        self.m_zusatzinfoLCT.InsertColumn(0, 'Datum')
-        self.m_zusatzinfoLCT.InsertColumn(1, 'Quelle')
-        self.m_zusatzinfoLCT.InsertColumn(2, 'Inhalt', width=300)
+    def _create_lctrl_cols(self):
+        GuiHelper.set_columns_forlstctrl(self.m_zusatzinfoLCT, self.DOCINFODEFINS)
+        GuiHelper.set_columns_forlstctrl(self.m_conPersoLCTRL, self.CONNNPERSINFODEFINS)
 
-    def _eds(self, dt):
-        if dt is None:
-            return ""
-        
-        return "{:%d.%m.%Y}".format(dt)
-    
-    def _ess(self, val):
-        if val is None: return ""
-
-        return val.__str__()
-    
-    def _add_ibline(self, dataidx,  ib : DocumentInfoBit):
-        lct = self.m_zusatzinfoLCT
-        idx = lct.InsertItem(lct.GetColumnCount(), self._eds(ib.infodate))
-        lct.SetItemData(idx, dataidx)
-        lct.SetItem(idx, 1, self._ess(ib.suppliedby))
-        lct.SetItem(idx, 2,  self._ess(ib.infocontent))
 
     def _fill_ibcols(self):
         if self._document.docinfobits is None: return
 
-        idx = 0
-        for ib in self._document.docinfobits:
-            self._add_ibline(idx, ib)
-            idx += 1
+        GuiHelper.set_data_for_lstctrl(self.m_zusatzinfoLCT, 
+                                       self.DOCINFODEFINS,
+                                       self._document.docinfobits)
+        
+    def _fill_connpersons(self):
+        self._connected_persons = sqp.SQQuery(self._fact, PersonDocumentInter_Hollow).where(
+            PersonDocumentInter_Hollow.DocumentId == self._document._id).as_list()
+        
+        for hp in self._connected_persons:
+            self._fact.fill_joins(hp, PersonDocumentInter_Hollow.Person)
+
+        GuiHelper.set_data_for_lstctrl(self.m_conPersoLCTRL, 
+                                       self.CONNNPERSINFODEFINS, 
+                                       self._connected_persons)
+
             
     def _get_all_types(self):
         return sqp.SQQuery(self._fact, DocTypeCat).where(DocTypeCat.Type=="DOC_TYPE").order_by(DocTypeCat.Value).as_list()
@@ -93,6 +100,7 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         GuiHelper.set_val(self.m_archivepathTB, d.filepath)
         GuiHelper.set_val(self.m_docextTB, d.ext)
         self._fill_ibcols()
+        self._fill_connpersons()
 
 
     def _scaleimagetomax(self, img : wx.Image, width : int, height : int):
@@ -209,8 +217,9 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         self._fact.flush(newib)
 
         self._document.docinfobits.append(newib)
-        idx = len(self._document.docinfobits)-1
-        self._add_ibline(idx, newib)
+        # idx = len(self._document.docinfobits)-1
+        # self._add_ibline(idx, newib)
+        GuiHelper.append_data_for_lstctrl(self.m_zusatzinfoLCT, self.DOCINFODEFINS, newib)
 
     def editInfoBit(self, event):
         selib = GuiHelper.get_selected_fromlctrl(self.m_zusatzinfoLCT, self._document.docinfobits)
@@ -221,7 +230,6 @@ class EditDocumentDialog(gg.geditDocumentDialog):
 
         if res == wx.ID_CANCEL: return
 
-        self.m_zusatzinfoLCT.DeleteAllItems()
         self._fill_ibcols()
 
     def removeInfoBit(self, event):
@@ -232,7 +240,6 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         if res == wx.YES:
             self._fact.delete(selib)
             
-            self.m_zusatzinfoLCT.DeleteAllItems()
             remid = -1
             ct = 0
             for ib in self._document.docinfobits:
@@ -244,3 +251,40 @@ class EditDocumentDialog(gg.geditDocumentDialog):
                 self._document.docinfobits.pop(remid)
 
             self._fill_ibcols()
+
+
+
+    def connectPerson(self, event):
+        alreadyconn = []
+        for connper in self._connected_persons:
+            alreadyconn.append(connper.personid)
+
+        addpidial = FindPersonsDialog(self, self._fact, alreadyconn)
+        res = addpidial.showmodal()
+
+        if res == wx.ID_CANCEL: return
+
+        #adding one ore more person link to the current pictuere now
+        for adper in addpidial.selected:
+            inter = PersonDocumentInter_Hollow(documentid=self._document._id,
+                                              personid=adper._id)
+            self._fact.flush(inter)
+
+        self._fill_connpersons()
+        
+        
+    def disconnectPerson(self, event):
+        selpinter = GuiHelper.get_selected_fromlctrl(self.m_conPersoLCTRL, self._connected_persons)
+
+        if selpinter is None: return
+
+        self._fact.delete(selpinter)
+        self._fill_connpersons()
+    
+    def conPerSelected(self, event):
+        selcon = GuiHelper.get_selected_fromlctrl(self.m_conPersoLCTRL, self._connected_persons)
+        GuiHelper.enable_ctrls(selcon is not None, self.m_removePersonsBU)
+
+    def conPerDeSelected(self, event):
+        selcon = GuiHelper.get_selected_fromlctrl(self.m_conPersoLCTRL, self._connected_persons)
+        GuiHelper.enable_ctrls(selcon is not None, self.m_removePersonsBU)

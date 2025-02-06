@@ -69,24 +69,6 @@ class EditPictureDialog(gg.geditPictureDialog):
         GuiHelper.set_columns_forlstctrl(self.m_persoOnPicLCTRL,
                                          self.CONNNPERSINFODEFINS)
 
-    #def _eds(self, dt):
-    #    if dt is None:
-    #        return ""
-    #    
-    #    return "{:%d.%m.%Y}".format(dt)
-    
-    #def _ess(self, val):
-    #    if val is None: return ""
-    #
-    #    return val.__str__()
-    
-    #def _add_ibline(self, dataidx,  ib : PictureInfoBit):
-    #    lct = self.m_zusatzinfoLCT
-    #    idx = lct.InsertItem(lct.GetColumnCount(), self._eds(ib.infodate))
-    #    lct.SetItemData(idx, dataidx)
-    #    lct.SetItem(idx, 1, self._ess(ib.suppliedby))
-    #    lct.SetItem(idx, 2,  self._ess(ib.infocontent))
-
     def _fill_ibcols(self):
         if self._picture.pictinfobits is None: return
 
