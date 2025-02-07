@@ -78,9 +78,15 @@ class EditPictureDialog(gg.geditPictureDialog):
 
     def _fill_connpersons(self):
         self._picinters = sqp.SQQuery(self._fact, PersonPictureInter_Hollow).where(PersonPictureInter_Hollow.PictureId==self._picture._id).as_list()
+        hadprob = False
         for picinter in self._picinters:
-            self._fact.fill_joins(picinter, PersonPictureInter_Hollow.Person)
+            try:
+                self._fact.fill_joins(picinter, PersonPictureInter_Hollow.Person)
+            except:
+                hadprob = True
 
+        if hadprob:
+            GuiHelper.show_error("Mindestens eine der mit dem Bild verknüpften Personen exisitiert nicht (mehr) in der Datenbank. Bitte prüfe dies in der Bilderliste")
         self._picinters.sort(key=attrgetter("person.name", "person.firstname"))
 
         GuiHelper.set_data_for_lstctrl(self.m_persoOnPicLCTRL,

@@ -63,8 +63,15 @@ class EditDocumentDialog(gg.geditDocumentDialog):
         self._connected_persons = sqp.SQQuery(self._fact, PersonDocumentInter_Hollow).where(
             PersonDocumentInter_Hollow.DocumentId == self._document._id).as_list()
         
+        hadprob = False
         for hp in self._connected_persons:
-            self._fact.fill_joins(hp, PersonDocumentInter_Hollow.Person)
+            try:
+                self._fact.fill_joins(hp, PersonDocumentInter_Hollow.Person)
+            except:
+                hadprob = True
+
+        if hadprob:
+            GuiHelper.show_error("Mindestens eine der mit dem Dokument verknüpften Personen exisitiert nicht (mehr) in der Datenbank. Bitte prüfe dies in der Dokumentenliste")
 
         GuiHelper.set_data_for_lstctrl(self.m_conPersoLCTRL, 
                                        self.CONNNPERSINFODEFINS, 

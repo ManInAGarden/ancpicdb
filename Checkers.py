@@ -1,6 +1,6 @@
 import datetime
 import sqlitepersist as sqp
-from PersistClasses import Picture, Person, FullPerson, Document, PersonPictureInter_Hollow
+from PersistClasses import Picture, Person, FullPerson, Document, PersonPictureInter_Hollow, PersonDocumentInter_Hollow
 
 years = 365.25
 months = 30
@@ -98,16 +98,39 @@ class PictureChecker(_CheckerBase):
         return answ
     
 class DocumentChecker(_CheckerBase):
-     
-     def _chk_data_consistency(self):
+    def _chk_docwithout_pers(self, docs2chk):
+        answ = {"Dokument ohne Person":{},
+                "Dokument mit fehlender Zielperson":{}}
+
+        if len(docs2chk)==0:
+            return answ
+        
+        for doc in docs2chk:
+            pdinters = sqp.SQQuery(self._fact, PersonDocumentInter_Hollow).where(PersonDocumentInter_Hollow.DocumentId==doc._id).as_list()
+            if len(pdinters)==0:
+                answ["Dokument ohne Person"][doc.__str__()]=doc
+            else:
+                for pdinter in pdinters:
+                    try:
+                        self._fact.fill_joins(pdinter, PersonDocumentInter_Hollow.Person)
+                    except Exception as exc:
+                        pass
+
+                    if pdinter.person is None:
+                        answ["Dokument mit fehlender Zielperson"][doc.__str__()] = doc
+                        break
+
+        return answ
+
+
+    def _chk_data_consistency(self, docs):
         answ = {"Kennung fehlt":{},
                 "Dokument ohne Gruppe":{},
                 "Titel fehlt" : {},
                 "Kein Archiveintrag":{}
                 }
          
-        alldocs = sqp.SQQuery(self._fact, Document).where().as_list()
-        for doc in alldocs:
+        for doc in docs:
             if self.is_empty_str(doc.readableid):
                 answ["Kennung fehlt"][doc.__str__()] = doc
                      
@@ -122,13 +145,15 @@ class DocumentChecker(_CheckerBase):
 
         return answ
 
-     def do_checks(self) -> dict:
-        subansw = self._chk_data_consistency()
+    def do_checks(self) -> dict:
+        alldocs = sqp.SQQuery(self._fact, Document).where().as_list()
 
-        return subansw
+        subansw = self._chk_data_consistency(alldocs)
+        answ = subansw | self._chk_docwithout_pers(alldocs)
+
+        return answ
 
 class PersonChecker(_CheckerBase):
-        
 
     def _chk_parent(self, child : Person, parent : Person) -> bool:
         """check wehter a given parent can be the child's parent according to birthdates and deathdates of both
