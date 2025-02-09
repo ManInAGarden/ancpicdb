@@ -478,7 +478,7 @@ class geditDocumentDialog ( wx.Dialog ):
 		self.m_docextTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
 		gbSizer7.Add( self.m_docextTB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
-		self.m_staticText87 = wx.StaticText( self, wx.ID_ANY, u"Dokumenttyp:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText87 = wx.StaticText( self, wx.ID_ANY, u"Archivierter Typ:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText87.Wrap( -1 )
 
 		gbSizer7.Add( self.m_staticText87, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
@@ -613,6 +613,14 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		self.m_documentsLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
 		gbSizer6.Add( self.m_documentsLCTRL, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
+		self.m_staticText99 = wx.StaticText( self, wx.ID_ANY, u"Filter:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText99.Wrap( -1 )
+
+		gbSizer6.Add( self.m_staticText99, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_filterInfoTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		gbSizer6.Add( self.m_filterInfoTB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
 		bSizer10 = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.m_ApplyFilterBU = wx.Button( self, wx.ID_ANY, u"MyButton", wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT|wx.BU_NOTEXT )
@@ -676,7 +684,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		bSizer10.Add( self.m_workingGAUGE, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.RESERVE_SPACE_EVEN_IF_HIDDEN, 5 )
 
 
-		gbSizer6.Add( bSizer10, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+		gbSizer6.Add( bSizer10, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText11 = wx.StaticText( self, wx.ID_ANY, u"Dokumente:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText11.Wrap( -1 )
@@ -688,10 +696,10 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		m_sdbSizer2.AddButton( self.m_sdbSizer2OK )
 		m_sdbSizer2.Realize()
 
-		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
+		gbSizer6.Add( m_sdbSizer2, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
 
 
-		gbSizer6.AddGrowableCol( 0 )
+		gbSizer6.AddGrowableCol( 1 )
 		gbSizer6.AddGrowableRow( 1 )
 
 		self.SetSizer( gbSizer6 )
@@ -703,6 +711,7 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		self.m_documentsLCTRL.Bind( wx.EVT_LEFT_DCLICK, self.listDblClick )
 		self.m_documentsLCTRL.Bind( wx.EVT_LIST_ITEM_DESELECTED, self.documentDeselected )
 		self.m_documentsLCTRL.Bind( wx.EVT_LIST_ITEM_SELECTED, self.documentSelected )
+		self.m_ApplyFilterBU.Bind( wx.EVT_BUTTON, self.applyFilter )
 		self.m_addRowBU.Bind( wx.EVT_BUTTON, self.addNewRow )
 		self.m_editBU.Bind( wx.EVT_BUTTON, self.editButnClick )
 		self.m_downloadDocumentBU.Bind( wx.EVT_BUTTON, self.downloadDocument )
@@ -723,6 +732,9 @@ class gDocumentsViewDialog ( wx.Dialog ):
 		event.Skip()
 
 	def documentSelected( self, event ):
+		event.Skip()
+
+	def applyFilter( self, event ):
 		event.Skip()
 
 	def addNewRow( self, event ):
@@ -1968,6 +1980,85 @@ class gEditSignifcPictureDialog ( wx.Dialog ):
 
 
 ###########################################################################
+## Class gDocumentFilterDialog
+###########################################################################
+
+class gDocumentFilterDialog ( wx.Dialog ):
+
+	def __init__( self, parent ):
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Dokumentfilter", pos = wx.DefaultPosition, size = wx.Size( 630,257 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetFont( wx.Font( 11, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False, "Arial" ) )
+
+		gbSizer15 = wx.GridBagSizer( 0, 0 )
+		gbSizer15.SetFlexibleDirection( wx.BOTH )
+		gbSizer15.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+		m_sdbSizer11 = wx.StdDialogButtonSizer()
+		self.m_sdbSizer11OK = wx.Button( self, wx.ID_OK )
+		m_sdbSizer11.AddButton( self.m_sdbSizer11OK )
+		self.m_sdbSizer11Cancel = wx.Button( self, wx.ID_CANCEL )
+		m_sdbSizer11.AddButton( self.m_sdbSizer11Cancel )
+		m_sdbSizer11.Realize()
+
+		gbSizer15.Add( m_sdbSizer11, wx.GBPosition( 5, 0 ), wx.GBSpan( 1, 2 ), wx.ALIGN_RIGHT|wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText44 = wx.StaticText( self, wx.ID_ANY, u"Kennummer:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText44.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText44, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_kennummerTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer15.Add( self.m_kennummerTB, wx.GBPosition( 0, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText45 = wx.StaticText( self, wx.ID_ANY, u"Dokumenttitel:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText45.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText45, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_titelTB = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		gbSizer15.Add( self.m_titelTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText46 = wx.StaticText( self, wx.ID_ANY, u"Dokumentgruppe:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText46.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText46, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_groupCBChoices = []
+		self.m_groupCB = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, m_groupCBChoices, 0 )
+		gbSizer15.Add( self.m_groupCB, wx.GBPosition( 2, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText47 = wx.StaticText( self, wx.ID_ANY, u"Produziert am:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText47.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText47, wx.GBPosition( 4, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		self.m_prodDateDP = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DROPDOWN )
+		gbSizer15.Add( self.m_prodDateDP, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticText97 = wx.StaticText( self, wx.ID_ANY, u"Dokumenttyp:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText97.Wrap( -1 )
+
+		gbSizer15.Add( self.m_staticText97, wx.GBPosition( 3, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
+
+		m_docTypeCBChoices = []
+		self.m_docTypeCB = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, m_docTypeCBChoices, 0 )
+		gbSizer15.Add( self.m_docTypeCB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
+
+
+		gbSizer15.AddGrowableCol( 1 )
+
+		self.SetSizer( gbSizer15 )
+		self.Layout()
+
+		self.Centre( wx.BOTH )
+
+	def __del__( self ):
+		pass
+
+
+###########################################################################
 ## Class gWantedPosterPrintDialog
 ###########################################################################
 
@@ -2902,7 +2993,7 @@ class gCreateBackupDialog ( wx.Dialog ):
 class gConnectedPersonsDialog ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Verbundene Personen", pos = wx.DefaultPosition, size = wx.Size( 756,375 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Verbundene Personen", pos = wx.DefaultPosition, size = wx.Size( 756,363 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -2962,6 +3053,7 @@ class gConnectedPersonsDialog ( wx.Dialog ):
 
 
 		gbSizer29.AddGrowableCol( 1 )
+		gbSizer29.AddGrowableRow( 2 )
 
 		self.SetSizer( gbSizer29 )
 		self.Layout()

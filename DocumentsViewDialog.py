@@ -9,6 +9,8 @@ import sqlitepersist as sqp
 from ConfigReader import ConfigReader
 from EditDocumentDialog import EditDocumentDialog
 from ConnectedPersonsDialog import ConnectedPersonsDialog
+from DocumentFilterData import DocumentFilterData
+from DocumentFilterDialog import DocumentFilterDialog
 import backgroundworkers as bgw
 
 class DocumentsViewDialog(gg.gDocumentsViewDialog):
@@ -42,6 +44,8 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
         if self.machlabel is None:
             self.machlabel = "XXXX"
         
+        self._filter = DocumentFilterData(fact) #current active filter for the data
+        
         bgw.EVT_RESULT(self, self.workerfinished)
         bgw.EVT_NOTIFY_PERC(self, self.notifyperc)
 
@@ -65,9 +69,18 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
     
     def _filldialog(self):
         """fill dialog with all the pictures"""
-        q = sqp.SQQuery(self._fact, Document).order_by(sqp.OrderInfo(Document.ScanDate, sqp.OrderDirection.DESCENDING))
-        self._documents = list(q)
+        self._refilldialog()
+        
 
+    def _refilldialog(self):
+        """fill dialog with all the documents filtered if filter hase been set"""
+        #requery the document data
+        if self._filter is not None:
+            q = self._filter.get_query()
+        else:
+            q = sqp.SQQuery(self._fact, Document).order_by(sqp.OrderInfo(Document.ScanDate, sqp.OrderDirection.DESCENDING))
+
+        self._documents = q.as_list()
         GuiHelper.set_data_for_lstctrl(self.m_documentsLCTRL,
                                        self.DOCLISTDEFINS,
                                        self._documents)
@@ -223,3 +236,15 @@ class DocumentsViewDialog(gg.gDocumentsViewDialog):
             GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
         except Exception as exc:
             GuiHelper.show_error("Die Datei kann nicht geschrieben werden. {}", exc)
+
+    def applyFilter(self, event):
+        edifiltdial = DocumentFilterDialog(self, self._fact, self._filter)
+
+        res = edifiltdial.showmodal()
+
+        if res == wx.ID_CANCEL:
+            return
+            
+        self._filter = edifiltdial.filter
+        GuiHelper.set_val(self.m_filterInfoTB, self._filter.get_info())
+        self._refilldialog()
