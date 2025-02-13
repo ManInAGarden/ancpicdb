@@ -63,6 +63,97 @@ class Mocker(object):
         self._sqpf.flush(pers)
         return pers
 
+    def intersect_persnpic(self, person : Person, pict : Picture, subtitle : str = None, position : int = 0, key : str="") -> PersonPictureInter:
+        if not type(person) is Person: raise Exception("intersects first argument must of type Person!")
+        if not type(pict) is Picture: raise Exception("intersects first argument must of type Person!")
+        
+        if pict._id is None: raise Exception("Flush picture before intersecting it to a person")
+        if person._id is None: raise Exception("Flush person before intersecting it to a picture")
+
+        if subtitle is not None:
+            subt = key + subtitle
+        else:
+            subt = None
+
+        inter = PersonPictureInter(pictureid=pict._id,
+                                   personid=person._id,
+                                   position=position,
+                                   subtitle=subt)
+        self._sqpf.flush(inter)
+
+        return inter
+
+    
+    def create_picture_from_dict(self, pictd : dict, key:str = "") -> Person:
+        p = Picture()
+        
+        for dkey, value in pictd.items():
+            if dkey=="title" or dkey=="subtitle":
+                setattr(p, dkey, key + value)
+            else:
+                setattr(p, dkey, value)
+
+        self._sqpf.flush(p)
+        return p
+    
+    def create_person_from_dict(self, persd : dict, key:str = "") -> Person:
+        p = Person()
+        bday = None
+        bmonth = None
+        byear = None
+        for dkey, value in persd.items():
+            if dkey=="firstname" or dkey=="name":
+                setattr(p, dkey, key + value)
+            elif dkey=="birthday":
+                bday = value
+            elif dkey=="birthmonth":
+                bmonth = value
+            elif dkey=="birthyear":
+                byear = value
+            elif dkey=="biosex":
+                catval = self._sqpf.getcat(SexCat, value)
+                setattr(p, dkey, catval)
+            else:
+                setattr(p, dkey, value)
+
+        if bday is not None and byear is not None and bmonth is not None:
+            p.birthday = datetime.datetime(byear, bmonth, bday)
+            bd = None
+            bm = None
+            by = None
+        else:
+            bday = None
+            p.birthmonth = bmonth
+            p.birthyear = byear
+
+        self._sqpf.flush(p)
+
+        return p
+            
+
+    def create_pictures(self, data : list, key:str = "") -> list:
+        """create pictures from a list of dictionaries, each defining a person
+           if not empty all titles will be preceded by the key
+        """
+        pictures = []
+        for picd in data:
+            p = self.create_picture_from_dict(picd, key)
+            pictures.append(p)
+
+        return pictures
+
+
+    def create_persons(self, data : list, key:str = "") -> list:
+        """create persons from a list of dictionaries, each defining a person
+           if not empty all names will be preceded by the key
+        """
+        persons = []
+        for persd in data:
+            p = self.create_person_from_dict(persd, key)
+            persons.append(p)
+
+        return persons
+            
 
     def _get_bool(self, valdict, key,  default=False):
         if key not in valdict:

@@ -43,7 +43,18 @@ class BgCsvImporter(BgWorker):
         zipf.extractall(zippath)
 
 
-    def _import_class(self, impcls, zipd, fact : sqp.SQFactory, findwith:list=[]) -> int:
+    
+    def _import_class(self, impcls, zipd, fact : sqp.SQFactory, findwith:list=[], strictwith: list=[]) -> int:
+        """Import data from a csv for a given sqp-class
+            data not already in the db will be created and those already there will be updated
+            with the data from the csv
+            
+            impcls: The sqplitepersist class to be used
+            zipd: The path to the folder containing a zip that is namend by the naming scheme
+            fact: The sqlitepersist factory class to be used for the database operations
+            findwith: List persistent fields of impcls to be used to identify the data, if list is emtpy Id will be used
+            strict: If true any 
+        """
         logger = self.paras._logger
         imp = sqp.SQLitePersistCsvImporter(impcls, fact, findwith=findwith)
         fname = sqp.SQLitePersistCsvImporter.get_std_fname(impcls)

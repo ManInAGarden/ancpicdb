@@ -17,8 +17,10 @@ class SQLitePersistCsvImporter():
                  impcls : PBase, 
                  fact : SQFactory, 
                  findwith: list = [PBase.Id],
+                 strictwith: list = [],
                  itemdelim: str =',', 
                  stringdelim : str ='"'):
+        
         self._delimitm = itemdelim
         self._delimstr = stringdelim
         self._fact = fact
@@ -26,10 +28,16 @@ class SQLitePersistCsvImporter():
         self._after_data_do = None #method like doafterflush(self, obj : PBase)
         self._before_data_do = None #line after_data but called before the flush to the db is carried out
         self._findwith = findwith
+        self._strictwith = strictwith
         if self._findwith is None or len(self._findwith)==0 or (len(self._findwith)==1 and self._findwith[0]==PBase.Id):
             self._findbyid = True
         else:
             self._findbyid = False
+
+        if self._strictwith is None or len(self._strictwith)==0:
+            self._bestrict = False
+        else:
+            self._bestrict = True
 
     @property
     def after_data_do(self):
@@ -52,25 +60,56 @@ class SQLitePersistCsvImporter():
     def findwith(self):
         return self._findwith
     
+    @property
+    def strictwith(self):
+        return self._strictwith
+    
     def do_import(self, f) -> int:
         if self._findbyid:
             return self.do_importby_id(f)
         else:
             return self.do_importby_unikey(f)
 
+    def append_to_crealist(self, creadi : dict, obj : PBase):
+        """append a created object to the given dict by using its _id as a key
+        and dictionary with the data for each element. For the key of the inner dict we use the
+        strict fields
+        """
+        indict = {}
+        for fdef in self._strictwith:
+            val = self._fact.get_contents(obj, fdef)
+            key = fdef.get_fieldname()
+            indict[key] = val
+
+        creadi[obj._id] = indict
+
+    def _getsrchsexp(self, creaentry):
+        first = True
+        for strictdef in self._strictwith:
+            fname = strictdef.get_fieldname()
+            if first:
+                first = False
+                exp = strictdef == creaentry[fname]
+            else:
+                exp = (exp) &  strictdef == creaentry[fname]
+
+        return exp
+
     def do_importby_id(self, f):
         dr = csv.DictReader(f)
         lc = 0
-
+        crealst = {}
         #self._logger.debug("Starting csv-import for class {}", self._impcls.__name__)
         for row in dr:
             obj = self._create_instance(self._impcls, row)
             of = self._fact.ForceWrite
-            self._fact.ForceWrite = True #tell the fact to try an insert after the update for db-writes failed, this way we can write instert data with existing _ids
+            self._fact.ForceWrite = True #tell the fact to try an insert after the update for db-writes failed, this way we can insert data with existing _ids
             try:
                 if self._before_data_do is not None:
                     self._before_data_do(obj)
                 self._fact.flush(obj)
+                if self._bestrict:
+                    self.append_to_crealist(crealst, obj)
                 if self._after_data_do is not None:
                     self._after_data_do(obj)
             except Exception as exc:
@@ -83,6 +122,14 @@ class SQLitePersistCsvImporter():
             lc += 1
             #self._logger.debug("Succesfully created id <{}> for class <{}> from line# <{}>",
             #                    str(obj._id), self._impcls.__name__, lc)
+
+        if self._bestrict and len(crealst) > 0:
+            for creakey, creaval in crealst.items():
+                exp = self._getsrchsexp(creaval)
+                allelems = SQQuery(self._fact, self._impcls).where(exp).as_list()
+                for allelem in allelems:
+                    if allelem._id not in crealst.keys:
+                        self._fact.delete(allelem)
 
         return lc
 

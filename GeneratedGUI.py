@@ -2640,14 +2640,20 @@ class gExportDataDialog ( wx.Dialog ):
 
 		self.m_personsCB = wx.CheckBox( self, wx.ID_ANY, u"Personen", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_personsCB.SetValue(True)
+		self.m_personsCB.Enable( False )
+
 		gbSizer25.Add( self.m_personsCB, wx.GBPosition( 3, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_documentsCB = wx.CheckBox( self, wx.ID_ANY, u"Dokumente", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_documentsCB.SetValue(True)
+		self.m_documentsCB.Enable( False )
+
 		gbSizer25.Add( self.m_documentsCB, wx.GBPosition( 4, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_picturesCB = wx.CheckBox( self, wx.ID_ANY, u"Bilder", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_picturesCB.SetValue(True)
+		self.m_picturesCB.Enable( False )
+
 		gbSizer25.Add( self.m_picturesCB, wx.GBPosition( 5, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_staticText77 = wx.StaticText( self, wx.ID_ANY, u"Nur Elemente neuer als:", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -2656,6 +2662,8 @@ class gExportDataDialog ( wx.Dialog ):
 		gbSizer25.Add( self.m_staticText77, wx.GBPosition( 6, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_onlyNewerThanDPI = wx.adv.DatePickerCtrl( self, wx.ID_ANY, wx.DefaultDateTime, wx.DefaultPosition, wx.DefaultSize, wx.adv.DP_ALLOWNONE|wx.adv.DP_DEFAULT|wx.adv.DP_DROPDOWN )
+		self.m_onlyNewerThanDPI.Enable( False )
+
 		gbSizer25.Add( self.m_onlyNewerThanDPI, wx.GBPosition( 6, 1 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_targetDIRP = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Auswahl des Zielverzeichnisses", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE|wx.DIRP_DIR_MUST_EXIST|wx.DIRP_SMALL )
