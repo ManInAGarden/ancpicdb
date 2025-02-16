@@ -3,6 +3,8 @@ from .SQLitePersistFactoryParts import *
 from .SQLitePersistBasicClasses import *
 from .SQLitePersistQueryParts import *
 
+import mylogger as mylo
+
 import csv
 
 class SQLitePersistCsvImporter():
@@ -19,11 +21,13 @@ class SQLitePersistCsvImporter():
                  findwith: list = [PBase.Id],
                  strictwith: list = [],
                  itemdelim: str =',', 
-                 stringdelim : str ='"'):
+                 stringdelim : str ='"',
+                 logger : mylo.Logger = None):
         
         self._delimitm = itemdelim
         self._delimstr = stringdelim
         self._fact = fact
+        self._logger : mylo.Logger = logger
         self._impcls = impcls
         self._after_data_do = None #method like doafterflush(self, obj : PBase)
         self._before_data_do = None #line after_data but called before the flush to the db is carried out
@@ -64,6 +68,18 @@ class SQLitePersistCsvImporter():
     def strictwith(self):
         return self._strictwith
     
+    def _logdebug(self, frm, *args):
+        if self._logger is not None:
+            self._logger.debug(frm, *args)
+
+    def _logerror(self, frm, *args):
+        if self._logger is not None:
+            self._logger.error(frm, *args)
+
+    def _loginfo(self, frm, *args):
+        if self._logger is not None:
+            self._logger.info(frm, *args)
+
     def do_import(self, f) -> int:
         if self._findbyid:
             return self.do_importby_id(f)
@@ -71,7 +87,7 @@ class SQLitePersistCsvImporter():
             return self.do_importby_unikey(f)
 
     def append_to_crealist(self, creadi : dict, obj : PBase):
-        """append a created object to the given dict by using its _id as a key
+        """append a created object to the given dict by using its hex representation of _id as a key
         and dictionary with the data for each element. For the key of the inner dict we use the
         strict fields
         """
@@ -81,7 +97,7 @@ class SQLitePersistCsvImporter():
             key = fdef.get_fieldname()
             indict[key] = val
 
-        creadi[obj._id] = indict
+        creadi[obj._id.hex] = indict
 
     def _getsrchsexp(self, creaentry):
         first = True
@@ -91,15 +107,15 @@ class SQLitePersistCsvImporter():
                 first = False
                 exp = strictdef == creaentry[fname]
             else:
-                exp = (exp) &  strictdef == creaentry[fname]
+                exp = exp &  (strictdef == creaentry[fname])
 
         return exp
 
     def do_importby_id(self, f):
         dr = csv.DictReader(f)
         lc = 0
-        crealst = {}
-        #self._logger.debug("Starting csv-import for class {}", self._impcls.__name__)
+        in_csv_lst = {}
+        self._loginfo("Starting csv-import for class {}", self._impcls.__name__)
         for row in dr:
             obj = self._create_instance(self._impcls, row)
             of = self._fact.ForceWrite
@@ -109,27 +125,39 @@ class SQLitePersistCsvImporter():
                     self._before_data_do(obj)
                 self._fact.flush(obj)
                 if self._bestrict:
-                    self.append_to_crealist(crealst, obj)
+                    self.append_to_crealist(in_csv_lst, obj)
                 if self._after_data_do is not None:
                     self._after_data_do(obj)
             except Exception as exc:
-                #self._logger.error("Error trying to create an instance class <{}> from line# <{}>",
-                #                    self._impcls.__name__, lc)
+                self._logerror("Error trying to create an instance class <{}> from line# <{}>",
+                                self._impcls.__name__, 
+                                lc)
                 raise exc
             finally:
                 self._fact.ForceWrite = of #get back to previous forcewrite state
                 
             lc += 1
-            #self._logger.debug("Succesfully created id <{}> for class <{}> from line# <{}>",
-            #                    str(obj._id), self._impcls.__name__, lc)
+            self._logdebug("Succesfully created id <{}> for class <{}> from line# <{}>",
+                           str(obj._id), self._impcls.__name__, lc)
 
-        if self._bestrict and len(crealst) > 0:
-            for creakey, creaval in crealst.items():
-                exp = self._getsrchsexp(creaval)
+        if self._bestrict and len(in_csv_lst) > 0:
+            for in_csv_key, in_csv_val in in_csv_lst.items():
+                exp = self._getsrchsexp(in_csv_val)
+                self._logdebug("Selecting all elements of class {} where stricdefs are the same as in {}",
+                               self._impcls.__name__,
+                               in_csv_val)
                 allelems = SQQuery(self._fact, self._impcls).where(exp).as_list()
+                self._logdebug("fetched {} elements for approval by strict on {}",
+                               len(allelems),
+                               in_csv_val)
                 for allelem in allelems:
-                    if allelem._id not in crealst.keys:
+                    if not allelem._id.hex in in_csv_lst:
+                        self._logdebug("{} id not approved as been delivered in csv and therefore deleted", 
+                                       allelem._id)
                         self._fact.delete(allelem)
+                    else:
+                        self._logdebug("{} id approved as beeing delivered by csv and not deleted", 
+                                       allelem._id)
 
         return lc
 

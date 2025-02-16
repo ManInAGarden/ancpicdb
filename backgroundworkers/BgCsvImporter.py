@@ -56,7 +56,12 @@ class BgCsvImporter(BgWorker):
             strict: If true any 
         """
         logger = self.paras._logger
-        imp = sqp.SQLitePersistCsvImporter(impcls, fact, findwith=findwith)
+        imp = sqp.SQLitePersistCsvImporter(impcls, 
+                                           fact, 
+                                           findwith=findwith, 
+                                           strictwith=strictwith,
+                                           logger=logger)
+        
         fname = sqp.SQLitePersistCsvImporter.get_std_fname(impcls)
         fname = os.path.join(zipd, "data", fname)
         logger.debug("Csv importing from {} now", fname)
@@ -86,7 +91,7 @@ class BgCsvImporter(BgWorker):
         sumct = 0
         pct = self._import_class(Person, zipd, fact)
         sumct += pct
-        ibct = self._import_class(PersonInfoBit, zipd, fact)
+        ibct = self._import_class(PersonInfoBit, zipd, fact, strictwith=[PersonInfoBit.TargetId])
         sumct += ibct
         logger.debug("Finished importing person related data related now, imported {} persons and {} person-info-bits.",
                      pct,
@@ -99,8 +104,8 @@ class BgCsvImporter(BgWorker):
         logger = self.paras._logger
         logger.debug("Importing document related data now")
         docct = self._import_class(Document, zipd, fact)
-        docict = self._import_class(DocumentInfoBit, zipd, fact)
-        pdocintct = self._import_class(PersonDocumentInter, zipd, fact)
+        docict = self._import_class(DocumentInfoBit, zipd, fact, strictwith=[DocumentInfoBit.TargetId])
+        pdocintct = self._import_class(PersonDocumentInter, zipd, fact, strictwith=[PersonDocumentInter.PersonId])
 
         logger.debug("Finished document import, did {} documents, {} document-info-bits and {} person-documents-intersections",
                      docct,
@@ -113,8 +118,8 @@ class BgCsvImporter(BgWorker):
         logger = self.paras._logger
         logger.debug("Importing picture related data now")
         pi_ct = self._import_class(Picture, zipd, fact)
-        piin_ct = self._import_class(PictureInfoBit, zipd, fact)
-        per_pi_ct = self._import_class(PersonPictureInter, zipd, fact)
+        piin_ct = self._import_class(PictureInfoBit, zipd, fact, strictwith=[PictureInfoBit.TargetId])
+        per_pi_ct = self._import_class(PersonPictureInter, zipd, fact, strictwith=[PersonPictureInter.PersonId])
 
         logger.debug("Finished picture import, did {} pictures, {} picture-info-bits and {} person-picture-intersections.",
                      pi_ct,

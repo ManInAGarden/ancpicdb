@@ -97,7 +97,7 @@ class TestCsvExport(TestBase):
             for picr in pics_r:
                 self.Spf.delete(picr) 
 
-            impo = sqp.SQLitePersistCsvImporter(Picture, self.Spf)
+            impo = sqp.SQLitePersistCsvImporter(Picture, self.Spf, logger=self.MyLogger)
             impo.do_import(fo)
 
             #now read the data again
@@ -155,7 +155,8 @@ class TestCsvExport(TestBase):
             #try an update by first and last name as identifier and NOT with the _id
             impo = sqp.SQLitePersistCsvImporter(Person, 
                                                 self.Spf, 
-                                                findwith=[Person.FirstName, Person.Name])
+                                                findwith=[Person.FirstName, Person.Name],
+                                                logger=self.MyLogger)
             impct = impo.do_import(fo)
             assert impct > 0
 
@@ -193,6 +194,7 @@ class TestCsvExport(TestBase):
             {"title":"Karl in München", "fluftakenyear": 1910},
             {"title":"Fritz im Regiesessel beim Dreh von Metropolis", "fluftakenyear":1921},
             {"title":"Anna beim Vorsprechen", "fluftakenyear": 1893},
+            {"title":"Anna bei sonstwas", "fluftakenyear": 1994}
         ]
 
         pictures = self.Mck.create_pictures(picd, "910")
@@ -222,21 +224,28 @@ class TestCsvExport(TestBase):
             
                 assert lc2 > 0
 
-                inter4 = self.Mck.intersect_persnpic(persons[3], pictures[3], subtitle="Anna", key="910")
+                inter4 = self.Mck.intersect_persnpic(persons[3], pictures[3], subtitle="Anna", key="910") #connect a new person to a new picture
+                inter5 = self.Mck.intersect_persnpic(persons[2], pictures[4], subtitle="Simulierte alte Verknüpfung", key="910") #connect an old person to another picture
                 pict2s = sqp.SQQuery(self.Spf, PersonPictureInter).where(sqp.IsLike(PersonPictureInter.Subtitle, "910%")).as_list()
-                assert len(pict1s) + 1 == len(pict2s)
+                assert len(pict1s) + 2 == len(pict2s) #two more connections after the export here
                 
                 fo.seek(0)
-                #try an update by first and last name as identifier and NOT with the _id
+                #try an update by _id
                 impo = sqp.SQLitePersistCsvImporter(Person, 
-                                                    self.Spf)
+                                                    self.Spf,
+                                                    logger=self.MyLogger)
                 impct = impo.do_import(fo)
                 assert impct > 0
 
                 fo2.seek(0)
+                #import person->pictire intersects beeing strict on the PersonId, which means
+                #that any connection from person to picture that is not on the csv will
+                #be deleted when it connects to person that is mentioned in at least one of the 
+                #intersections in the csv
                 impo2 = sqp.SQLitePersistCsvImporter(PersonPictureInter, 
                                                     self.Spf,
-                                                    strictwith=[PersonPictureInter.PersonId, PersonPictureInter.PictureId])
+                                                    strictwith=[PersonPictureInter.PersonId],
+                                                    logger=self.MyLogger)
                 impct2 = impo2.do_import(fo2)
                 assert impct2 > 0
 
@@ -258,10 +267,10 @@ class TestCsvExport(TestBase):
             #but!
             assert p1s.lastupdate < p1sr.lastupdate #there should me more than 5s between the two
 
-        #inter4 should be gone
+        #inter4 should NOT be gone becaues it connects a different person
         pict1s_r = sqp.SQQuery(self.Spf, PersonPictureInter).where(sqp.IsLike(PersonPictureInter.Subtitle, "910%")).as_list()
-        assert len(pict1s) == len(pict1s_r)
-        for interind in range(len(pict1s_r)):
+        assert len(pict1s) + 1 == len(pict1s_r)
+        for interind in range(len(pict1s)):
             ppinter = pict1s[interind]
             ppinter_r = pict1s_r[interind]
             assert ppinter.personid == ppinter_r.personid
@@ -271,8 +280,12 @@ class TestCsvExport(TestBase):
             #but!
             assert ppinter.lastupdate < ppinter_r.lastupdate
 
-        #make really sure the inter4 is gone
+        #make really sure the inter4 is still there
         inter4_r = sqp.SQQuery(self.Spf, PersonPictureInter).where(PersonPictureInter.Id==inter4._id).first_or_default(None)
-        assert inter4_r is None
+        assert inter4_r is not None
+
+        #but inter5 is gone
+        inter5_r = sqp.SQQuery(self.Spf, PersonPictureInter).where(PersonPictureInter.Id==inter5._id).first_or_default(None)
+        assert inter5_r is None
 
 
