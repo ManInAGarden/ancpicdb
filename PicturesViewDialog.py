@@ -240,10 +240,10 @@ class PicturesViewDialog(gg.gPicturesViewDialog):
 
         try:
             with open(fname, 'w', newline='', encoding="ansi") as csvfile:
-                csvw = csv.writer(csvfile)
+                csvw = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
                 csvw.writerow(["_id", "readableid", "title", "bestdatestr", "groupname", "grouponum"])
                 for sp in selpics:
-                    csvw.writerow([sp._id, sp.readableid, sp.title, sp.bestdatestr, sp.groupname, sp.groupordernum])
+                    csvw.writerow([sp._id, sp.readableid, sp.title, sp.bestdatestr , sp.groupname, sp.groupordernum])
             
             GuiHelper.show_message("CSV Datei unter <{}> erfolgreich geschrieben", fname)
         except Exception as exc:

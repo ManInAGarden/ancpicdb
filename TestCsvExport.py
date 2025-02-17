@@ -5,6 +5,7 @@ import datetime as dt
 import unittest
 import tempfile as tf
 import time
+import uuid
 
 class TestCsvExport(TestBase):
     def setUp(self):
@@ -158,7 +159,10 @@ class TestCsvExport(TestBase):
                                                 findwith=[Person.FirstName, Person.Name],
                                                 logger=self.MyLogger)
             impct = impo.do_import(fo)
+            assert impo.imported is not None
             assert impct > 0
+
+            assert type(impo.imported[0]) is uuid.UUID
 
         assert len(person1s) == impct
 
@@ -180,14 +184,18 @@ class TestCsvExport(TestBase):
             
     
     def test_intersExpNImWithKey910(self):
+        mykey = "910"
         pdt = [
             {"firstname":"First_Fritz", "name":"Last_Lang", "biosex":"MALE","birthday":5,"birthmonth":12,"birthyear":1890, "deathyear":1976},
             {"firstname":"First_Maria", "name":"Last_Callas", "biosex":"FEMALE","birthday":2, "birthmonth":12, "birthyear":1923, "deathyear":1977},
-            {"firstname":"First_Karl", "name":"Last_Valentin", "biosex":"MALE","birthday":4, "birthmonth": 6, "birthyear":1892, "deathyear":1948},
+            {"firstname":"First_Karl", "name":"Last_Valentin", "biosex":"MALE","birthday":4, "birthmonth": 6, "birthyear":1892, "deathyear":1948}
+        ]
+        
+        newpdt = [
             {"firstname":"First_Anna", "name":"Last_Held", "biosex":"MALE","birthday": 8,"birthmonth": 3,"birthyear": 1873, "deathyear":1918}
         ]
 
-        persons = self.Mck.create_persons(pdt, "910")
+        persons = self.Mck.create_persons(pdt, mykey)
 
         picd = [
             {"title":"Maria auf der großen Bühne", "fluftakenyear":1923},
@@ -197,16 +205,16 @@ class TestCsvExport(TestBase):
             {"title":"Anna bei sonstwas", "fluftakenyear": 1994}
         ]
 
-        pictures = self.Mck.create_pictures(picd, "910")
+        pictures = self.Mck.create_pictures(picd, mykey)
 
-        inter1 = self.Mck.intersect_persnpic(persons[0], pictures[2], subtitle="Fritz", key="910")
-        inter2 = self.Mck.intersect_persnpic(persons[1], pictures[0], subtitle="Maria", key="910")
-        inter3 = self.Mck.intersect_persnpic(persons[2], pictures[1], subtitle="Karl", key="910")
+        inter1 = self.Mck.intersect_persnpic(persons[0], pictures[2], subtitle="Fritz", key=mykey)
+        inter2 = self.Mck.intersect_persnpic(persons[1], pictures[0], subtitle="Maria", key=mykey)
+        inter3 = self.Mck.intersect_persnpic(persons[2], pictures[1], subtitle="Karl", key=mykey)
 
         time.sleep(5) #sleep five seconds so that lastupd will be newer then created on the import
         #now get all the persons with a not empty deathyear, that should be only those defined in pdt
-        person1s = sqp.SQQuery(self.Spf, Person).where(sqp.IsNotNone(Person.DeathYear)).as_list()
-        pict1s = sqp.SQQuery(self.Spf, PersonPictureInter).where(sqp.IsLike(PersonPictureInter.Subtitle, "910%")).as_list()
+        person1s = sqp.SQQuery(self.Spf, Person).where(sqp.IsNotNone(Person.DeathYear) & sqp.IsLike(Person.Name, mykey + "%")).as_list()
+        pict1s = sqp.SQQuery(self.Spf, PersonPictureInter).where(sqp.IsLike(PersonPictureInter.Subtitle, mykey + "%")).as_list()
         assert len(person1s) > 0
         assert len(pict1s) > 0
 
@@ -219,44 +227,57 @@ class TestCsvExport(TestBase):
 
             fo2 = tf.NamedTemporaryFile(mode="w+t", prefix="TSTPIC", suffix=".csv", delete = False)
             with fo2:
+                #export the old persons
                 expo2 = sqp.SQLitePersistCsvExporter(PersonPictureInter, fo2)
                 lc2 = expo2.do_export(pict1s)
             
                 assert lc2 > 0
 
-                inter4 = self.Mck.intersect_persnpic(persons[3], pictures[3], subtitle="Anna", key="910") #connect a new person to a new picture
+                #create a new person in the db wwhich should completely be left alone by imports
+                newpersons = self.Mck.create_persons(newpdt, "910")
+                newpersons_r = sqp.SQQuery(self.Spf, Person).where(sqp.IsNotNone(Person.DeathYear) & sqp.IsLike(Person.Name, mykey + "%")).as_list()
+                assert len(newpersons_r) == len(newpersons) + len(person1s)
+
+                #connect a new person not in the csv to a new picture
+                inter4 = self.Mck.intersect_persnpic(newpersons[0], pictures[3], subtitle="Anna", key="910") 
+                #connect to an old person, this should be deleted by the import when restricted
                 inter5 = self.Mck.intersect_persnpic(persons[2], pictures[4], subtitle="Simulierte alte Verknüpfung", key="910") #connect an old person to another picture
+                
                 pict2s = sqp.SQQuery(self.Spf, PersonPictureInter).where(sqp.IsLike(PersonPictureInter.Subtitle, "910%")).as_list()
                 assert len(pict1s) + 2 == len(pict2s) #two more connections after the export here
                 
                 fo.seek(0)
-                #try an update by _id
-                impo = sqp.SQLitePersistCsvImporter(Person, 
+                #try import by _id
+                persimpo = sqp.SQLitePersistCsvImporter(Person, 
                                                     self.Spf,
                                                     logger=self.MyLogger)
-                impct = impo.do_import(fo)
+                
+                impct = persimpo.do_import(fo)
+                assert impct == len(persimpo.imported)
                 assert impct > 0
+                assert impct == len(person1s) #the new person was not exported and so also not imported?
 
                 fo2.seek(0)
-                #import person->pictire intersects beeing strict on the PersonId, which means
+                #import person->picture intersects beeing strict on the PersonId, which means
                 #that any connection from person to picture that is not on the csv will
                 #be deleted when it connects to person that is mentioned in at least one of the 
                 #intersections in the csv
-                impo2 = sqp.SQLitePersistCsvImporter(PersonPictureInter, 
+                impinters = sqp.SQLitePersistCsvImporter(PersonPictureInter, 
                                                     self.Spf,
-                                                    strictwith=[PersonPictureInter.PersonId],
                                                     logger=self.MyLogger)
-                impct2 = impo2.do_import(fo2)
+                impct2 = impinters.do_import(fo2)
                 assert impct2 > 0
+                impct3 = impinters.restrict_on(persimpo.imported, PersonPictureInter.PersonId)
+                assert impct3 == len(impinters.imported)
 
         assert len(person1s) == impct
 
-        person1s_r = sqp.SQQuery(self.Spf, Person).where(sqp.IsNotNone(Person.DeathYear)).as_list()
+        person1s_r = sqp.SQQuery(self.Spf, Person).where(sqp.IsNotNone(Person.DeathYear) & sqp.IsLike(Person.Name, mykey + "%")).as_list()
 
-        assert len(person1s_r) == len(person1s)
+        assert len(person1s_r) == len(person1s) + 1 #there's one additional person?
 
         #we did not change anything in the csv, so data should be basically the same after the import
-        for pind in range(len(person1s_r)):
+        for pind in range(len(person1s)):
             p1s = person1s[pind]
             p1sr = person1s_r[pind]
             assert p1s._id == p1sr._id

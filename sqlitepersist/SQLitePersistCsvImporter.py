@@ -19,7 +19,6 @@ class SQLitePersistCsvImporter():
                  impcls : PBase, 
                  fact : SQFactory, 
                  findwith: list = [PBase.Id],
-                 strictwith: list = [],
                  itemdelim: str =',', 
                  stringdelim : str ='"',
                  logger : mylo.Logger = None):
@@ -32,16 +31,12 @@ class SQLitePersistCsvImporter():
         self._after_data_do = None #method like doafterflush(self, obj : PBase)
         self._before_data_do = None #line after_data but called before the flush to the db is carried out
         self._findwith = findwith
-        self._strictwith = strictwith
+        self._lastimported = None
         if self._findwith is None or len(self._findwith)==0 or (len(self._findwith)==1 and self._findwith[0]==PBase.Id):
             self._findbyid = True
         else:
             self._findbyid = False
 
-        if self._strictwith is None or len(self._strictwith)==0:
-            self._bestrict = False
-        else:
-            self._bestrict = True
 
     @property
     def after_data_do(self):
@@ -65,8 +60,8 @@ class SQLitePersistCsvImporter():
         return self._findwith
     
     @property
-    def strictwith(self):
-        return self._strictwith
+    def imported(self):
+        return self._lastimported
     
     def _logdebug(self, frm, *args):
         if self._logger is not None:
@@ -86,48 +81,45 @@ class SQLitePersistCsvImporter():
         else:
             return self.do_importby_unikey(f)
 
-    def append_to_crealist(self, creadi : dict, obj : PBase):
-        """append a created object to the given dict by using its hex representation of _id as a key
-        and dictionary with the data for each element. For the key of the inner dict we use the
-        strict fields
-        """
-        indict = {}
-        for fdef in self._strictwith:
-            val = self._fact.get_contents(obj, fdef)
-            key = fdef.get_fieldname()
-            indict[key] = val
+        return len(self._lastimported)
+        
+    def restrict_on(self, parents_ids : list, resfield) -> int:
+        """Restrict the children found before to those where an attribute matches one of the parent ids"""
+        if self._lastimported is None or len(self._lastimported)==0: return 0 #nothing to do
 
-        creadi[obj._id.hex] = indict
+        imported = []
+        for parid in parents_ids:
+            conns = SQQuery(self._fact, self._impcls).where(resfield==parid).as_list()
+            for conn in conns:
+                if not conn._id in self._lastimported:
+                    self._fact.delete(conn)
+                else:
+                    imported.append(conn._id)
 
-    def _getsrchsexp(self, creaentry):
-        first = True
-        for strictdef in self._strictwith:
-            fname = strictdef.get_fieldname()
-            if first:
-                first = False
-                exp = strictdef == creaentry[fname]
-            else:
-                exp = exp &  (strictdef == creaentry[fname])
-
-        return exp
-
-    def do_importby_id(self, f):
+        self._lastimported = imported
+        return len(imported)
+    
+    
+    def do_importby_id(self, f) -> int:
         dr = csv.DictReader(f)
-        lc = 0
-        in_csv_lst = {}
+        imported = []
         self._loginfo("Starting csv-import for class {}", self._impcls.__name__)
+        lc = 0
         for row in dr:
             obj = self._create_instance(self._impcls, row)
+            imported.append(obj._id)
             of = self._fact.ForceWrite
             self._fact.ForceWrite = True #tell the fact to try an insert after the update for db-writes failed, this way we can insert data with existing _ids
             try:
                 if self._before_data_do is not None:
                     self._before_data_do(obj)
+
                 self._fact.flush(obj)
-                if self._bestrict:
-                    self.append_to_crealist(in_csv_lst, obj)
+                
                 if self._after_data_do is not None:
                     self._after_data_do(obj)
+
+                lc += 1
             except Exception as exc:
                 self._logerror("Error trying to create an instance class <{}> from line# <{}>",
                                 self._impcls.__name__, 
@@ -136,36 +128,18 @@ class SQLitePersistCsvImporter():
             finally:
                 self._fact.ForceWrite = of #get back to previous forcewrite state
                 
-            lc += 1
             self._logdebug("Succesfully created id <{}> for class <{}> from line# <{}>",
-                           str(obj._id), self._impcls.__name__, lc)
+                           str(obj._id), self._impcls.__name__, len(imported))
 
-        if self._bestrict and len(in_csv_lst) > 0:
-            for in_csv_key, in_csv_val in in_csv_lst.items():
-                exp = self._getsrchsexp(in_csv_val)
-                self._logdebug("Selecting all elements of class {} where stricdefs are the same as in {}",
-                               self._impcls.__name__,
-                               in_csv_val)
-                allelems = SQQuery(self._fact, self._impcls).where(exp).as_list()
-                self._logdebug("fetched {} elements for approval by strict on {}",
-                               len(allelems),
-                               in_csv_val)
-                for allelem in allelems:
-                    if not allelem._id.hex in in_csv_lst:
-                        self._logdebug("{} id not approved as been delivered in csv and therefore deleted", 
-                                       allelem._id)
-                        self._fact.delete(allelem)
-                    else:
-                        self._logdebug("{} id approved as beeing delivered by csv and not deleted", 
-                                       allelem._id)
+        self._lastimported = imported
+        return len(imported)
 
-        return lc
-
-    def do_importby_unikey(self, f):
+    def do_importby_unikey(self, f) -> int:
+        imported = []
         dr = csv.DictReader(f)
-        lc = 0
         for row in dr:
             obj = self._create_instance(self._impcls, row)
+            imported.append(obj._id)
             first = True
             exp = None
 
@@ -187,9 +161,8 @@ class SQLitePersistCsvImporter():
             else:
                 self._update_existing(foundl[0], obj)
 
-            lc += 1
-
-        return lc
+        self._lastimported = imported
+        return len(imported)
 
     def _update_existing(self, targobj, srcobj):
         #to make everything inside the fact work correctly we transfer any member from src to targ
@@ -203,9 +176,6 @@ class SQLitePersistCsvImporter():
 
         self._fact.flush(targobj)
         
-
-
-
     def _create_instance(self, cls : PBase, row):
         """create an instance of the object from date in the row (filled columns)
         """

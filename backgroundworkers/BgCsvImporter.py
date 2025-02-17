@@ -44,7 +44,8 @@ class BgCsvImporter(BgWorker):
 
 
     
-    def _import_class(self, impcls, zipd, fact : sqp.SQFactory, findwith:list=[], strictwith: list=[]) -> int:
+    def _import_class(self, impcls, zipd, fact : sqp.SQFactory, findwith:list=[],
+                      restrictto : list = None, restrictby = None) -> list:
         """Import data from a csv for a given sqp-class
             data not already in the db will be created and those already there will be updated
             with the data from the csv
@@ -59,27 +60,28 @@ class BgCsvImporter(BgWorker):
         imp = sqp.SQLitePersistCsvImporter(impcls, 
                                            fact, 
                                            findwith=findwith, 
-                                           strictwith=strictwith,
                                            logger=logger)
         
         fname = sqp.SQLitePersistCsvImporter.get_std_fname(impcls)
         fname = os.path.join(zipd, "data", fname)
         logger.debug("Csv importing from {} now", fname)
-        ct = 0
         with open(fname, "r") as f:
-            ct = imp.do_import(f)
+            imct = imp.do_import(f)
         
-        return ct
+        if restrictto is not None and restrictby is not None and len(restrictto) > 0:
+            imp.restrict_on(restrictto, restrictby)
+
+        return imp.imported
 
     def _import_basics(self, zipd, fact : sqp.SQFactory) -> int:
         logger = self.paras._logger
         logger.debug("Importing basic objects now")
         sumct = 0
-        sumct += self._import_class(sqp.PCatalog, 
+        sumct += len(self._import_class(sqp.PCatalog, 
                                     zipd, 
                                     fact, 
-                                    findwith=[sqp.PCatalog.Code, sqp.PCatalog.Type, sqp.PCatalog.LangCode])
-        sumct += self._import_class(DataGroup, zipd, fact)
+                                    findwith=[sqp.PCatalog.Code, sqp.PCatalog.Type, sqp.PCatalog.LangCode]))
+        sumct += len(self._import_class(DataGroup, zipd, fact))
         logger.debug("Finished importing basic objects now, did {} catalog entries and data groups", sumct)
         
         return sumct
@@ -89,23 +91,35 @@ class BgCsvImporter(BgWorker):
         logger = self.paras._logger
         logger.debug("Importing person data now")
         sumct = 0
-        pct = self._import_class(Person, zipd, fact)
+        imp_persns = self._import_class(Person, zipd, fact)
+        pct = len(imp_persns)
         sumct += pct
-        ibct = self._import_class(PersonInfoBit, zipd, fact, strictwith=[PersonInfoBit.TargetId])
+        imp_infobits = self._import_class(PersonInfoBit, zipd, fact, 
+                                          restrictto=imp_persns, 
+                                          restrictby=PersonInfoBit.TargetId)
+        ibct = len(imp_infobits)
         sumct += ibct
         logger.debug("Finished importing person related data related now, imported {} persons and {} person-info-bits.",
                      pct,
                      ibct)
 
-        return sumct
+        return sumct, imp_persns
 
 
-    def _import_documents(self, zipd, fact : sqp.SQFactory) -> int:
+    def _import_documents(self, zipd, fact : sqp.SQFactory, restrcitopersons : list) -> int:
         logger = self.paras._logger
         logger.debug("Importing document related data now")
-        docct = self._import_class(Document, zipd, fact)
-        docict = self._import_class(DocumentInfoBit, zipd, fact, strictwith=[DocumentInfoBit.TargetId])
-        pdocintct = self._import_class(PersonDocumentInter, zipd, fact, strictwith=[PersonDocumentInter.PersonId])
+        docct = len(self._import_class(Document, zipd, fact))
+        docict = len(self._import_class(DocumentInfoBit, 
+                                        zipd, 
+                                        fact, 
+                                        restrictto=restrcitopersons,
+                                        restrictby=DocumentInfoBit.TargetId))
+        pdocintct = len(self._import_class(PersonDocumentInter, 
+                                            zipd, 
+                                            fact, 
+                                            restrictto=restrcitopersons,
+                                            restrictby=PersonDocumentInter.PersonId))
 
         logger.debug("Finished document import, did {} documents, {} document-info-bits and {} person-documents-intersections",
                      docct,
@@ -114,12 +128,21 @@ class BgCsvImporter(BgWorker):
         
         return docct + docict + pdocintct
 
-    def _import_pictures(self, zipd, fact : sqp.SQFactory) -> int:
+    def _import_pictures(self, zipd, fact : sqp.SQFactory, restrcitopersons : list) -> int:
         logger = self.paras._logger
         logger.debug("Importing picture related data now")
-        pi_ct = self._import_class(Picture, zipd, fact)
-        piin_ct = self._import_class(PictureInfoBit, zipd, fact, strictwith=[PictureInfoBit.TargetId])
-        per_pi_ct = self._import_class(PersonPictureInter, zipd, fact, strictwith=[PersonPictureInter.PersonId])
+        pi_ct = len(self._import_class(Picture, zipd, fact))
+        piin_ct = len(self._import_class(PictureInfoBit, 
+                                         zipd, 
+                                         fact, 
+                                         restrictto=restrcitopersons, 
+                                         restrictby=PictureInfoBit.TargetId))
+        
+        per_pi_ct = len(self._import_class(PersonPictureInter, 
+                                           zipd, 
+                                           fact, 
+                                           restrictto=restrcitopersons, 
+                                           restrictby=PersonPictureInter.PersonId))
 
         logger.debug("Finished picture import, did {} pictures, {} picture-info-bits and {} person-picture-intersections.",
                      pi_ct,
@@ -149,11 +172,11 @@ class BgCsvImporter(BgWorker):
                 wx.PostEvent(self.notifywin, NotifyPercentEvent(10))
                 bsum = self._import_basics(tdir, fact)
                 wx.PostEvent(self.notifywin, NotifyPercentEvent(20))
-                pesum = self._import_persons(tdir, fact)
+                pesum, impersos = self._import_persons(tdir, fact)
                 wx.PostEvent(self.notifywin, NotifyPercentEvent(30))
-                dsum = self._import_documents(tdir, fact)
+                dsum = self._import_documents(tdir, fact, restrcitopersons=impersos)
                 wx.PostEvent(self.notifywin, NotifyPercentEvent(50))
-                pisum = self._import_pictures(tdir, fact)
+                pisum = self._import_pictures(tdir, fact, restrcitopersons=impersos)
                 wx.PostEvent(self.notifywin, NotifyPercentEvent(70))
                 srcarchdir = os.path.join(tdir, "data/Archive")
                 targarchdir = self.paras._docarchive._basepath
