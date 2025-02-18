@@ -3133,6 +3133,8 @@ class gFindPersonsDialog ( wx.Dialog ):
 		gbSizer30.Add( self.m_nameTB, wx.GBPosition( 1, 1 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 5 )
 
 		self.m_searchBU = wx.Button( self, wx.ID_ANY, u"Suchen", wx.DefaultPosition, wx.DefaultSize, 0 )
+
+		self.m_searchBU.SetDefault()
 		gbSizer30.Add( self.m_searchBU, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALL, 5 )
 
 		self.m_searchResultLCTRL = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
