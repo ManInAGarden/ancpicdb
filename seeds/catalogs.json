@@ -15,6 +15,7 @@
             {"type": "DOC_TYPE", "code":"ZEUGNIS", "value":"Zeugnis", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"DANKTOT", "value":"Danksagung Beerdigung", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"TOTENBRIEF", "value":"Totenbrief", "langcode":"DEU"},
+            {"type": "DOC_TYPE", "code":"DANKHOCHZ", "value":"Danksagung Hochzeit", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"DANKGEB", "value":"Danksagung Geburtstag", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"GEBANZ", "value":"Geburtsanzeige", "langcode":"DEU"},
             {"type": "DOC_TYPE", "code":"ARBEITSBUCH", "value":"Arbeitsbuch", "langcode":"DEU"},
